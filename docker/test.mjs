@@ -175,7 +175,7 @@ JS
     assert.ok(response.ok, 'the Bot API must answer')
     const result = await response.json()
     assert.ok(result.ok, result.error?.message)
-    assert.ok(Array.isArray(result.value.bots), 'the DS Bot plugin must load')
+    assert.ok(Array.isArray(result.value.bots), 'the H bot plugin must load')
   `, loginUrl])
   const processOwner = docker(['exec', server, 'stat', '-c', '%u:%g', '/proc/1']).stdout.trim()
   assert.equal(processOwner, '1234:1235', 'web process must run under the new identity')
@@ -186,7 +186,7 @@ JS
     test "$(cat /data/restored/private.txt)" = restored
     test -w /data/profiles/web/package.json
   `])
-  console.log('PASS: web startup, DS Bot API and private data access under the new identity')
+  console.log('PASS: web startup, H bot API and private data access under the new identity')
 } finally {
   for (const container of containers) {
     docker(['rm', '--force', container], { allowFailure: true })

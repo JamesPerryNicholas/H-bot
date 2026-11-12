@@ -42,7 +42,7 @@ Bot 是长期身份。登录应该跟着 Bot 走，而不是跟着某一段对�
 
 - DSH Desktop 的浏览器面板仍由用户操作；桌面应用中的面板页由 Bot 和用户共同使用，接管状态由用户控制。
 - 群聊或子 Agent 里 Bot 发起的交接不出聊天卡，只在浏览器面板顶部的接管条里处理；工具结果会提醒 Bot 在当前对话说明要用户做什么，在面板里点交还不会通知 Bot。
-- 单独把 `browser-plugins/*` 装进一个没有 DS Bot 的 DSH profile 时，profile 按 Session id 分开，换段会像官方 browser-use 一样丢掉登录。跟 Bot 走的那份目录只有 DS Bot 挂载时才有。
+- 单独把 `browser-plugins/*` 装进一个没有 H bot 的 DSH profile 时，profile 按 Session id 分开，换段会像官方 browser-use 一样丢掉登录。跟 Bot 走的那份目录只有 H bot 挂载时才有。
 - `task` 在插件内部再调一次模型，步骤在工具结果里，不在 Bot 自己的逐步工具调用里。
 - 这次实测用的是自建多步页面，加上 WebVoyager 里两条 arXiv 任务，不是整套 600 多条。
 

@@ -73,7 +73,7 @@ export function validateCustom({ name, command, args }) {
   return clean
 }
 
-// The permission preset DS Bot gives the Bot, mapped to each driver's mode.
+// The permission preset H bot gives the Bot, mapped to each driver's mode.
 // An ACP agent that lists its modes gets one of them or none: an agent with no
 // matching mode keeps its own (see acp.js).
 export const MODES = {

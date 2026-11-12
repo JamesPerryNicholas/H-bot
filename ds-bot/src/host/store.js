@@ -379,7 +379,7 @@ export function install(rt) {
     if (!writable()) return required ? Promise.reject(new Error(`This host cannot save the Bot team: ${readOnly()}`)) : writing
     const run = writing.then(async () => {
       // Re-check writability once the queued write runs: an adopt queued before
-      // it may have made this host read-only (e.g. a file a newer DS Bot wrote).
+      // it may have made this host read-only (e.g. a file a newer H bot wrote).
       if (stuck !== undefined || holder !== undefined) {
         if (required) throw new Error(`This host cannot save the Bot team: ${readOnly()}`)
         warnReadOnly()

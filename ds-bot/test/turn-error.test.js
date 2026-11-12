@@ -195,7 +195,7 @@ test('once the host no longer holds the failure, Retry leads and asks the Bot to
 
 test('a failed retry says why and can be tried again', async () => {
   const side = cell({ code: 'SERVER' })
-  side.actions.failResume = 'DS Bot is still loading this chat.'
+  side.actions.failResume = 'H bot is still loading this chat.'
   side.buttons(side.render())[0].node.props.onClick()
   await tick()
   const tree = side.render()
@@ -426,7 +426,7 @@ test('the copy and fix tables go by code alone', () => {
 })
 
 // The words a Chinese interface may still show in English (design note, 用词).
-const ENGLISH_ALLOWED = /\b(DeepSeek|DS Bot|Bot|API|Key|Harness|DSH|HTTP|Router|Chief)\b/gi
+const ENGLISH_ALLOWED = /\b(DeepSeek|H bot|Bot|API|Key|Harness|DSH|HTTP|Router|Chief)\b/gi
 
 test('in a Chinese interface every repair card state reads in Chinese, outside Technical details', () => {
   const dicts = new Map()

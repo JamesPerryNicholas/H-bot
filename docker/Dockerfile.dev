@@ -63,7 +63,7 @@ WORKDIR /workspace
 EXPOSE 3080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-LABEL org.opencontainers.image.title="DS Bot (dev)" \
-      org.opencontainers.image.description="DS Bot from the mounted checkout, with source reload" \
-      org.opencontainers.image.source="https://github.com/Fei2411/DS-Bot" \
+LABEL org.opencontainers.image.title="H bot (dev)" \
+      org.opencontainers.image.description="H bot from the mounted checkout, with source reload" \
+      org.opencontainers.image.source="https://github.com/JamesPerryNicholas/H-bot" \
       org.opencontainers.image.licenses="Apache-2.0"

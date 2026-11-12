@@ -12,10 +12,10 @@ const build = parse(readFileSync(new URL('../electron-builder.local.yml', import
 
 test('local installer offers separate data and workspace directories', () => {
   assert.deepEqual(defaultPlaces(build.defaultPlaces), {
-    dataDir: join(homedir(), '.ds-bot-dev'), workspace: join(homedir(), 'DS Bot Dev'),
+    dataDir: join(homedir(), '.ds-bot-dev'), workspace: join(homedir(), 'H bot Dev'),
   })
   assert.deepEqual(defaultPlaces(), {
-    dataDir: join(homedir(), '.ds-bot'), workspace: join(homedir(), 'DS Bot'),
+    dataDir: join(homedir(), '.ds-bot'), workspace: join(homedir(), 'H bot'),
   })
   assert.equal(build.identity.inheritLegacy, false)
   assert.equal(build.automaticUpdates, false)

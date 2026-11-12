@@ -232,7 +232,7 @@ describe('watchReleases', () => {
 
     const hits = watchReleases({
       current: '0.1.7', arch: 'x64', asset: deb,
-      fetch: async () => releaseResponse([release('0.1.9', { page, assets: [{ name: 'DS-Bot-0.1.9-linux-amd64.deb' }] })]),
+      fetch: async () => releaseResponse([release('0.1.9', { page, assets: [{ name: 'H-bot-0.1.9-linux-amd64.deb' }] })]),
       log: quietLog(),
     })
     t.after(hits.stop)
@@ -296,7 +296,7 @@ describe('watchReleases', () => {
     t.after(updates.stop)
     await updates.latest()
     await sleep(20)
-    assert.deepEqual(log.lines, ['DS Bot: update 0.1.9 available', 'DS Bot: update 0.1.9 not opened: dialog failed'])
+    assert.deepEqual(log.lines, ['H bot: update 0.1.9 available', 'H bot: update 0.1.9 not opened: dialog failed'])
     assert.deepEqual(unhandled, [])
   })
 
@@ -433,7 +433,7 @@ describe('watchUpdates', () => {
       await sleep(20)
       assert.deepEqual(updater.installs, [])
       assert.equal(stopped, false)
-      assert.deepEqual(log.lines, ['DS Bot: update 0.1.9 downloaded'])
+      assert.deepEqual(log.lines, ['H bot: update 0.1.9 downloaded'])
     }
   })
 
@@ -444,7 +444,7 @@ describe('watchUpdates', () => {
     const updates = watchUpdates({ updater, beforeInstall: async () => {}, log })
     t.after(updates.stop)
     assert.equal(await updates.latest(), null)
-    assert.deepEqual(log.lines, ['DS Bot: update failed: offline'])
+    assert.deepEqual(log.lines, ['H bot: update failed: offline'])
   })
 
   test('tells what the newest check found and whether its download finished', async (t) => {

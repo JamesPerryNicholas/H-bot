@@ -33,7 +33,7 @@ runInNewContext(bundle.outputFiles[0].text, {
 })
 const { AboutPage, ownAppRow } = module.exports
 
-// The DS Bot row in Settings → About, with the row's hint and its buttons' text, class
+// The H bot row in Settings → About, with the row's hint and its buttons' text, class
 // and clicks. `update` is the value the update source holds.
 function page(update) {
   const calls = []
@@ -53,8 +53,8 @@ function page(update) {
   }
 }
 
-// 公开#499: in the desktop app the DS Bot row shows the app's own update state.
-test('the six app update states set the DS Bot row\'s hint and button', () => {
+// 公开#499: in the desktop app the H bot row shows the app's own update state.
+test('the six app update states set the H bot row\'s hint and button', () => {
   const cases = [
     [{ phase: 'checking' }, 'Checking for updates…', []],
     [{ phase: 'current' }, 'Up to date', [{ text: 'Check for updates', className: 'bt-soft bt-soft-sm', action: 'checkOwnApp' }]],

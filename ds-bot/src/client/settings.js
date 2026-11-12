@@ -34,12 +34,12 @@ const capitalize = word => word[0].toUpperCase() + word.slice(1)
 
 // Settings dialog: a 198px page list beside the page. Bots and group chats each list
 // their members, and one opens on its own settings form. Usage widens the dialog.
-// DS Bot's pages come first; below a rule, the pages DSH and other plugins register
+// H bot's pages come first; below a rule, the pages DSH and other plugins register
 // (`settings.section`), then Feedback and About. DSH's General rows join General, and
-// its Models page opens from DS Bot's Models page as the advanced settings.
-const SETTINGS_PAGES = [['general', 'General'], ['models', 'Models'], ['local-agents', 'Local agents'], ['bots', 'Bots'], ['groups', 'Group chats'], ['connectors', 'Connectors'], ['im', 'IM'], ['capabilities', 'Capabilities'], ['browser', 'Browser'], ['computer', 'Computer use'], ['schedules', 'Scheduled tasks'], ['pages', 'Pages'], ['files', 'Saved files'], ['usage', 'Usage'], ['secrets', 'Secrets'], ['feedback', 'Feedback'], ['about', 'About DS Bot']]
+// its Models page opens from H bot's Models page as the advanced settings.
+const SETTINGS_PAGES = [['general', 'General'], ['models', 'Models'], ['local-agents', 'Local agents'], ['bots', 'Bots'], ['groups', 'Group chats'], ['connectors', 'Connectors'], ['im', 'IM'], ['capabilities', 'Capabilities'], ['browser', 'Browser'], ['computer', 'Computer use'], ['schedules', 'Scheduled tasks'], ['pages', 'Pages'], ['files', 'Saved files'], ['usage', 'Usage'], ['secrets', 'Secrets'], ['feedback', 'Feedback'], ['about', 'About H bot']]
 const LAST_PAGES = new Set(['feedback', 'about'])
-// DSH sections DS Bot's own pages already hold.
+// DSH sections H bot's own pages already hold.
 const MERGED_SECTIONS = new Set(['general', 'models'])
 // DSH General rows that sit under Appearance; the rest go under More.
 const LOOK_ITEMS = ['appearance', 'font-size']

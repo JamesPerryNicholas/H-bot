@@ -1,4 +1,4 @@
-// The LlmAdapter that serves every local-agent route. A DS Bot Bot whose model
+// The LlmAdapter that serves every local-agent route. A H bot Bot whose model
 // is one of these routes answers through a local agent CLI instead of a model
 // API: the loop, Sessions, tools and approvals are the ordinary ones; this
 // adapter turns each request into a prompt for the CLI session the Session is
@@ -83,7 +83,7 @@ export class LocalAgentAdapter extends LlmAdapter {
     return driver
   }
 
-  // What DS Bot knows of a route without starting its CLI: the CLI's default, what a
+  // What H bot knows of a route without starting its CLI: the CLI's default, what a
   // probe found, and what a Bot runs on. DSH and the catalog ask this for every route.
   async listModels(route) {
     if (engineOf(route, this.deps.customAgents()) === undefined) return []
@@ -136,7 +136,7 @@ export class LocalAgentAdapter extends LlmAdapter {
   }
 
   // ---------------------------------------------------------------------------
-  // The live bridge for one DS Bot Session.
+  // The live bridge for one H bot Session.
   async liveFor(options) {
     const sessionId = String(options.sessionId)
     let live = this.live.get(sessionId)

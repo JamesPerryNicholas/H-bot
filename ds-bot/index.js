@@ -1,4 +1,4 @@
-// DS Bot: a team of long-lived Bots on top of ordinary dsh root Sessions.
+// H bot: a team of long-lived Bots on top of ordinary dsh root Sessions.
 // Every Bot is one root Session; the roster, rooms, and the bot-to-bot exchange log live
 // in one JSON file under DSH_HOME so they survive restarts without new Session event types.
 import { join } from 'node:path'

@@ -18,7 +18,7 @@
 
 ## 协作方式
 
-团队里谁都可以做任何工作：分诊、修 bug、做功能、改界面、写文档。只有一部分决定归维护者：产品方向、改动已定的设计、这些规则、发版和架构。需要这类决定的 Issue 和 Pull Request 带 `maintainer` 标签；开工前先等维护者回复。DS Bot 要做成什么，见 [docs/vision.zh.md](docs/vision.zh.md)；已定的设计在 [docs/plans/](docs/plans/)。拿不准是 bug 还是设计如此时，先查这两处，再在 Issue 里问。
+团队里谁都可以做任何工作：分诊、修 bug、做功能、改界面、写文档。只有一部分决定归维护者：产品方向、改动已定的设计、这些规则、发版和架构。需要这类决定的 Issue 和 Pull Request 带 `maintainer` 标签；开工前先等维护者回复。H bot 要做成什么，见 [docs/vision.zh.md](docs/vision.zh.md)；已定的设计在 [docs/plans/](docs/plans/)。拿不准是 bug 还是设计如此时，先查这两处，再在 Issue 里问。
 
 ### 分支
 
@@ -169,17 +169,17 @@ dev/bench.sh dev 3081 8771 reset    # 模拟模型 + DSH Web；数据在 ../.dsh
 
 ## 报告问题
 
-最简单的方式是在 DS Bot 里：打开 **设置 → 反馈**，写下发生了什么，选 **在 GitHub 上报告**。它会新开一个 Issue，DS Bot 和 DSH 版本、系统、模型和最近的错误都已填好。**复制** 会把同样的内容放进剪贴板，**下载** 会保存完整的错误日志（`<DSH_HOME>/bot/logs/diagnostics.jsonl`）。
+最简单的方式是在 H bot 里：打开 **设置 → 反馈**，写下发生了什么，选 **在 GitHub 上报告**。它会新开一个 Issue，H bot 和 DSH 版本、系统、模型和最近的错误都已填好。**复制** 会把同样的内容放进剪贴板，**下载** 会保存完整的错误日志（`<DSH_HOME>/bot/logs/diagnostics.jsonl`）。
 
 手动开 Issue 时，请写上：
 
 - DSH 版本（DSH Desktop 或 `@deepseek-ai/dsh`）、操作系统，以及用的是 DSH Desktop 还是 DSH Web。
-- DS Bot 的安装方式（npm、发布文件、Git 地址或命令行）和版本。
+- H bot 的安装方式（npm、发布文件、Git 地址或命令行）和版本。
 - 你做了什么、期望什么、实际发生了什么，报错请贴原文。
 - 一张整窗截图，包含聊天和报错。
 - 能让问题再次出现的步骤。
 
-DS Bot 会从诊断信息里去掉 API key、token、保存的密钥和你的用户目录。发出前请读一遍，并去掉截图里的个人信息。
+H bot 会从诊断信息里去掉 API key、token、保存的密钥和你的用户目录。发出前请读一遍，并去掉截图里的个人信息。
 
 安全问题不要开公开 Issue。请在仓库的 **Security** 页使用 **Report a vulnerability**。
 
@@ -187,4 +187,4 @@ Issue 只用来报告 bug。提问、想法和功能建议请发到 [Discussions
 
 ## 许可
 
-DS Bot 使用 [Apache License 2.0](LICENSE)。提交贡献即表示你同意按同一许可授权，如该许可第 5 条所述。
+H bot 使用 [Apache License 2.0](LICENSE)。提交贡献即表示你同意按同一许可授权，如该许可第 5 条所述。

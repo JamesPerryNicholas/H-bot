@@ -12,7 +12,7 @@ extraMetadata:
     automaticUpdates: false
     defaultPlaces:
       dataName: .ds-bot-dev
-      workspaceName: DS Bot Dev
+      workspaceName: H bot Dev
     identity:
       appId: io.github.fei2411.dsbot.local
       inheritLegacy: false

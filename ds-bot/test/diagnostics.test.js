@@ -189,7 +189,7 @@ test('reportMarkdown says when nothing went wrong', () => {
   assert.doesNotMatch(text, /DSH \|/)
 })
 
-test('errorCode tells refusals from DS Bot faults', () => {
+test('errorCode tells refusals from H bot faults', () => {
   assert.equal(errorCode(new Error('Unknown Bot')), 'bot/refused')
   assert.equal(errorCode(new TypeError('x is undefined')), 'bot/internal')
   assert.equal(errorCode(Object.assign(new Error('no'), { code: 'ENOENT' })), 'bot/internal')
@@ -411,19 +411,19 @@ test('a turn refused for not being a model endpoint refuses that route', () => {
 test('issueUrl fills the issue form, keeps the versions when the errors are too long, and falls back to the clipboard', async () => {
   const { issueUrl } = await import('../src/client/diagnostics.js')
   const base = 'https://github.com/JamesPerryNicholas/H-bot/issues/new'
-  const short = issueUrl(base, { what: 'Writer failed\nin the group', diagnostics: '| DS Bot | 0.1.0 |' })
+  const short = issueUrl(base, { what: 'Writer failed\nin the group', diagnostics: '| H bot | 0.1.0 |' })
   assert.equal(short.inline, true)
   const params = new URL(short.url).searchParams
   assert.equal(params.get('template'), 'bug.yml')
   assert.equal(params.get('title'), 'Writer failed')
   assert.equal(params.get('what'), 'Writer failed\nin the group')
-  assert.equal(params.get('diagnostics'), '| DS Bot | 0.1.0 |')
+  assert.equal(params.get('diagnostics'), '| H bot | 0.1.0 |')
   const long = issueUrl(base, { diagnostics: '错误'.repeat(2000) })
   assert.equal(long.inline, false)
   assert.ok(long.url.length < 7000)
   assert.match(new URL(long.url).searchParams.get('diagnostics'), /clipboard/)
   assert.equal(new URL(long.url).searchParams.has('title'), false)
-  const table = '| | |\n|---|---|\n| DS Bot | 0.1.2 |\n| DSH | 0.2.0 |'
+  const table = '| | |\n|---|---|\n| H bot | 0.1.2 |\n| DSH | 0.2.0 |'
   const errors = issueUrl(base, { what: 'Writer failed', diagnostics: `${table}\n\nRecent host errors:\n${'错误'.repeat(2000)}` })
   assert.equal(errors.inline, false)
   assert.ok(errors.url.length < 7000)

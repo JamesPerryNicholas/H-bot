@@ -128,10 +128,10 @@ try {
     stream.setEncoding('utf8')
     stream.on('data', (chunk) => { output += chunk; process.stdout.write(chunk) })
   }
-  const updateLine = `DS Bot: update ${String(version)} ${releasePage ? 'available' : 'downloaded'}`
+  const updateLine = `H bot: update ${String(version)} ${releasePage ? 'available' : 'downloaded'}`
   const end = Date.now() + (releasePage ? 3 : 5) * 60_000
   while (!output.includes(updateLine)) {
-    if (releasePage ? /DS Bot: update check failed/u.test(output) : /DS Bot: update failed/u.test(output)) {
+    if (releasePage ? /H bot: update check failed/u.test(output) : /H bot: update failed/u.test(output)) {
       throw new Error('the app reported a failed update')
     }
     if (app.exitCode !== null) {

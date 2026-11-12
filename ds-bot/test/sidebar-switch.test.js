@@ -532,7 +532,7 @@ test('the rail spaces its icons on the open column\'s rhythm', () => {
   assert.match(bodyOf('.bt-rail'), /(^|;)gap:6px/)
 })
 
-// #452: the Connect plugins button left the footer; what DS Bot puts there is
+// #452: the Connect plugins button left the footer; what H bot puts there is
 // the account menu and the way back from Agent mode.
 test('the Bot footer holds the account and the return button only', () => {
   const source = readFileSync(new URL('../src/client/index.js', import.meta.url), 'utf8')

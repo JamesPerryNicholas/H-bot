@@ -8,7 +8,7 @@
 | `script/` | `ds-bot-browser-script` | 一次提交一段脚本 |
 | `task/` | `ds-bot-browser-task` | 一个目标，交回答案和步骤 |
 
-DS Bot 里设置 `browserPlugin` 为 `refs`、`script` 或 `task`。三个不会一起挂上。profile 在 `bot/browser-profiles/<botId>/`，群会话用同一个 Bot 的那一份。Bot 之间不复制 cookie。
+H bot 里设置 `browserPlugin` 为 `refs`、`script` 或 `task`。三个不会一起挂上。profile 在 `bot/browser-profiles/<botId>/`，群会话用同一个 Bot 的那一份。Bot 之间不复制 cookie。
 
 登录、付款、验证码调用 `browser_handoff`，用户做完再 `browser_resume`。
 

@@ -276,7 +276,7 @@ export function startSnapshot(state, now) {
 
 export const detailsText = ({ version, platform, arch, reason, lines }) => [`${PRODUCT_NAME} ${version} (${platform} ${arch})`, `reason: ${reason}`, '', ...lines].join('\n')
 
-const note = message => { console.log(`DS Bot: start window: ${message}`) }
+const note = message => { console.log(`H bot: start window: ${message}`) }
 // The page sends a button's detail as { value }; anything else counts as none.
 const valueOf = payload => (payload !== null && typeof payload === 'object' && typeof payload.value === 'string' ? payload.value.slice(0, 40) : undefined)
 // An option of the import card: its name and whether it is ticked.
@@ -832,7 +832,7 @@ export class StartWindow {
     const reason = this.#state.failure?.reason ?? 'other'
     const text = detailsText({ version, platform: process.platform, arch: process.arch, reason, lines: this.#o.log.tail(SAVED_LINES) })
     try {
-      const filePath = await saveAs(this.#window, 'DS-Bot-log.txt')
+      const filePath = await saveAs(this.#window, 'H-bot-log.txt')
       if (!filePath) return
       await writeFile(filePath, text, 'utf8')
       note(`the log was saved to ${filePath}`)

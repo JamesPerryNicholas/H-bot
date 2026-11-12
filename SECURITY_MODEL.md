@@ -1,10 +1,10 @@
-# DS Bot security model
+# H bot security model
 
 The threat model that security reviews and scans of this repository start from. Infrastructure is `docker/` and `docker-compose.yml` in this repository.
 
 ## System overview and trust boundaries
 
-DS Bot is a team of long-lived LLM Bots built as a plugin on DeepSeek Harness (DSH). It runs in three ways:
+H bot is a team of long-lived LLM Bots built as a plugin on DeepSeek Harness (DSH). It runs in three ways:
 
 - **DSH Desktop / DSH Web** with the `ds-bot` plugin, on the user's own computer.
 - **Desktop app** (`app/`, Electron) that runs a pinned DSH with the plugin in its own `DSH_HOME`, and imports a team from `~/.dsh` (read only).

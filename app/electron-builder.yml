@@ -84,7 +84,7 @@ mac:
   # Without this key macOS registers no Local Network entry for the app and
   # blocks LAN connections from tool processes outright ("No route to host").
   extendInfo:
-    NSLocalNetworkUsageDescription: DS Bot runs commands that connect to devices on your local network.
+    NSLocalNetworkUsageDescription: H bot runs commands that connect to devices on your local network.
 linux:
   # The Linux Host uses the payload's plain Node, which cannot read asar archives.
   asar: false
@@ -99,7 +99,7 @@ linux:
   # terminal command should not have.
   executableName: dsbot
   # A deb needs a maintainer; package.json's author has no email, so it goes here.
-  maintainer: Fei2411 <https://github.com/Fei2411>
+  maintainer: H bot <https://github.com/JamesPerryNicholas/H-bot>
   # Links the running window to the menu entry (WM_CLASS = app id).
   syncDesktopName: true
   icon: assets/icon.png
@@ -112,5 +112,5 @@ deb:
 # so the build itself never publishes (--publish never).
 publish:
   provider: github
-  owner: Fei2411
-  repo: DS-Bot
+  owner: JamesPerryNicholas
+  repo: H-bot

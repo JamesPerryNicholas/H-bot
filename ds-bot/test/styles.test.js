@@ -34,7 +34,7 @@ const react = {
 }
 
 const tick = () => new Promise(resolve => setImmediate(resolve))
-// DS Bot's style tags in a document, all of them or those of one group.
+// H bot's style tags in a document, all of them or those of one group.
 const tagged = (document, tag) => [...document.head.querySelectorAll('style')]
   .filter(style => style.dataset.dshBot !== undefined && (tag === undefined || style.dataset.dshBot === tag))
 
@@ -96,7 +96,7 @@ const bench = (rows) => {
 
 // #228: our style tags carry the client module id, so another module's materialization
 // cannot claim them and its teardown cannot delete them.
-test('every DS Bot style is owned by the ds-bot client module', async () => {
+test('every H bot style is owned by the ds-bot client module', async () => {
   const { window, module, register, materialize, update } = bench(['other'])
   const { installStyles, installCompiledStyles } = module.exports
   const { document } = window

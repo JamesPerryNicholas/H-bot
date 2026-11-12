@@ -226,12 +226,12 @@ const ZH = {
   'Add a provider': '添加服务商',
   'Needs an API key': '需要 API key',
   'Key set': '已设置 key',
-  'Key set outside DS Bot': 'key 在 DS Bot 之外设置',
+  'Key set outside H bot': 'key 在 H bot 之外设置',
   'No models': '没有模型',
   '{count} models': '{count} 个模型',
   // What a Bot runs on
   'Runs on': '运行方式',
-  'DS Bot model': 'DS Bot 模型',
+  'H bot model': 'H bot 模型',
   'Local agent': '本地 Agent',
   'CLI default': 'CLI 默认',
   'Signed in': '已登录',
@@ -239,7 +239,7 @@ const ZH = {
   'Sign-in unknown': '登录状态未知',
   'Looking for agent CLIs…': '正在查找 Agent CLI…',
   'Reading models…': '正在读取模型…',
-  "Answers with a model served by DS Bot, with DS Bot's tools.": '用 DS Bot 里的模型回答，用 DS Bot 的工具。',
+  "Answers with a model served by H bot, with H bot's tools.": '用 H bot 里的模型回答，用 H bot 的工具。',
   'Answers through this CLI on your computer, with its own tools and sign-in.': '通过这台电脑上的 CLI 回答，用它自己的工具和登录。',
   'Change what {name} runs on?': '更换 {name} 的运行方式？',
   'Its own chat starts a new part with a handoff before the next turn.': '下一轮开始前，它的私聊会开新的一段并做好交接。',
@@ -273,7 +273,7 @@ const ZH = {
   'Current session': '当前会话',
   'This page could not be shown.': '这个页面无法显示。',
   'Current': '当前',
-  'This key comes from outside DS Bot, such as an environment variable, and cannot be changed here.': '这个 key 来自 DS Bot 之外（例如环境变量），这里改不了。',
+  'This key comes from outside H bot, such as an environment variable, and cannot be changed here.': '这个 key 来自 H bot 之外（例如环境变量），这里改不了。',
   'and {count} more': '还有 {count} 个',
   'Remove {name}? Bots on its models need another model.': '删除 {name}？用它的模型的 Bot 要换一个模型。',
   'Remove provider': '删除服务商',
@@ -340,7 +340,7 @@ const ZH = {
   'HTTP status': 'HTTP 状态码',
   'Request ID': '请求 ID',
   'Provider message': '原文',
-  'DS Bot': 'DS Bot',
+  'H bot': 'H bot',
 
   // Header
   'Message {name}': '给 {name} 发消息',
@@ -442,7 +442,7 @@ const ZH = {
   Rename: '重命名',
   'Add instructions in Bot settings': '在 Bot 设置里添加说明',
   'No scheduled tasks yet. To add one, tell the Bot in its chat what to do and when.': '还没有定时任务。要添加，在对话里告诉 Bot 做什么、什么时候做。',
-  'The browser is in DSH Desktop and the DS Bot app.': '浏览器在 DSH 桌面版和 DS Bot 应用里。',
+  'The browser is in DSH Desktop and the H bot app.': '浏览器在 DSH 桌面版和 H bot 应用里。',
   'New tab': '新标签页',
   'Close tab': '关闭标签页',
   'Open {title}': '打开 {title}',
@@ -643,7 +643,7 @@ const ZH = {
   'No group chats yet.': '还没有群聊。',
   'A group chat lets several Bots work on one thing with you.': '在群聊里，几个 Bot 和你一起做一件事。',
   'Back to group chats': '返回群聊列表',
-  'DS Bot settings': 'DS Bot 设置',
+  'H bot settings': 'H bot 设置',
   'Settings pages': '设置页面',
   'Advanced settings': '高级设置',
   'Back to models': '返回模型',
@@ -714,14 +714,14 @@ const ZH = {
   '{n} d': '{n} 天',
 
   // Plugin updates
-  'DS Bot {version} is available': 'DS Bot {version} 可以更新',
-  'Updating DS Bot…': '正在更新 DS Bot…',
-  'DS Bot {version} is installed. Restart DSH to use it.': 'DS Bot {version} 已安装，重启 DSH 后生效',
-  'DS Bot {version} is installed.': 'DS Bot {version} 已安装。',
-  'DS Bot update': 'DS Bot 更新',
-  'DS Bot {version}': 'DS Bot {version}',
+  'H bot {version} is available': 'H bot {version} 可以更新',
+  'Updating H bot…': '正在更新 H bot…',
+  'H bot {version} is installed. Restart DSH to use it.': 'H bot {version} 已安装，重启 DSH 后生效',
+  'H bot {version} is installed.': 'H bot {version} 已安装。',
+  'H bot update': 'H bot 更新',
+  'H bot {version}': 'H bot {version}',
   'Update installed': '更新已安装',
-  'Restart DSH to start using DS Bot {version}.': '重启 DSH 后开始使用 DS Bot {version}。',
+  'Restart DSH to start using H bot {version}.': '重启 DSH 后开始使用 H bot {version}。',
   'You have {version}.': '当前版本 {version}。',
   'The update did not finish: {reason}': '更新没有完成：{reason}',
   "What's new": '更新说明',
@@ -731,7 +731,7 @@ const ZH = {
   'DSH update': 'DSH 更新',
   'DSH {version}': 'DSH {version}',
   'Restart DSH to start using DSH {version}.': '重启 DSH 后开始使用 DSH {version}。',
-  'Update DS Bot {version} first.': '先更新 DS Bot {version}。',
+  'Update H bot {version} first.': '先更新 H bot {version}。',
   'Open updates': '打开更新',
 
   // Command palette
@@ -1187,16 +1187,16 @@ const ZH = {
   'Compared with the {count} days before': '与再往前 {count} 天相比',
   '{share}% of all usage from {span}': '占 {span} 全部用量的 {share}%',
   // About
-  'About DS Bot': '关于 DS Bot',
+  'About H bot': '关于 H bot',
   'Version {version}': '版本 {version}',
-  'Star the upstream project on GitHub': '在 GitHub 上给上游项目点 Star',
-  'Support the upstream project with a star on GitHub.': '欢迎在 GitHub 上为上游项目点 Star。',
-  'Upstream source code': '上游源代码',
+  'Star H bot on GitHub': '在 GitHub 上给 H bot 点 Star',
+  'Support H bot with a star on GitHub.': '欢迎在 GitHub 上为 H bot 点 Star。',
+  'Source code': '源代码',
   'Upstream GitHub issue': '上游 GitHub issue',
   'Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.': '在上游仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。',
-  'Star DS Bot on GitHub': '在 GitHub 上给 DS Bot 点 Star',
+  'Star H bot on GitHub': '在 GitHub 上给 H bot 点 Star',
   '{count} stars': '{count} 个 Star',
-  'If DS Bot helps you, a star on GitHub helps more people find it.': '如果 DS Bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。',
+  'If H bot helps you, a star on GitHub helps more people find it.': '如果 H bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。',
   Updates: '更新',
   'Check for updates': '检查更新',
   'Checking…': '正在检查…',
@@ -1211,7 +1211,7 @@ const ZH = {
   '{version} is available': '{version} 已发布',
   'Installed from a local folder; update it there.': '从本地文件夹安装，请在那里更新。',
   'Updates are not offered for this install.': '这种安装方式不提供更新。',
-  'Updates come with the DS Bot app.': '随 DS Bot 应用一起更新。',
+  'Updates come with the H bot app.': '随 H bot 应用一起更新。',
   Links: '链接',
   'Source code': '源代码',
   'Release notes': '发布说明',
@@ -1227,7 +1227,7 @@ const ZH = {
   Show: '查看',
   Hide: '收起',
   'GitHub issue': 'GitHub issue',
-  'Opens a new issue in the DS Bot repository with all of this filled in. Nothing is sent until you submit it there.': '在 DS Bot 仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。',
+  'Opens a new issue in the H bot repository with all of this filled in. Nothing is sent until you submit it there.': '在 H bot 仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。',
   'Report on GitHub': '在 GitHub 上报告',
   'Copied the diagnostics.': '已复制诊断信息。',
   'Could not copy. Select the text below and copy it.': '无法复制。请选中下面的文字手动复制。',
@@ -1239,7 +1239,7 @@ const ZH = {
   'Recent errors': '最近的错误',
   'Recent errors · {count}': '最近的错误 · {count}',
   'No errors recorded.': '没有错误记录。',
-  'Failed model calls and DS Bot problems show here, newest first.': '模型调用失败和 DS Bot 的问题会显示在这里，最新的在前。',
+  'Failed model calls and H bot problems show here, newest first.': '模型调用失败和 H bot 的问题会显示在这里，最新的在前。',
   'Model call': '模型调用',
   'This window': '这个窗口',
   'Error log': '错误日志',
@@ -1519,7 +1519,7 @@ const ZH = {
 const HOST_ERRORS = [
   [/^Could not reach the mail server at (.+)\. Check the server address\.$/, '连不上邮件服务器 $1，请检查服务器地址。'],
   [/^Model (.+) is not available\. Available: (.*)$/, '模型 $1 不可用。可用的：$2'],
-  [/^The API key for (.+) is set outside DS Bot and cannot be changed here$/, '$1 的 API key 是在 DS Bot 之外设置的，这里改不了'],
+  [/^The API key for (.+) is set outside H bot and cannot be changed here$/, '$1 的 API key 是在 H bot 之外设置的，这里改不了'],
   [/^(.+) takes no API key here$/, '$1 不能在这里填 API key'],
   [/^(.+) is already set up$/, '$1 已经设置过了'],
   [/^DSH offers no provider (.+)$/, 'DSH 没有服务商 $1'],
@@ -1615,14 +1615,14 @@ const HOST_ZH = {
   'This side chat is no longer here.': '这个侧边对话已经不在了。',
   'This side question is no longer here.': '这个侧边提问已经不在了。',
   'This Bot has not called a model yet. Send a normal message first.': '这个 Bot 还没有调用过模型，请先正常发一条消息。',
-  'DS Bot restarted before this answer finished.': 'DS Bot 在回答完成前重启了。',
+  'H bot restarted before this answer finished.': 'H bot 在回答完成前重启了。',
   'The model called a tool again after being told not to, so this aside was not answered.': '模型在被要求不要调用工具之后又调用了工具，所以这次没有回答。',
   'The model wrote nothing.': '模型没有写任何内容。',
   'Nothing to ask': '没有要问的内容',
   'Nothing to open': '没有要打开的内容',
   'Nothing to cancel': '没有要取消的内容',
   'Nothing to close': '没有要关闭的内容',
-  'DS Bot is still loading this chat.': 'DS Bot 还在加载这个对话。',
+  'H bot is still loading this chat.': 'H bot 还在加载这个对话。',
   // Computer use
   'Computer use': '电脑操控',
   'Computer': '电脑',
@@ -1674,7 +1674,7 @@ const HOST_ZH = {
 Object.assign(ZH, HOST_ZH)
 
 // Brand templates before interpolation so Bot names, paths and other user values stay intact.
-const brandCopy = text => text.replace(/\bDS Bot\b/g, PRODUCT_NAME)
+const brandCopy = text => text.replace(/\bH bot\b/g, PRODUCT_NAME)
 
 const fill = (text, params) => (params
   ? text.replace(/\{(\w+)\}/g, (match, name) => (name in params ? String(params[name]) : match))
@@ -1706,7 +1706,7 @@ export function hostText(message) {
   if (Object.hasOwn(ZH, message)) return t(message)
   if (!language().startsWith('zh')) {
     // Only this fixed host phrase names the app; the provider name may be user input.
-    return message.replace(/ is set outside DS Bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`)
+    return message.replace(/ is set outside H bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`)
   }
   for (const [pattern, template] of HOST_ERRORS) {
     if (pattern.test(message)) return message.replace(pattern, brandCopy(template))

@@ -59,7 +59,7 @@ test('current product identity reaches Main Bots, members and their group sessio
   for (const id of ['main', 'worker', 'group-worker']) {
     assert.match(prompt(id), /a Bot on the user's team in H bot\./)
     assert.match(prompt(id), /older names in imported chat history or data paths/)
-    assert.doesNotMatch(prompt(id), /DS Bot|heng bot/)
+    assert.doesNotMatch(prompt(id), /H bot|heng bot/)
   }
   assert.match(prompt('main'), /You are Chief/)
   assert.match(prompt('main'), /Chief of Staff/)
@@ -75,6 +75,6 @@ test('current product identity reaches Main Bots, members and their group sessio
 test('memory summaries and reviewers use the current application identity', () => {
   for (const text of [SUMMARY_SYSTEM, askSystem(false), askSystem(true), reviewSystem(), reviewSystem({ group: true }), tidySystem({ who: 'Chief', max: 100 })]) {
     assert.match(text, /H bot/)
-    assert.doesNotMatch(text, /DS Bot|heng bot/)
+    assert.doesNotMatch(text, /H bot|heng bot/)
   }
 })

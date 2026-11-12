@@ -59,7 +59,7 @@ const TEXT_RULES = [
   { id: 'retired-product-name', level: MUST, re: /deepseek[-_ ]?bot/gi, legacyOk: true, notFiles: /^CHANGELOG(?:\.[a-z]+)?\.md$/ },
   { id: 'old-project-name', level: MUST, re: /DSH Bot\b/g, legacyOk: true },
   { id: 'old-package-name', level: MUST, re: /\bdsh-bot\b/g, legacyOk: true },
-  { id: 'legacy-name-in-migration', level: KEEP, re: /\bdsh-bot\b|DeepSeek Bot\b/gi, onlyLegacy: true, summary: true },
+  { id: 'legacy-name-in-migration', level: KEEP, re: /\bdsh-bot\b|H bot\b/gi, onlyLegacy: true, summary: true },
   // Drafts and local-only material.
   { id: 'draft-marker', level: MUST, re: /TBD\(|DRAFT for|草稿/g },
   { id: 'not-public-path-in-docs', level: MUST, re: new RegExp(NOT_PUBLIC.source, 'g'), files: /\.md$/ },

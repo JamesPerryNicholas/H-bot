@@ -197,7 +197,7 @@ export function install(rt) {
   const FOLDER_RETRY_MS = 300_000
   const PAUSE_NOTE = 'H bot paused your turn for a context check. Go on with it now from where you stopped.'
   // An imported inbox may already contain the pre-rename note; do not enqueue it twice.
-  const isPauseNote = message => [PAUSE_NOTE, PAUSE_NOTE.replace('H bot', 'DS Bot')].includes(textOf(message.content))
+  const isPauseNote = message => [PAUSE_NOTE, PAUSE_NOTE.replace('H bot', 'H bot')].includes(textOf(message.content))
 
   // A broken provider adapter must not crash every turn; estimate from the
   // derived messages instead, with one warning.
@@ -264,15 +264,15 @@ export function install(rt) {
 
   // The backend's own entry points leave Bot Sessions alone, earlier parts and group
   // records included: automatic pressure and overflow compaction do nothing, and
-  // /compact is refused. Only DS Bot condenses a Bot Session, when the steward says so,
-  // and then the summary is DS Bot's checkpoint. An explicit range is different: with
+  // /compact is refused. Only H bot condenses a Bot Session, when the steward says so,
+  // and then the summary is H bot's checkpoint. An explicit range is different: with
   // those entry points closed, the only range DSH still asks of a Bot Session is the one
   // a model switch needs to fit the new model's window, and a refusal there ended the
-  // switch itself (MODEL_SWITCH_COMPACTION_FAILED). So DS Bot condenses that range as its
+  // switch itself (MODEL_SWITCH_COMPACTION_FAILED). So H bot condenses that range as its
   // own checkpoint instead. Each preset mount has its own compaction backend. Every other
   // Session, subagents included, is as it was.
   const adoptedEngines = new Set()
-  // Sessions DS Bot itself is condensing right now.
+  // Sessions H bot itself is condensing right now.
   const condensing = new Set()
   // The range of a Bot Session DSH is condensing for a model switch, where the route the
   // Session used last is the one being switched away from.
@@ -284,8 +284,8 @@ export function install(rt) {
     return id !== undefined && (rt.selfOf(id) !== undefined || rt.roomOf(id) !== undefined)
   }
   const ownedByBot = target => isBotTarget(target) && !condensing.has(target.session.id)
-  // Condenses a range of a Bot Session the way DS Bot condenses its own parts: the
-  // session counts as condensing, so the summary hook writes DS Bot's checkpoint rather
+  // Condenses a range of a Bot Session the way H bot condenses its own parts: the
+  // session counts as condensing, so the summary hook writes H bot's checkpoint rather
   // than the backend writing one of its own.
   async function condenseRange(target, run, { forSwitch = false } = {}) {
     const sessionId = target.session.id
@@ -298,7 +298,7 @@ export function install(rt) {
       if (forSwitch) switchRanges.delete(sessionId)
     }
   }
-  // The engine that serves this agent, when DS Bot can condense through it.
+  // The engine that serves this agent, when H bot can condense through it.
   const engineOf = agent => [ctx.get('agentPresets')?.serviceFor(agent, 'compaction'), ctx.get('compaction')]
     .find(engine => typeof engine?.[ORIGINAL_COMPACT]?.summarize === 'function')
   // The wrapper decides per call, so it can go on before the Session is a Bot's.
@@ -566,7 +566,7 @@ export function install(rt) {
     return { kept: kept.reverse(), more }
   }
 
-  // DS Bot's summary for a Bot Session, in place of the backend's. Like the backend's
+  // H bot's summary for a Bot Session, in place of the backend's. Like the backend's
   // own, it is one request on the conversation's own prefix, so the provider serves
   // that from cache.
   async function writeCheckpoint(input, agent, signal) {
@@ -709,7 +709,7 @@ export function install(rt) {
     const sessionId = agent.session.id
     condensing.add(sessionId)
     try {
-      // Through the service itself, past DS Bot's own wrapper: only a call on the
+      // Through the service itself, past H bot's own wrapper: only a call on the
       // service gives the engine its own context, with the services it injects.
       const result = inTurn
         ? await engine.compactIfNeeded(agent, 'context-overflow', signal)
@@ -730,7 +730,7 @@ export function install(rt) {
     return after < lines.check
   }
 
-  // The note a part opened with, as the fresh part shows it. A note DS Bot put
+  // The note a part opened with, as the fresh part shows it. A note H bot put
   // together without the model carries the last note the model wrote.
   function noteText(segment) {
     if (segment?.fallback === undefined) return segment?.note
@@ -906,7 +906,7 @@ export function install(rt) {
   // Input in the inbox is durable but does not wake the driver; send() is what wakes
   // it. Re-send what waits, in order, the first message with the wake, so a stopped
   // turn goes on without waiting for the next input. Only while the plugin is live —
-  // a turn that starts during unload would run without DS Bot's hooks.
+  // a turn that starts during unload would run without H bot's hooks.
   const wake = (agent) => {
     const pending = [...agent.inbox.nextStep, ...agent.inbox.nextTurn]
     for (const message of pending) agent.inbox.remove(message.id)
@@ -1239,7 +1239,7 @@ export function install(rt) {
       carried.recent.length, carried.earlier.length, folder === undefined ? '' : `; now works in ${folder}`)
   }
 
-  // Ends a step DS Bot takes over. Before a turn's first step an empty batch ends the
+  // Ends a step H bot takes over. Before a turn's first step an empty batch ends the
   // turn as completed, where a reject ends it as blocked, which other listeners read as
   // a failure. Later in a turn an empty batch would run another model step, and a turn
   // carried through a steer cut keeps its reject, since a completed turn reads as answered.
@@ -1324,7 +1324,7 @@ export function install(rt) {
 
   // DSH 0.2.1 checks a Session's folder as it puts each model request together, before
   // agent/pre-step, and fails the turn when both the folder and the one the Session was
-  // made in are gone. The team folder is DS Bot's own, so it is made again; a Bot whose
+  // made in are gone. The team folder is H bot's own, so it is made again; a Bot whose
   // own folder went away first changes to the folder it would move to, through DSH's
   // documented way out (`workingDirectory.set`), and the pre-step then moves it to a
   // fresh part there, as on DSH 0.2.0.

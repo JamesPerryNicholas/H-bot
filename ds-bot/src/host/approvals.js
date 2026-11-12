@@ -1,6 +1,6 @@
 // Approvals. A member's group Session is hidden, so DSH's approval card never shows
-// there and the turn would wait forever: DS Bot answers those requests itself, from
-// the group chat. A Bot's own chat keeps DSH's card, but DS Bot can answer those too
+// there and the turn would wait forever: H bot answers those requests itself, from
+// the group chat. A Bot's own chat keeps DSH's card, but H bot can answer those too
 // (IM chats, the phone app): the request is raced — whichever side answers first wins,
 // and the other card withdraws.
 import { randomUUID } from 'node:crypto'

@@ -265,10 +265,10 @@ test('a request with an id in a group calls the member once', async (t) => {
   assert.equal(posts, 1)
 })
 
-test('a request that was in the air when DS Bot stopped is not sent again', async (t) => {
+test('a request that was in the air when H bot stopped is not sent again', async (t) => {
   const home = tempHome()
   const first = await boot(home, team())
-  // The delivery hangs, as it would when DS Bot stops in the middle of it.
+  // The delivery hangs, as it would when H bot stops in the middle of it.
   first.ctx.sessions.flush = async () => new Promise(() => {})
   const inFlight = first.tool('message_bot', { to: 'Writer', message: 'do the thing', request_id: 'r-1' }, 'a')
   inFlight.catch(() => {})

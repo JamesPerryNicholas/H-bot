@@ -60,7 +60,7 @@ const isolation = results.isolation ?? {}
 const html = `<!doctype html>
 <html lang="zh">
 <meta charset="utf-8">
-<title>DS Bot 浏览器插件调研</title>
+<title>H bot 浏览器插件调研</title>
 <style>
   :root { color-scheme: light; --ink:#1c1915; --paper:#f6f1e7; --line:#ddd4c4; --good:#1f7a4d; --bad:#9d341f; --mark:#e7a322; }
   * { box-sizing: border-box; }
@@ -119,9 +119,9 @@ const html = `<!doctype html>
 
 <section id="agents">
   <h2>Agent 浏览器项目</h2>
-  <p class="fine">下面七个都对过 DSH 的 Session 模型和 DS Bot 的长期身份。Chrome DevTools 按你的判断留在调研里，不做成插件。ego lite 这台 Linux 环境跑不了，用 script 插件测它那种「一段脚本」的形状，不把它算成测过。</p>
+  <p class="fine">下面七个都对过 DSH 的 Session 模型和 H bot 的长期身份。Chrome DevTools 按你的判断留在调研里，不做成插件。ego lite 这台 Linux 环境跑不了，用 script 插件测它那种「一段脚本」的形状，不把它算成测过。</p>
   <div class="grid">
-    <article class="card"><h3>browser-use</h3><p>开源 Python / TypeScript agent，另有 Cloud。CLI 3.0 把一整段浏览收成一次 <code>browser_exec</code>。和 Bot 的差距：它自己就是 agent，登录跟它的浏览器走，不跟 DS Bot 的身份走。官方 DSH 只登记一个 provider，换 Session 不恢复 profile。</p></article>
+    <article class="card"><h3>browser-use</h3><p>开源 Python / TypeScript agent，另有 Cloud。CLI 3.0 把一整段浏览收成一次 <code>browser_exec</code>。和 Bot 的差距：它自己就是 agent，登录跟它的浏览器走，不跟 H bot 的身份走。官方 DSH 只登记一个 provider，换 Session 不恢复 profile。</p></article>
     <article class="card"><h3>Playwright MCP</h3><p>微软的无障碍树和编号。DSH 官方 provider 之一。逐步、可核对，适合多模态模型看截图、也适合只看文本。官方挂载按 Session 收浏览器。我们的 refs 用同一类操作，但 profile 按 Bot 留在磁盘上。</p></article>
     <article class="card"><h3>Stagehand</h3><p>Browserbase 的 act / extract / observe，里面还会再调一个模型。DSH 有 native provider，文档写明这个内层模型还没接上 DSH 的路由和用量。Bot 的记忆里看不到内层怎么点的。适合当对照，不适合当团队唯一后端。</p></article>
     <article class="card"><h3>Skyvern</h3><p>偏视觉和流程的开源浏览器 agent，强项是表格和长表单。它自带一套 agent 循环和部署。接到 Bot 上会变成第二个循环。这次没有把它的服务拉起来测，结论来自它的产品形状。</p></article>
@@ -155,7 +155,7 @@ const html = `<!doctype html>
     <article class="card"><h3>script</h3><p><code>browser_exec</code> 跑一段已经注入帮手的 JavaScript，用 <code>done(answer)</code> 交卷。对应 Hermes / ego 的一段脚本。失败了可以再交一段。登录仍走 handoff。</p></article>
     <article class="card"><h3>task</h3><p><code>browser_task</code> 收一个目标，内部用 refs 的工具和同一次模型调用跑完，结果里带步骤清单。Bot 的对话里只有一次工具调用。适合整段网页差事，不适合要中途改口的活。</p></article>
   </div>
-  <p>三个包在 <code>browser-plugins/refs</code>、<code>script</code>、<code>task</code>，都有 <code>apply</code>，可以单独装进 DSH。单独装时目录按 Session id，不按 Bot。DS Bot 挂载时才换成 Bot id。团队配置只接受一个名字。</p>
+  <p>三个包在 <code>browser-plugins/refs</code>、<code>script</code>、<code>task</code>，都有 <code>apply</code>，可以单独装进 DSH。单独装时目录按 Session id，不按 Bot。H bot 挂载时才换成 Bot id。团队配置只接受一个名字。</p>
 </section>
 
 <section id="runs">

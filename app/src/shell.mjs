@@ -7,22 +7,22 @@ import { createTray } from './tray.mjs'
 
 export const SHELL_TEXT = {
   en: {
-    tooltip: 'DS Bot',
-    open: 'Open DS Bot',
-    quit: 'Quit DS Bot',
-    notice: 'DS Bot keeps running in the system tray. Its Bots go on working while the window is closed.',
+    tooltip: 'H bot',
+    open: 'Open H bot',
+    quit: 'Quit H bot',
+    notice: 'H bot keeps running in the system tray. Its Bots go on working while the window is closed.',
     noticeConfirm: 'OK',
-    fallback: 'The system tray is not available, so DS Bot cannot stay in the background. Do you want to end it?',
+    fallback: 'The system tray is not available, so H bot cannot stay in the background. Do you want to end it?',
     cancel: 'Cancel',
     stopAll: 'Stop all',
   },
   zh: {
-    tooltip: 'DS Bot',
-    open: '打开 DS Bot',
-    quit: '退出 DS Bot',
-    notice: 'DS Bot 会留在系统托盘里继续运行，关掉窗口时 Bot 们照常工作。',
+    tooltip: 'H bot',
+    open: '打开 H bot',
+    quit: '退出 H bot',
+    notice: 'H bot 会留在系统托盘里继续运行，关掉窗口时 Bot 们照常工作。',
     noticeConfirm: '好',
-    fallback: '系统托盘不可用，DS Bot 不能留在后台。要结束它吗？',
+    fallback: '系统托盘不可用，H bot 不能留在后台。要结束它吗？',
     cancel: '取消',
     stopAll: '全部停止',
   },
@@ -141,7 +141,7 @@ export function createShell(options) {
     } catch (error) {
       // Without a tray the window stays where the user can reach it; the app never vanishes.
       tray = undefined
-      log.warn(`DS Bot: the system tray is not available: ${error instanceof Error ? error.message : String(error)}`)
+      log.warn(`H bot: the system tray is not available: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -158,7 +158,7 @@ export function createShell(options) {
       })
       if (response === 0) { quit(); return }
     } catch (error) {
-      log.warn(`DS Bot: the fallback quit could not be asked: ${error instanceof Error ? error.message : String(error)}`)
+      log.warn(`H bot: the fallback quit could not be asked: ${error instanceof Error ? error.message : String(error)}`)
     }
     // The window stays in the task bar, where the user can reach it.
     target.minimize()

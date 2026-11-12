@@ -263,12 +263,12 @@ var ZH = {
   "Add a provider": "添加服务商",
   "Needs an API key": "需要 API key",
   "Key set": "已设置 key",
-  "Key set outside DS Bot": "key 在 DS Bot 之外设置",
+  "Key set outside H bot": "key 在 H bot 之外设置",
   "No models": "没有模型",
   "{count} models": "{count} 个模型",
   // What a Bot runs on
   "Runs on": "运行方式",
-  "DS Bot model": "DS Bot 模型",
+  "H bot model": "H bot 模型",
   "Local agent": "本地 Agent",
   "CLI default": "CLI 默认",
   "Signed in": "已登录",
@@ -276,7 +276,7 @@ var ZH = {
   "Sign-in unknown": "登录状态未知",
   "Looking for agent CLIs…": "正在查找 Agent CLI…",
   "Reading models…": "正在读取模型…",
-  "Answers with a model served by DS Bot, with DS Bot's tools.": "用 DS Bot 里的模型回答，用 DS Bot 的工具。",
+  "Answers with a model served by H bot, with H bot's tools.": "用 H bot 里的模型回答，用 H bot 的工具。",
   "Answers through this CLI on your computer, with its own tools and sign-in.": "通过这台电脑上的 CLI 回答，用它自己的工具和登录。",
   "Change what {name} runs on?": "更换 {name} 的运行方式？",
   "Its own chat starts a new part with a handoff before the next turn.": "下一轮开始前，它的私聊会开新的一段并做好交接。",
@@ -310,7 +310,7 @@ var ZH = {
   "Current session": "当前会话",
   "This page could not be shown.": "这个页面无法显示。",
   "Current": "当前",
-  "This key comes from outside DS Bot, such as an environment variable, and cannot be changed here.": "这个 key 来自 DS Bot 之外（例如环境变量），这里改不了。",
+  "This key comes from outside H bot, such as an environment variable, and cannot be changed here.": "这个 key 来自 H bot 之外（例如环境变量），这里改不了。",
   "and {count} more": "还有 {count} 个",
   "Remove {name}? Bots on its models need another model.": "删除 {name}？用它的模型的 Bot 要换一个模型。",
   "Remove provider": "删除服务商",
@@ -377,7 +377,7 @@ var ZH = {
   "HTTP status": "HTTP 状态码",
   "Request ID": "请求 ID",
   "Provider message": "原文",
-  "DS Bot": "DS Bot",
+  "H bot": "H bot",
   // Header
   "Message {name}": "给 {name} 发消息",
   Message: "发消息",
@@ -476,7 +476,7 @@ var ZH = {
   Rename: "重命名",
   "Add instructions in Bot settings": "在 Bot 设置里添加说明",
   "No scheduled tasks yet. To add one, tell the Bot in its chat what to do and when.": "还没有定时任务。要添加，在对话里告诉 Bot 做什么、什么时候做。",
-  "The browser is in DSH Desktop and the DS Bot app.": "浏览器在 DSH 桌面版和 DS Bot 应用里。",
+  "The browser is in DSH Desktop and the H bot app.": "浏览器在 DSH 桌面版和 H bot 应用里。",
   "New tab": "新标签页",
   "Close tab": "关闭标签页",
   "Open {title}": "打开 {title}",
@@ -704,7 +704,7 @@ var ZH = {
   "No group chats yet.": "还没有群聊。",
   "A group chat lets several Bots work on one thing with you.": "在群聊里，几个 Bot 和你一起做一件事。",
   "Back to group chats": "返回群聊列表",
-  "DS Bot settings": "DS Bot 设置",
+  "H bot settings": "H bot 设置",
   "Settings pages": "设置页面",
   "Advanced settings": "高级设置",
   "Back to models": "返回模型",
@@ -773,14 +773,14 @@ var ZH = {
   "{n} h": "{n} 小时",
   "{n} d": "{n} 天",
   // Plugin updates
-  "DS Bot {version} is available": "DS Bot {version} 可以更新",
-  "Updating DS Bot…": "正在更新 DS Bot…",
-  "DS Bot {version} is installed. Restart DSH to use it.": "DS Bot {version} 已安装，重启 DSH 后生效",
-  "DS Bot {version} is installed.": "DS Bot {version} 已安装。",
-  "DS Bot update": "DS Bot 更新",
-  "DS Bot {version}": "DS Bot {version}",
+  "H bot {version} is available": "H bot {version} 可以更新",
+  "Updating H bot…": "正在更新 H bot…",
+  "H bot {version} is installed. Restart DSH to use it.": "H bot {version} 已安装，重启 DSH 后生效",
+  "H bot {version} is installed.": "H bot {version} 已安装。",
+  "H bot update": "H bot 更新",
+  "H bot {version}": "H bot {version}",
   "Update installed": "更新已安装",
-  "Restart DSH to start using DS Bot {version}.": "重启 DSH 后开始使用 DS Bot {version}。",
+  "Restart DSH to start using H bot {version}.": "重启 DSH 后开始使用 H bot {version}。",
   "You have {version}.": "当前版本 {version}。",
   "The update did not finish: {reason}": "更新没有完成：{reason}",
   "What's new": "更新说明",
@@ -790,7 +790,7 @@ var ZH = {
   "DSH update": "DSH 更新",
   "DSH {version}": "DSH {version}",
   "Restart DSH to start using DSH {version}.": "重启 DSH 后开始使用 DSH {version}。",
-  "Update DS Bot {version} first.": "先更新 DS Bot {version}。",
+  "Update H bot {version} first.": "先更新 H bot {version}。",
   "Open updates": "打开更新",
   // Command palette
   Messages: "消息",
@@ -1235,16 +1235,16 @@ var ZH = {
   "Compared with the {count} days before": "与再往前 {count} 天相比",
   "{share}% of all usage from {span}": "占 {span} 全部用量的 {share}%",
   // About
-  "About DS Bot": "关于 DS Bot",
+  "About H bot": "关于 H bot",
   "Version {version}": "版本 {version}",
-  "Star the upstream project on GitHub": "在 GitHub 上给上游项目点 Star",
-  "Support the upstream project with a star on GitHub.": "欢迎在 GitHub 上为上游项目点 Star。",
-  "Upstream source code": "上游源代码",
+  "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
+  "Support H bot with a star on GitHub.": "欢迎在 GitHub 上为 H bot 点 Star。",
+  "Source code": "源代码",
   "Upstream GitHub issue": "上游 GitHub issue",
   "Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.": "在上游仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
-  "Star DS Bot on GitHub": "在 GitHub 上给 DS Bot 点 Star",
+  "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
   "{count} stars": "{count} 个 Star",
-  "If DS Bot helps you, a star on GitHub helps more people find it.": "如果 DS Bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。",
+  "If H bot helps you, a star on GitHub helps more people find it.": "如果 H bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。",
   Updates: "更新",
   "Check for updates": "检查更新",
   "Checking…": "正在检查…",
@@ -1259,7 +1259,7 @@ var ZH = {
   "{version} is available": "{version} 已发布",
   "Installed from a local folder; update it there.": "从本地文件夹安装，请在那里更新。",
   "Updates are not offered for this install.": "这种安装方式不提供更新。",
-  "Updates come with the DS Bot app.": "随 DS Bot 应用一起更新。",
+  "Updates come with the H bot app.": "随 H bot 应用一起更新。",
   Links: "链接",
   "Source code": "源代码",
   "Release notes": "发布说明",
@@ -1275,7 +1275,7 @@ var ZH = {
   Show: "查看",
   Hide: "收起",
   "GitHub issue": "GitHub issue",
-  "Opens a new issue in the DS Bot repository with all of this filled in. Nothing is sent until you submit it there.": "在 DS Bot 仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
+  "Opens a new issue in the H bot repository with all of this filled in. Nothing is sent until you submit it there.": "在 H bot 仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
   "Report on GitHub": "在 GitHub 上报告",
   "Copied the diagnostics.": "已复制诊断信息。",
   "Could not copy. Select the text below and copy it.": "无法复制。请选中下面的文字手动复制。",
@@ -1287,7 +1287,7 @@ var ZH = {
   "Recent errors": "最近的错误",
   "Recent errors · {count}": "最近的错误 · {count}",
   "No errors recorded.": "没有错误记录。",
-  "Failed model calls and DS Bot problems show here, newest first.": "模型调用失败和 DS Bot 的问题会显示在这里，最新的在前。",
+  "Failed model calls and H bot problems show here, newest first.": "模型调用失败和 H bot 的问题会显示在这里，最新的在前。",
   "Model call": "模型调用",
   "This window": "这个窗口",
   "Error log": "错误日志",
@@ -1563,7 +1563,7 @@ var ZH = {
 var HOST_ERRORS = [
   [/^Could not reach the mail server at (.+)\. Check the server address\.$/, "连不上邮件服务器 $1，请检查服务器地址。"],
   [/^Model (.+) is not available\. Available: (.*)$/, "模型 $1 不可用。可用的：$2"],
-  [/^The API key for (.+) is set outside DS Bot and cannot be changed here$/, "$1 的 API key 是在 DS Bot 之外设置的，这里改不了"],
+  [/^The API key for (.+) is set outside H bot and cannot be changed here$/, "$1 的 API key 是在 H bot 之外设置的，这里改不了"],
   [/^(.+) takes no API key here$/, "$1 不能在这里填 API key"],
   [/^(.+) is already set up$/, "$1 已经设置过了"],
   [/^DSH offers no provider (.+)$/, "DSH 没有服务商 $1"],
@@ -1659,14 +1659,14 @@ var HOST_ZH = {
   "This side chat is no longer here.": "这个侧边对话已经不在了。",
   "This side question is no longer here.": "这个侧边提问已经不在了。",
   "This Bot has not called a model yet. Send a normal message first.": "这个 Bot 还没有调用过模型，请先正常发一条消息。",
-  "DS Bot restarted before this answer finished.": "DS Bot 在回答完成前重启了。",
+  "H bot restarted before this answer finished.": "H bot 在回答完成前重启了。",
   "The model called a tool again after being told not to, so this aside was not answered.": "模型在被要求不要调用工具之后又调用了工具，所以这次没有回答。",
   "The model wrote nothing.": "模型没有写任何内容。",
   "Nothing to ask": "没有要问的内容",
   "Nothing to open": "没有要打开的内容",
   "Nothing to cancel": "没有要取消的内容",
   "Nothing to close": "没有要关闭的内容",
-  "DS Bot is still loading this chat.": "DS Bot 还在加载这个对话。",
+  "H bot is still loading this chat.": "H bot 还在加载这个对话。",
   // Computer use
   "Computer use": "电脑操控",
   "Computer": "电脑",
@@ -1716,7 +1716,7 @@ var HOST_ZH = {
   "{name} waits for the computer": "{name} 等你停手"
 };
 Object.assign(ZH, HOST_ZH);
-var brandCopy = (text) => text.replace(/\bDS Bot\b/g, PRODUCT_NAME);
+var brandCopy = (text) => text.replace(/\bH bot\b/g, PRODUCT_NAME);
 var fill = (text, params) => params ? text.replace(/\{(\w+)\}/g, (match, name) => name in params ? String(params[name]) : match) : text;
 var service = null;
 var bound = null;
@@ -1741,7 +1741,7 @@ function t(key, params) {
 function hostText(message) {
   if (Object.hasOwn(ZH, message)) return t(message);
   if (!language().startsWith("zh")) {
-    return message.replace(/ is set outside DS Bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`);
+    return message.replace(/ is set outside H bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`);
   }
   for (const [pattern, template] of HOST_ERRORS) {
     if (pattern.test(message)) return message.replace(pattern, brandCopy(template));
@@ -2172,7 +2172,7 @@ function teamActions({ call: call2, after, partFor, roster, ui: ui2, live, cards
       ui2.set((state) => ({ ...state, details: id, view: "details", renaming: true, tab: null, panelYield: yieldTo(state, "details") }));
     },
     openSettings,
-    // DS Bot's own Models page: the providers DSH serves, their keys and models.
+    // H bot's own Models page: the providers DSH serves, their keys and models.
     openModels: () => openSettings("models"),
     closeSettings: () => {
       ui2.set((state) => state.settings ? { ...state, settings: null } : state);
@@ -3568,7 +3568,7 @@ html[data-windows-titlebar]:not([data-fullscreen]) :is(.bt-pane,.bt-panel)::befo
 .bt-fold{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin-top:4px;white-space:normal}
 .bt-fold-code{position:relative}
 .bt-fold-code>.bt-tool{position:absolute;right:6px;bottom:6px}
-/* The part of a cut code block the preview keeps, drawn by DS Bot so the host's
+/* The part of a cut code block the preview keeps, drawn by H bot so the host's
    Markdown draws no copy control of its own for it. */
 .bt-fold-code>.bt-fold-pre{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,currentColor 6%,transparent);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:20px;overflow-x:auto}
 .bt-fold-code>*+.bt-fold-pre{margin-top:6px}
@@ -3711,7 +3711,7 @@ body[data-ds-dark-theme] .bt-scrim{background:rgba(0,0,0,.5)}
 /* A DSH page opens on its own title, which the dialog head already shows. */
 .bt-dsh-section>[data-slot]>*>h2:first-child,.bt-dsh-section>[data-slot]>*>:first-child>h2:first-child{display:none}
 .bt-dsh-item{min-width:0}
-/* DSH's General rows draw their own row inside DS Bot's card: the card's inset and
+/* DSH's General rows draw their own row inside H bot's card: the card's inset and
    rules apply, an empty row takes no line, and Appearance is already the section title. */
 .bt-dsh-item>[data-slot]>*{padding-left:12px;padding-right:12px;border-bottom-width:0}
 .bt-dsh-item>[data-slot]>.bt-set-row{padding:10px 12px}
@@ -4227,7 +4227,7 @@ body[data-bt-layout=flat] .bt-think{max-width:calc(var(--bt-flat-w) * 100%)}
 /* A turn's process seat is a flow child of its own, not a flowItem: a seat whose
    member cells all emptied themselves (a hidden exchange turn, a turn whose
    calls draw nothing) still kept its margin, stacking a blank band per hidden
-   call. Only the slot a DS Bot cell marked counts, so a seat another renderer
+   call. Only the slot a H bot cell marked counts, so a seat another renderer
    fills — even with plain text and no element child — is never taken for empty. */
 [data-step-process]:has(> [data-step-process-body] [data-slot="conversation.chat.node"][data-bt-emptied]):not(:has(> [data-step-process-body] [data-slot="conversation.chat.node"]:not([data-bt-emptied]))){display:none!important}
 /* A generate_image result shows its picture in the chat flow, without bringing
@@ -10188,7 +10188,7 @@ function CliList({ agents, known, scanning, refresh, selected, onPick, actions }
 var RunModeSwitch = ({ mode, setMode }) => (0, import_react20.createElement)(
   Segmented,
   { label: t("Runs on"), value: mode },
-  (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "model", onClick: () => setMode("model") }, t("DS Bot model")),
+  (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "model", onClick: () => setMode("model") }, t("H bot model")),
   (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "local", onClick: () => setMode("local") }, t("Local agent"))
 );
 var ReadingModels = () => (0, import_react20.createElement)(
@@ -10228,8 +10228,8 @@ function RunModeCard({ bot, roster, actions, run: run2, Card: Card3 }) {
       (0, import_react20.createElement)(
         "span",
         { className: "bt-set-copy" },
-        (0, import_react20.createElement)("span", { className: "bt-bs-label" }, bot.engine === void 0 ? t("DS Bot model") : engineName, bot.engine === void 0 ? null : (0, import_react20.createElement)(AgentBadge, { engine: bot.engine })),
-        (0, import_react20.createElement)("span", { className: "bt-set-hint" }, bot.engine === void 0 ? t("Answers with a model served by DS Bot, with DS Bot's tools.") : t("Answers through this CLI on your computer, with its own tools and sign-in."))
+        (0, import_react20.createElement)("span", { className: "bt-bs-label" }, bot.engine === void 0 ? t("H bot model") : engineName, bot.engine === void 0 ? null : (0, import_react20.createElement)(AgentBadge, { engine: bot.engine })),
+        (0, import_react20.createElement)("span", { className: "bt-set-hint" }, bot.engine === void 0 ? t("Answers with a model served by H bot, with H bot's tools.") : t("Answers through this CLI on your computer, with its own tools and sign-in."))
       ),
       (0, import_react20.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", "aria-expanded": open, onClick: () => open ? setOpen(false) : start() }, open ? t("Cancel") : t("Change"))
     ),
@@ -17056,10 +17056,10 @@ function UpdateButton({ useUpdate, actions }) {
     setDshError("");
     void actions.installDshUpdate().catch((failure) => setDshError(hostText(failure?.message ?? String(failure))));
   };
-  const label = phase === "installing" ? t("Updating DS Bot…") : dshPhase === "installing" ? t("Updating DSH…") : phase === "installed" ? t("DS Bot {version} is installed. Restart DSH to use it.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("DS Bot {version} is installed.", { version: update.installed ?? update.latest }) : dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : update?.available ? t("DS Bot {version} is available", { version: update.latest }) : t("DSH {version} is available", { version: dsh?.verified });
+  const label = phase === "installing" ? t("Updating H bot…") : dshPhase === "installing" ? t("Updating DSH…") : phase === "installed" ? t("H bot {version} is installed. Restart DSH to use it.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("H bot {version} is installed.", { version: update.installed ?? update.latest }) : dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : update?.available ? t("H bot {version} is available", { version: update.latest }) : t("DSH {version} is available", { version: dsh?.verified });
   const message = error || (phase === "failed" ? update.error : "");
   const dshMessage = dshError || (dshPhase === "failed" ? dsh?.error : "");
-  const dshText = dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : dsh?.available === false && dsh?.blockedBy ? t("Update DS Bot {version} first.", { version: dsh.blockedBy }) : t("You have {version}.", { version: dsh?.current });
+  const dshText = dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : dsh?.available === false && dsh?.blockedBy ? t("Update H bot {version} first.", { version: dsh.blockedBy }) : t("You have {version}.", { version: dsh?.current });
   return (0, import_react37.createElement)(
     import_react37.Fragment,
     null,
@@ -17076,12 +17076,12 @@ function UpdateButton({ useUpdate, actions }) {
     }, (0, import_react37.createElement)(CloudDownloadIcon, { done: phase === "installed" || phase === "updated" }), phase === "failed" || dshPhase === "failed" ? (0, import_react37.createElement)("span", { className: "bt-update-dot", "aria-hidden": true }) : null),
     shown && box ? (0, import_react_dom5.createPortal)((0, import_react37.createElement)(
       "div",
-      { className: "bt-update-pop", role: "dialog", "aria-label": update?.available || phase !== "idle" ? t("DS Bot update") : t("DSH update"), style: box, "data-leaving": leaving || void 0 },
+      { className: "bt-update-pop", role: "dialog", "aria-label": update?.available || phase !== "idle" ? t("H bot update") : t("DSH update"), style: box, "data-leaving": leaving || void 0 },
       update?.available || phase !== "idle" ? (0, import_react37.createElement)(
         import_react37.Fragment,
         null,
-        (0, import_react37.createElement)("div", { className: "bt-update-title" }, phase === "installed" || phase === "updated" ? t("Update installed") : t("DS Bot {version}", { version: update.latest })),
-        (0, import_react37.createElement)("div", { className: "bt-update-text" }, phase === "installed" ? t("Restart DSH to start using DS Bot {version}.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("DS Bot {version} is installed.", { version: update.installed ?? update.latest }) : t("You have {version}.", { version: update.current })),
+        (0, import_react37.createElement)("div", { className: "bt-update-title" }, phase === "installed" || phase === "updated" ? t("Update installed") : t("H bot {version}", { version: update.latest })),
+        (0, import_react37.createElement)("div", { className: "bt-update-text" }, phase === "installed" ? t("Restart DSH to start using H bot {version}.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("H bot {version} is installed.", { version: update.installed ?? update.latest }) : t("You have {version}.", { version: update.current })),
         message ? (0, import_react37.createElement)("div", { className: "bt-update-error", role: "alert" }, t("The update did not finish: {reason}", { reason: message })) : null,
         (0, import_react37.createElement)(
           "div",
@@ -17478,7 +17478,7 @@ var SIDEBAR_CSS = `
 [class*="_footArea"]:has(.bt-foot-account)>[class*="_settingsArea"]{grid-column:3}
 [class*="_footArea"]:has(.bt-foot-account)>[class*="_settingsArea"] button[class*="_trigger"] [class*="_label"]{display:none!important}
 
-/* The update cloud springs in when a newer DS Bot shows up; its arrow drops in a
+/* The update cloud springs in when a newer H bot shows up; its arrow drops in a
    loop while the install runs. */
 .bt-round.bt-update{position:relative;color:var(--bt-accent,#4D6BFE);animation:bt-update-in ${SPRING_SHAPE.duration}ms ${SPRING_SHAPE.easing}}
 .bt-round.bt-update svg{width:17px;height:17px}
@@ -21797,7 +21797,7 @@ function entrySummary(entry) {
   if (entry.source === "turn") return failureLabel(entry.code, entry.text);
   return entry.text;
 }
-var SOURCES = { turn: "Model call", host: "DS Bot", api: "DS Bot", browser: "This window" };
+var SOURCES = { turn: "Model call", host: "H bot", api: "H bot", browser: "This window" };
 var issueWindow = reserveWindow;
 function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
   const [what, setWhat] = (0, import_react46.useState)("");
@@ -21879,7 +21879,7 @@ function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
     (0, import_react46.createElement)(
       Section2,
       { key: "errors", title: report ? t("Recent errors · {count}", { count: total }) : t("Recent errors") },
-      shown.length === 0 ? (0, import_react46.createElement)(Row4, { label: t("No errors recorded."), hint: t("Failed model calls and DS Bot problems show here, newest first.") }) : shown.map((entry, index) => (0, import_react46.createElement)(
+      shown.length === 0 ? (0, import_react46.createElement)(Row4, { label: t("No errors recorded."), hint: t("Failed model calls and H bot problems show here, newest first.") }) : shown.map((entry, index) => (0, import_react46.createElement)(
         "div",
         { key: `${entry.time}-${index}`, className: "bt-set-row bt-fb-entry", title: entry.text },
         (0, import_react46.createElement)("span", { className: "bt-fb-dot", "data-level": entry.level, "aria-hidden": true }),
@@ -21887,7 +21887,7 @@ function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
           "div",
           { className: "bt-set-copy" },
           (0, import_react46.createElement)("span", { className: "bt-fb-text" }, entrySummary(entry)),
-          (0, import_react46.createElement)("span", { className: "bt-set-hint" }, [whenText3(entry.time), entry.bot, entry.where, t(SOURCES[entry.source] ?? "DS Bot")].filter(Boolean).join(" · "))
+          (0, import_react46.createElement)("span", { className: "bt-set-hint" }, [whenText3(entry.time), entry.bot, entry.where, t(SOURCES[entry.source] ?? "H bot")].filter(Boolean).join(" · "))
         ),
         entry.code ? (0, import_react46.createElement)("span", { className: "bt-tag bt-fb-code" }, entry.status ? `${entry.code} ${entry.status}` : entry.code) : null
       )),
@@ -21959,12 +21959,12 @@ var import_react47 = require("react");
 var CHEER_MS = 1800;
 var starCount = (count) => new Intl.NumberFormat(dateLocale(), { notation: "compact", maximumFractionDigits: 1 }).format(count);
 function botHint(update) {
-  if (update.phase === "installing") return t("Updating DS Bot…");
-  if (update.phase === "installed") return t("Restart DSH to start using DS Bot {version}.", { version: update.installed ?? update.latest });
-  if (update.phase === "updated") return t("DS Bot {version} is installed.", { version: update.installed ?? update.latest });
+  if (update.phase === "installing") return t("Updating H bot…");
+  if (update.phase === "installed") return t("Restart DSH to start using H bot {version}.", { version: update.installed ?? update.latest });
+  if (update.phase === "updated") return t("H bot {version} is installed.", { version: update.installed ?? update.latest });
   if (update.phase === "failed") return t("The update did not finish: {reason}", { reason: hostText(update.error ?? "") });
-  if (update.available) return t("DS Bot {version} is available", { version: update.latest });
-  if (update.source === "app") return t("Updates come with the DS Bot app.");
+  if (update.available) return t("H bot {version} is available", { version: update.latest });
+  if (update.source === "app") return t("Updates come with the H bot app.");
   if (update.enabled === false) return t("Update checks are off.");
   if (update.source === "path") return t("Installed from a local folder; update it there.");
   if (!update.checkedAt) return null;
@@ -21996,7 +21996,7 @@ function dshHint(dsh, shown) {
   if (dsh.phase === "installing") return t("Updating DSH…");
   if (dsh.phase === "installed") return t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified });
   if (dsh.phase === "failed") return t("The update did not finish: {reason}", { reason: hostText(dsh.error ?? "") });
-  if (dsh.available === false && dsh.blockedBy) return t("Update DS Bot {version} first.", { version: dsh.blockedBy });
+  if (dsh.available === false && dsh.blockedBy) return t("Update H bot {version} first.", { version: dsh.blockedBy });
   if (shown) return t("DSH {version} is available", { version: dsh.verified });
   return t("Version {version}", { version: dsh.current });
 }
@@ -22068,14 +22068,14 @@ function AboutPage({ useUpdate, actions, run: run2, Section: Section2, Row: Row4
           href: repo,
           target: "_blank",
           rel: "noopener noreferrer",
-          title: t("Star the upstream project on GitHub"),
-          "aria-label": stars === null ? t("Star the upstream project on GitHub") : `${t("Star the upstream project on GitHub")} · ${t("{count} stars", { count: stars })}`
+          title: t("Star H bot on GitHub"),
+          "aria-label": stars === null ? t("Star H bot on GitHub") : `${t("Star H bot on GitHub")} · ${t("{count} stars", { count: stars })}`
         },
         (0, import_react47.createElement)("span", { className: "bt-star-main" }, (0, import_react47.createElement)("span", { className: "bt-star-icon" }, (0, import_react47.createElement)(StarLineIcon)), "Star"),
         stars === null ? null : (0, import_react47.createElement)("span", { className: "bt-star-count" }, starCount(stars))
       ) : null
     ),
-    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support the upstream project with a star on GitHub.")) : null,
+    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support H bot with a star on GitHub.")) : null,
     (0, import_react47.createElement)(
       Section2,
       { key: "updates", title: t("Updates") },
@@ -22085,7 +22085,7 @@ function AboutPage({ useUpdate, actions, run: run2, Section: Section2, Row: Row4
     (0, import_react47.createElement)(
       Section2,
       { key: "links", title: t("Links") },
-      repo ? (0, import_react47.createElement)(Row4, { label: t("Upstream source code"), hint: repo.replace(/^https:\/\//, "") }, (0, import_react47.createElement)("a", linkProps(repo), (0, import_react47.createElement)(GitHubMark), t("Open"))) : null,
+      repo ? (0, import_react47.createElement)(Row4, { label: t("Source code"), hint: repo.replace(/^https:\/\//, "") }, (0, import_react47.createElement)("a", linkProps(repo), (0, import_react47.createElement)(GitHubMark), t("Open"))) : null,
       update.notesUrl ? (0, import_react47.createElement)(Row4, { label: t("Release notes") }, (0, import_react47.createElement)("a", linkProps(update.notesUrl), t("Open"))) : null,
       (0, import_react47.createElement)(Row4, { label: t("Report a problem") }, (0, import_react47.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", onClick: () => actions.openSettings("feedback") }, t("Open")))
     )
@@ -22170,7 +22170,7 @@ function ProvidersPage({ actions, run: run2, Section: Section2, advanced = null 
 function keyState(key) {
   if (key === null) return null;
   if (!key.configured) return ["missing", t("Needs an API key")];
-  return key.writable ? ["set", t("Key set")] : ["outside", t("Key set outside DS Bot")];
+  return key.writable ? ["set", t("Key set")] : ["outside", t("Key set outside H bot")];
 }
 function ProviderRow({ provider, apply: apply2, actions, open, onToggle }) {
   const [confirm, setConfirm] = (0, import_react48.useState)(false);
@@ -22198,7 +22198,7 @@ function ProviderRow({ provider, apply: apply2, actions, open, onToggle }) {
       "div",
       { className: "bt-secret-edit" },
       provider.key?.writable ? (0, import_react48.createElement)(KeyEditor, { provider, apply: apply2, actions }) : null,
-      provider.key && !provider.key.writable ? (0, import_react48.createElement)("div", { className: "bt-set-hint" }, t("This key comes from outside DS Bot, such as an environment variable, and cannot be changed here.")) : null,
+      provider.key && !provider.key.writable ? (0, import_react48.createElement)("div", { className: "bt-set-hint" }, t("This key comes from outside H bot, such as an environment variable, and cannot be changed here.")) : null,
       provider.models.length > 0 ? (0, import_react48.createElement)(
         "div",
         { className: "bt-secret-edit-block" },
@@ -22520,7 +22520,7 @@ function LocalAgentsPage({ run: run2, Section: Section2, Row: Row4 }) {
 var import_react50 = require("react");
 var import_dsh_client_ui_primitives2 = require("@deepseek-ai/dsh-client-ui-primitives");
 var capitalize2 = (word) => word[0].toUpperCase() + word.slice(1);
-var SETTINGS_PAGES = [["general", "General"], ["models", "Models"], ["local-agents", "Local agents"], ["bots", "Bots"], ["groups", "Group chats"], ["connectors", "Connectors"], ["im", "IM"], ["capabilities", "Capabilities"], ["browser", "Browser"], ["computer", "Computer use"], ["schedules", "Scheduled tasks"], ["pages", "Pages"], ["files", "Saved files"], ["usage", "Usage"], ["secrets", "Secrets"], ["feedback", "Feedback"], ["about", "About DS Bot"]];
+var SETTINGS_PAGES = [["general", "General"], ["models", "Models"], ["local-agents", "Local agents"], ["bots", "Bots"], ["groups", "Group chats"], ["connectors", "Connectors"], ["im", "IM"], ["capabilities", "Capabilities"], ["browser", "Browser"], ["computer", "Computer use"], ["schedules", "Scheduled tasks"], ["pages", "Pages"], ["files", "Saved files"], ["usage", "Usage"], ["secrets", "Secrets"], ["feedback", "Feedback"], ["about", "About H bot"]];
 var LAST_PAGES = /* @__PURE__ */ new Set(["feedback", "about"]);
 var MERGED_SECTIONS = /* @__PURE__ */ new Set(["general", "models"]);
 var LOOK_ITEMS = ["appearance", "font-size"];
@@ -23495,7 +23495,7 @@ function installSettingsShell(ctx, { face, actions, ui: ui2, held }) {
   const disposers = [
     () => update.dispose(),
     // A profile that turned DSH's shell back on keeps it: the seat's child slots are then
-    // declared already, and DS Bot's dialog stays on its own pages.
+    // declared already, and H bot's dialog stays on its own pages.
     slots.inject("sidebar.settings", () => {
       try {
         const off = slots.register({ name: "sidebar.settings", inject: shellFace, children: SETTINGS_CHILDREN }, SettingsShell);
@@ -23505,7 +23505,7 @@ function installSettingsShell(ctx, { face, actions, ui: ui2, held }) {
           off();
         };
       } catch (error) {
-        console.warn("[ds-bot] DSH settings shell is on; DS Bot settings show its own pages only", error);
+        console.warn("[ds-bot] DSH settings shell is on; H bot settings show its own pages only", error);
         return () => {
         };
       }
@@ -24237,7 +24237,7 @@ var SIDE_TOKEN = "/side ";
 var GROUP_REFUSAL = "Side chat is only available in a Bot's private chat.";
 var ATTACHMENT_REFUSAL = "/side does not take attachments.";
 var EMPTY_REFUSAL = "Write a question after /side.";
-var LOADING_REFUSAL = "DS Bot is still loading this chat.";
+var LOADING_REFUSAL = "H bot is still loading this chat.";
 function sideSurface(roster, sessionId) {
   if (!roster?.ready) return "unknown";
   if (roster.roomsById?.[sessionId]) return "group";
@@ -26561,7 +26561,7 @@ function BrowserCards({ bot, sessionId, roster, actions, useBrowserTabs, useBrow
     actions.browserEnsure?.(bot.id);
   }, [bot.id]);
   if (roster.browser !== true || !actions.browserShow) {
-    return (0, import_react62.createElement)("div", { className: "bt-muted" }, t("The browser is in DSH Desktop and the DS Bot app."));
+    return (0, import_react62.createElement)("div", { className: "bt-muted" }, t("The browser is in DSH Desktop and the H bot app."));
   }
   if (state.ids.length === 0) {
     return (0, import_react62.createElement)(

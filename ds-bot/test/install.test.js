@@ -274,7 +274,7 @@ test('a custom agent keeps the local agents adapter live after install', async (
 })
 
 // Local-agent routes have their own prefix (#1059): a Bot on DSH's own OpenCode
-// provider stays there, and DS Bot never registers a name another provider has.
+// provider stays there, and H bot never registers a name another provider has.
 test('a Bot on DSH\'s opencode provider is not taken for a local agent', async (t) => {
   const bot = { id: 'b1', name: 'Zen', model: 'opencode/glm-5', appliedModel: 'opencode/glm-5' }
   const { ctx, stop, rt } = start({ version: 1, bots: { b1: bot }, localAgents: { custom: [], sessions: {} } })
@@ -283,7 +283,7 @@ test('a Bot on DSH\'s opencode provider is not taken for a local agent', async (
   assert.equal(rt.state.bots.b1.model, 'opencode/glm-5')
   assert.equal(rt.isLocalAgentRef('opencode/glm-5'), false)
   const routes = (ctx.adapters ?? []).flatMap(entry => entry.routes)
-  assert.ok(!routes.includes('opencode'), 'DS Bot does not register the name DSH\'s provider uses')
+  assert.ok(!routes.includes('opencode'), 'H bot does not register the name DSH\'s provider uses')
 })
 
 test('a Bot saved on an old local-agent route moves to the prefixed one', async (t) => {
