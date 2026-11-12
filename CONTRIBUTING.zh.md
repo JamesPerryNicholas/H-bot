@@ -85,7 +85,7 @@
 
 ```sh
 git clone https://github.com/JamesPerryNicholas/H-bot.git H-bot
-cd ds-bot-repo/ds-bot
+cd H-bot/ds-bot
 
 # 插件自己的构建工具（只有 esbuild）。
 npm ci

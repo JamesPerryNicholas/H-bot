@@ -85,7 +85,7 @@ You need:
 
 ```sh
 git clone https://github.com/JamesPerryNicholas/H-bot.git H-bot
-cd ds-bot-repo/ds-bot
+cd H-bot/ds-bot
 
 # The plugin's own build tool (esbuild only).
 npm ci
