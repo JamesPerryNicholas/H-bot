@@ -1,0 +1,25 @@
+# Unlock-code edition: requires a one-time code before the $20 credit.
+# Team history is shared with the open edition and the existing
+# data at ~/.ds-bot (workspace: DS Bot). The install itself stays
+# separate (appId, product name, shortcuts, Program Files).
+extends: ./electron-builder.yml
+appId: io.github.fei2411.dsbot.local.unlock
+productName: H bot 校验版
+artifactName: H-bot-${version}-校验版-${os}-${arch}.${ext}
+publish: null
+extraMetadata:
+  name: dsbot-dev-unlock
+  productName: H bot 校验版
+  description: H bot desktop app (unlock-code edition)
+  dsBotBuild:
+    automaticUpdates: false
+    creditVariant: unlock
+    defaultPlaces:
+      dataName: .ds-bot
+      workspaceName: DS Bot
+    identity:
+      appId: io.github.fei2411.dsbot.local.unlock
+      inheritLegacy: false
+      shellName: H bot
+nsis:
+  guid: 05e5043d-abaa-44af-99d8-a71f0babbfbf

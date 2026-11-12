@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+<mask id="eyes" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><rect width="1024" height="1024" fill="white"/><rect x="480" y="494" width="20" height="28" rx="10" fill="black"/><rect x="526" y="494" width="20" height="28" rx="10" fill="black"/></mask>
+<linearGradient id="enamel" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#4B94FF"/><stop offset=".45" stop-color="#2561E8"/><stop offset="1" stop-color="#112F94"/></linearGradient>
+<radialGradient id="light" cx=".2" cy="0" r="1"><stop stop-color="#A1DBFF" stop-opacity=".6"/><stop offset=".6" stop-color="#74BDFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="silver" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".48" stop-color="#EAF5FF"/><stop offset="1" stop-color="#9CC8F6"/></linearGradient>
+<linearGradient id="fold" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#A2CFFF"/><stop offset=".45" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C0DDFF"/></linearGradient>
+<linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#E4F5FF" stop-opacity=".65"/><stop offset=".5" stop-color="#ACD5FF" stop-opacity=".12"/><stop offset="1" stop-color="#040F50" stop-opacity=".6"/></linearGradient>
+<filter id="shadow" x="-.3" y="-.3" width="1.6" height="1.7" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="16"/></filter>
+</defs>
+<rect x="61.44" y="61.44" width="901.12" height="901.12" rx="220.77439999999999" fill="url(#enamel)"/>
+<rect x="61.44" y="61.44" width="901.12" height="901.12" rx="220.77439999999999" fill="url(#light)"/>
+<rect x="63.44" y="63.44" width="897.12" height="897.12" rx="218.77439999999999" fill="none" stroke="url(#rim)" stroke-width="4"/>
+<g transform="translate(0 20)" opacity=".32" filter="url(#shadow)"><path fill="#061A60" mask="url(#eyes)" d="M410 278H538L478.5 452H587.5L646 278H774L614 746H486L548.5 564H439.5L378 746H250Z"/></g>
+<path fill="url(#silver)" mask="url(#eyes)" d="M410 278H538L478.5 452H587.5L646 278H774L614 746H486L548.5 564H439.5L378 746H250Z"/>
+<path d="M478.5 452H587.5L548.5 564H439.5Z" fill="url(#fold)" mask="url(#eyes)"/>
+<path d="M410 278H538M646 278H774M478.5 452H587.5" fill="none" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="3"/>
+</svg>

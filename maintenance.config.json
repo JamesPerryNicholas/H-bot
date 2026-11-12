@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "minimumNode": "24.9.0",
+  "outputDir": ".h-bot-maintenance",
+  "checkTimeoutMs": 600000,
+  "checks": [
+    "maintenance-tests",
+    "desktop-tests",
+    "plugin-build-check",
+    "plugin-lint",
+    "plugin-tests"
+  ]
+}
