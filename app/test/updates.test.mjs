@@ -171,7 +171,7 @@ describe('watchReleases', () => {
       [async () => releaseResponse({}, 403), 'H bot: update check failed: HTTP 403'],
       [async () => { throw new Error('offline') }, 'H bot: update check failed: offline'],
       [async () => ({ ok: true, status: 200, json: async () => { throw new Error('bad JSON') } }), 'H bot: update check failed: bad JSON'],
-      [async () => releaseResponse([release('0.1.9', { page: 'http://github.com/Fei2411/DS-Bot' })]), 'H bot: update check failed: release page URL is not HTTPS'],
+      [async () => releaseResponse([release('0.1.9', { page: 'http://github.com/JamesPerryNicholas/H-bot' })]), 'H bot: update check failed: release page URL is not HTTPS'],
     ]
     for (const [fetch, message] of cases) {
       const log = quietLog()

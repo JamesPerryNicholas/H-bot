@@ -84,8 +84,8 @@ You need:
 - For the test bench only: pnpm `11` and a checkout of DeepSeek Harness at the DSH version that the plugin is tested with.
 
 ```sh
-git clone https://github.com/JamesPerryNicholas/H-bot.git h-bot-repo
-cd ds-bot-repo/ds-bot
+git clone https://github.com/JamesPerryNicholas/H-bot.git H-bot
+cd H-bot/ds-bot
 
 # The plugin's own build tool (esbuild only).
 npm ci
