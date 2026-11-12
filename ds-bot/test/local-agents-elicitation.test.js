@@ -6,9 +6,9 @@ import { JsonRpcPeer } from '../src/host/local-agents/jsonrpc.js'
 const method = 'mcpServer/elicitation/request'
 const params = {
   threadId: 'test-thread', serverName: 'cua_repl', mode: 'form',
-  message: 'Allow Codex to use DS Bot?',
+  message: 'Allow Codex to use H bot?',
   requestedSchema: { $schema: 'https://json-schema.org/draft-07/schema#', type: 'object', properties: {} },
-  _meta: { connector_id: 'computer-use', tool_params: { app: 'DS Bot' } },
+  _meta: { connector_id: 'computer-use', tool_params: { app: 'H bot' } },
 }
 function setup() {
   const engine = new CodexEngine('test', {}, {})
@@ -27,7 +27,7 @@ for (const mode of ['form', 'openai/form', 'openaiForm']) {
     assert.equal(settled, false)
     assert.equal(event.type, 'permission')
     assert.equal(event.action, params.message)
-    assert.match(event.detail, /DS Bot/)
+    assert.match(event.detail, /H bot/)
     assert.equal(event.options.find(option => option.kind === 'allow_once').optionId, 'accept')
     event.reply('accept')
     assert.deepEqual(await response, { action: 'accept', content: {} })

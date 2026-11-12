@@ -88,7 +88,7 @@ export function apply(ctx) {
   // style so the shell's own interface returns. `plain` stays false until a Bot-mode
   // view hosts a plain session, which drops only the conversation replacements.
   const surface = createSource({ mode: readMode(), plain: false })
-  // Whether DS Bot holds the settings seat; Overlays draws the Settings dialog while it does not.
+  // Whether H bot holds the settings seat; Overlays draws the Settings dialog while it does not.
   const settingsShellHeld = createSource(false)
   let settingsShell = null
   // DSH Agent Session ids from the last pull, so a reload already knows the main
@@ -295,7 +295,7 @@ export function apply(ctx) {
     }, 'ds-bot: app update status')
   }
 
-  // The DS Bot app's own updater; its state goes beside the host's answer as ownApp,
+  // The H bot app's own updater; its state goes beside the host's answer as ownApp,
   // which the About row turns into the app's update state and buttons.
   const ownAppUpdates = globalThis.dsBotApp?.updates ?? null
   if (ownAppUpdates?.state && ownAppUpdates.subscribe) {
@@ -718,7 +718,7 @@ export function apply(ctx) {
     update.set(previous => ({ ...previous, ...value }))
     wakeUpdate()
   }
-  // The DSH the newest released DS Bot verified installs the same way.
+  // The DSH the newest released H bot verified installs the same way.
   actions.installDshUpdate = async () => {
     const dsh = await call('dsh-update-install')
     update.set(previous => ({ ...previous, dsh }))
@@ -821,8 +821,8 @@ export function apply(ctx) {
     })
   }
   const face = () => ({ actions, hooks: { roster, ui, activity, work, memoryNews, registry, turnClock, live, computer, cards, heldCards, browserPages, browserTabs, browserHolds, surface, update, frame, sidebarPref, settingsShellHeld } })
-  // DS Bot holds the settings seat in every mode, Agent mode included: the bundle patch
-  // turns DSH's own shell off, and this one draws DSH's settings pages in DS Bot's dialog.
+  // H bot holds the settings seat in every mode, Agent mode included: the bundle patch
+  // turns DSH's own shell off, and this one draws DSH's settings pages in H bot's dialog.
   ctx.effect(() => {
     const offStyles = installCompiledStyles(SETTINGS_SHELL_CSS, 'settings-shell')
     settingsShell = installSettingsShell(ctx, { face, actions, ui, held: settingsShellHeld })
@@ -1054,7 +1054,7 @@ export function apply(ctx) {
     [SIDE_CSS, 'side'],
     [BROWSER_CSS, 'browser'],
   ]
-  // Settings outside Bot mode (Agent mode) brings DS Bot's own rules and colors while it
+  // Settings outside Bot mode (Agent mode) brings H bot's own rules and colors while it
   // shows; the shell overrides and DSH's tokens stay as Agent mode has them.
   let shellSheets = 0
   actions.holdSettingsLook = () => {

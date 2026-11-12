@@ -9,7 +9,7 @@ const bundle = await build({
   bundle: true, format: 'cjs', platform: 'node', write: false,
   external: ['react', 'react-dom', '@deepseek-ai/dsh-client-ui-primitives'],
 })
-const ISSUES = 'https://github.com/Fei2411/DS-Bot/issues/new'
+const ISSUES = 'https://github.com/JamesPerryNicholas/H-bot/issues/new'
 
 // Settings → Feedback in a window whose `open` is `open`, with every state change kept.
 function page(window) {
@@ -38,7 +38,7 @@ function page(window) {
       throw new Error(`no platform module ${name}`)
     },
   })
-  const actions = { diagnostics: async () => ({ markdown: '| DS Bot | 0.1.6 |', issuesUrl: ISSUES, entries: [], total: 0 }) }
+  const actions = { diagnostics: async () => ({ markdown: '| H bot | 0.1.6 |', issuesUrl: ISSUES, entries: [], total: 0 }) }
   let pending
   const run = (promise) => { pending = promise; return promise }
   const tree = module.exports.FeedbackPage({ actions, run, Section: 'section', Row: 'row' })

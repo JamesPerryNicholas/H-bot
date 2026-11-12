@@ -17,7 +17,7 @@
 - 不选 Flatpak/Snap：应用要在宿主机跑 pnpm 装插件、用 node-pty 开真实终端、读 `~/.dsh` 导入团队，与沙箱直接冲突（`flatpak-spawn --host` 等于拆空沙箱；Snap 的 classic 限制要商店特批，非 Ubuntu 发行版也普遍抵触）。先例：IPFS Desktop 因 confinement 问题弃用 Snap，主推 AppImage。
 - 已知坑写进 README：AppImage 需要 FUSE 2（Ubuntu 24.04+/Debian 13+ 装 `libfuse2t64`）；Ubuntu 24.04+ 的 AppArmor 限制非特权 user namespace，会拦 AppImage 里的 Chromium 沙箱——deb 无此问题（post-install 设好 `chrome-sandbox`，electron-builder 26 起自动生成 AppArmor profile）。
 - 只出 x64；arm64 留到有 `linux/arm64` 预编译链（node-pty 等）确认后的后续工作。
-- 二进制与菜单项名 `dsbot`（`executableName`），deb 装进 `/opt/DS Bot`。
+- 二进制与菜单项名 `dsbot`（`executableName`），deb 装进 `/opt/H bot`。
 
 ## CI
 

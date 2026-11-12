@@ -2,7 +2,7 @@
   "name": "ds-bot-browser-script",
   "version": "0.1.0",
   "private": true,
-  "description": "DS Bot browser plugin: one JavaScript body per browser task. One profile per Bot.",
+  "description": "H bot browser plugin: one JavaScript body per browser task. One profile per Bot.",
   "license": "Apache-2.0",
   "type": "module",
   "main": "index.js",

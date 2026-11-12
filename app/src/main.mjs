@@ -195,7 +195,7 @@ if (canonical !== undefined) {
   logs = new LogFile({ dir: join(app.getPath('userData'), 'logs') })
   rawOutput = captureStdio(logs)
   app.once('will-quit', () => { logs.flush() })
-  console.log(`DS Bot ${app.getVersion()} (${process.platform} ${process.arch}), Electron ${process.versions.electron}`)
+  console.log(`H bot ${app.getVersion()} (${process.platform} ${process.arch}), Electron ${process.versions.electron}`)
   startWindow = new StartWindow({
     electron: { BrowserWindow, ipcMain, screen, shell: electronShell, clipboard, nativeTheme, systemPreferences },
     // 〔保存日志…〕 on the start window's failure cards.
@@ -503,7 +503,7 @@ async function pickAndPlace() {
     return
   }
   if (root.reason !== undefined) {
-    console.log(`DS Bot: the place ${root.at} cannot be used (${root.reason})`)
+    console.log(`H bot: the place ${root.at} cannot be used (${root.reason})`)
     proposed = undefined
     startWindow.card({ kind: 'rejected', reason: root.reason, path: root.at })
     return
@@ -546,7 +546,7 @@ async function startOver(root) {
     if (stopping || mine !== attempt) return
     setPlaces({ dataDir: root.dataDir, workspace: root.workspace })
     saveLocations(places)
-    console.log(`DS Bot: the data goes to ${places.dataDir}`)
+    console.log(`H bot: the data goes to ${places.dataDir}`)
   } finally {
     restarting = false
   }
@@ -616,9 +616,9 @@ async function startEngine(mine) {
   // taken has nothing left out.
   if (warm === undefined) {
     await restoreSessions(places.dataDir).then(({ copied, newer }) => {
-      if (copied.length > 0) console.log(`DS Bot: copied ${copied.join(', ')}, which the import left out`)
-      if (newer.length > 0) console.warn(`DS Bot: this DSH cannot read ${newer.join(', ')}, which the import left out`)
-    }, (error) => { console.error('DS Bot: the Sessions the import left out were not copied:', error) })
+      if (copied.length > 0) console.log(`H bot: copied ${copied.join(', ')}, which the import left out`)
+      if (newer.length > 0) console.warn(`H bot: this DSH cannot read ${newer.join(', ')}, which the import left out`)
+    }, (error) => { console.error('H bot: the Sessions the import left out were not copied:', error) })
   }
   host = warm?.host ?? newHost()
   host.onMessage(message => {
@@ -698,7 +698,7 @@ async function importStep(mine) {
   if (result.outcome === 'copied') {
     startWindow.done('import')
     const { summary } = result
-    console.log(`DS Bot: copied ${String(summary.bots)} Bots and ${String(summary.sessions)} Sessions from ${summary.from}`)
+    console.log(`H bot: copied ${String(summary.bots)} Bots and ${String(summary.sessions)} Sessions from ${summary.from}`)
     // The team lives here now; moving it is Settings' job (the data move).
     startWindow.place(undefined)
     return {}
@@ -720,7 +720,7 @@ async function importElsewhere(signal) {
     const root = rootOf(picked, { dshHome: userDshHome(), program: app.isPackaged ? programFolder() : undefined, current: places })
     if (root.same) return false
     if (root.reason !== undefined) {
-      console.log(`DS Bot: the place ${root.at} cannot be used (${root.reason})`)
+      console.log(`H bot: the place ${root.at} cannot be used (${root.reason})`)
       if (await askCard({ kind: 'rejected', reason: root.reason, path: root.at }, { signal }) === 'pick') continue
       return false
     }
@@ -834,7 +834,7 @@ function handleIpc() {
   ipcMain.handle(IPC.browserImportLive, async (event, sourceId, close) => {
     assertWindow(event)
     const source = (await listSources()).find((item) => item.id === sourceId)
-    if (!source) throw new Error('DS Bot: an unknown browser profile')
+    if (!source) throw new Error('H bot: an unknown browser profile')
     let outcome
     try {
       outcome = await importFromBrowser(source, { close: close === true })
@@ -851,9 +851,9 @@ function handleIpc() {
   })
   ipcMain.handle(IPC.browserImportApply, async (event, key, id) => {
     assertWindow(event)
-    if (typeof key !== 'string' || !key.startsWith('bot:')) throw new Error('DS Bot: a Bot storage key is required')
+    if (typeof key !== 'string' || !key.startsWith('bot:')) throw new Error('H bot: a Bot storage key is required')
     const pending = cookieImports.take(typeof id === 'string' ? id : '')
-    if (!pending) throw new Error('DS Bot: this import is no longer pending')
+    if (!pending) throw new Error('H bot: this import is no longer pending')
     const storage = session.fromPartition(partitionOf(key))
     return applyCookies(storage, pending.cookies)
   })
@@ -923,14 +923,14 @@ async function checkTeam(where, signal, onProgress) {
     try {
       signal.throwIfAborted()
       const { unreadable } = await check.start()
-      if (unreadable.length > 0) console.warn(`DS Bot: this DSH cannot read ${unreadable.join(', ')}`)
+      if (unreadable.length > 0) console.warn(`H bot: this DSH cannot read ${unreadable.join(', ')}`)
       return unreadable.length
     } finally {
       signal.removeEventListener('abort', stop)
       await check.stop()
     }
   } catch (error) {
-    if (!signal.aborted) console.error('DS Bot: the chats were not checked before the copy:', error)
+    if (!signal.aborted) console.error('H bot: the chats were not checked before the copy:', error)
     return 0
   } finally {
     await rm(home, { recursive: true, force: true, maxRetries: 5 }).catch((error) => { console.error(error) })
@@ -976,7 +976,7 @@ async function pickMove() {
 function moveCard(to) {
   const reason = moveReason(to)
   if (reason !== undefined) {
-    console.log(`DS Bot: the data cannot move to ${to} (${reason})`)
+    console.log(`H bot: the data cannot move to ${to} (${reason})`)
     startWindow.card({ kind: 'rejected', reason, path: to })
     return
   }
@@ -1129,7 +1129,7 @@ function startUpdates() {
     const debArch = { x64: 'amd64', arm64: 'arm64' }[process.arch] ?? process.arch
     return watchReleases({
       current: app.getVersion(), arch: process.arch, feed, ask: throwaway ? undefined : (version) => downloadPrompt.prompt(version), open: url => electronShell.openExternal(url),
-      asset: version => `DS-Bot-${version}-linux-${debArch}.deb`,
+      asset: version => `H-bot-${version}-linux-${debArch}.deb`,
     })
   }
   if (process.platform === 'win32' || process.platform === 'linux') {
@@ -1456,13 +1456,13 @@ function setMenu() {
 // The tray's and the menu's copy, in the app's language. On Windows the locale is known only once
 // the app is ready.
 function shellText() {
-  return Object.fromEntries(Object.entries(SHELL_TEXT[langOf(app.getLocale())]).map(([key, value]) => [key, value.replaceAll('DS Bot', PRODUCT_NAME)]))
+  return Object.fromEntries(Object.entries(SHELL_TEXT[langOf(app.getLocale())]).map(([key, value]) => [key, value.replaceAll('H bot', PRODUCT_NAME)]))
 }
 
 function assertWindow(event) {
   const contents = mainWindow?.webContents
   if (contents === undefined || event.sender !== contents || event.senderFrame !== contents.mainFrame
-    || !event.senderFrame.url.startsWith(`${origin}/`)) throw new Error('DS Bot: rejected IPC from an unknown page')
+    || !event.senderFrame.url.startsWith(`${origin}/`)) throw new Error('H bot: rejected IPC from an unknown page')
 }
 
 function fromWindow(event) {

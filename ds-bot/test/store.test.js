@@ -319,7 +319,7 @@ test('a save writes the unsaved change when the lock went away but the file did 
   }
 })
 
-test('a save writes nothing after adopting a file from a newer DS Bot', async (t) => {
+test('a save writes nothing after adopting a file from a newer H bot', async (t) => {
   const { rt, home, statePath } = runtime(t)
   await rt.load()
   rt.state.prefs.marker = 'ours'

@@ -101,7 +101,7 @@ test('a first turn replays the conversation, a later one sends only the delta', 
   assert.equal(records.s1.handedId, 'm2')
 })
 
-test('each DS Bot Session maps to its own CLI session', async (t) => {
+test('each H bot Session maps to its own CLI session', async (t) => {
   const records = {}
   const adapter = makeAdapter({ records })
   t.after(() => adapter.dispose())
@@ -153,7 +153,7 @@ test('a call to the dsbot server is allowed once without asking; other servers s
   const adapter = makeAdapter()
   t.after(() => adapter.dispose())
   const team = await collect(adapter.stream(options('s1', [user('m1', 'team-permission')])))
-  // The MCP call itself reaches DS Bot's tools; no approval card in between.
+  // The MCP call itself reaches H bot's tools; no approval card in between.
   assert.equal(team.calls[0]?.name, 'message_bot', JSON.stringify(team))
   const done = await collect(adapter.stream(options('s1', [user('m1', 'team-permission'), toolResult('m2', team.calls[0].id, 'River: pong')])))
   assert.match(done.text, /allowed via allow-once; tool said: River: pong/)
@@ -281,7 +281,7 @@ test('acp: full access allows and read-only refuses a change without a card', as
   const full = makeAdapter({ preset: 'danger-full-access', acpArgs: ['--cursor-modes'] })
   const readOnly = makeAdapter({ preset: 'read-only', acpArgs: ['--cursor-modes'] })
   t.after(() => Promise.all([full, readOnly].map(adapter => adapter.dispose())))
-  // Cursor has no bypass mode: the preset is kept by DS Bot's own answer.
+  // Cursor has no bypass mode: the preset is kept by H bot's own answer.
   const allowed = await collect(full.stream(options('s1', [user('m1', 'ask-permission')])))
   assert.equal(allowed.calls.length, 0)
   assert.match(allowed.text, /allowed via allow-once/)
@@ -476,7 +476,7 @@ test('claude stream-json: thinking, activity line, usage', async (t) => {
   assert.ok(out.usage.inputTokens === 10)
 })
 
-test('a write to a CLI that has exited does not throw out of DS Bot', async () => {
+test('a write to a CLI that has exited does not throw out of H bot', async () => {
   const unheard = []
   const hear = error => unheard.push(error)
   process.on('uncaughtException', hear)
@@ -622,7 +622,7 @@ test('claude: a saved conversation the CLI no longer has starts over with the hi
 
 // A CLI that exits before init for another reason keeps its id (above); only a
 // conversation the CLI reports missing is dropped.
-test('claude: print mode asks DS Bot for permission and lets team tools through', async (t) => {
+test('claude: print mode asks H bot for permission and lets team tools through', async (t) => {
   const adapter = makeAdapter()
   t.after(() => adapter.dispose())
   await collect(adapter.stream(options('s1', [user('m1', 'hello')], { provider: 'local-claude-code' })))
@@ -652,7 +652,7 @@ test('claude: the retry replays the input the dead CLI never read', async (t) =>
   t.after(() => adapter.dispose())
   const history = [user('m1', 'fix the login')]
   await assert.rejects(collect(adapter.stream(options('s1', history, { provider: 'local-claude-code' }))), error => error.code === 'LOCAL_AGENT_EXIT')
-  // The same full history comes back, as DS Bot resends the conversation.
+  // The same full history comes back, as H bot resends the conversation.
   const out = await collect(adapter.stream(options('s1', history, { provider: 'local-claude-code', signal: AbortSignal.timeout(15_000) })))
   assert.equal(out.finish.kind, 'stop')
   assert.match(readFileSync(`${runs}.prompts`, 'utf8'), /fix the login/)

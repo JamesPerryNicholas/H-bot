@@ -19,11 +19,11 @@ test('app branding follows the locale without rewriting user values or provider 
   for (const locale of ['en', 'zh']) {
     const off = installLocale(fakeLocale(locale))
     try {
-      assert.ok(!t('Updates come with the DS Bot app.').includes('DS Bot'))
-      assert.ok(t('Updates come with the DS Bot app.').includes('H bot'))
+      assert.ok(!t('Updates come with the H bot app.').includes('H bot'))
+      assert.ok(t('Updates come with the H bot app.').includes('H bot'))
       assert.equal(t('DeepSeek'), 'DeepSeek')
-      assert.equal(t('{name}', { name: 'DS Bot personal folder' }), 'DS Bot personal folder')
-      assert.equal(hostText('User note: DS Bot personal folder'), 'User note: DS Bot personal folder')
+      assert.equal(t('{name}', { name: 'H bot personal folder' }), 'H bot personal folder')
+      assert.equal(hostText('User note: H bot personal folder'), 'User note: H bot personal folder')
     } finally { off() }
   }
 })

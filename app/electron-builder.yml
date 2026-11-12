@@ -1,7 +1,7 @@
 appId: io.github.fei2411.dsbot
-productName: DS Bot
+productName: H bot
 copyright: Copyright 2026 Fei2411 and the DS Bot contributors
-artifactName: DS-Bot-${version}-${os}-${arch}.${ext}
+artifactName: H-bot-${version}-${os}-${arch}.${ext}
 directories:
   output: dist-pack
 files:
@@ -84,7 +84,7 @@ mac:
   # Without this key macOS registers no Local Network entry for the app and
   # blocks LAN connections from tool processes outright ("No route to host").
   extendInfo:
-    NSLocalNetworkUsageDescription: DS Bot runs commands that connect to devices on your local network.
+    NSLocalNetworkUsageDescription: H bot runs commands that connect to devices on your local network.
 linux:
   # The Linux Host uses the payload's plain Node, which cannot read asar archives.
   asar: false
@@ -112,5 +112,5 @@ deb:
 # so the build itself never publishes (--publish never).
 publish:
   provider: github
-  owner: Fei2411
-  repo: DS-Bot
+  owner: JamesPerryNicholas
+  repo: H-bot

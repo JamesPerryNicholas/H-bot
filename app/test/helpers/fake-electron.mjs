@@ -13,7 +13,7 @@ export const paths = {
   root,
   userData: join(root, 'userData'),
   downloads: join(root, 'downloads'),
-  exe: join(root, 'DS Bot.exe'),
+  exe: join(root, 'H bot.exe'),
   // The folder of the app itself: the Host's pnpm lives in it.
   appPath: join(root, 'app'),
 }
@@ -137,7 +137,7 @@ class FakeWebContents extends EventEmitter {
     this.isDestroyed = () => this.win.destroyed
     this.getURL = () => this.win.url
     this.isLoading = () => false
-    this.getTitle = () => 'DS Bot'
+    this.getTitle = () => 'H bot'
     this.sent = []
     this.send = (...args) => {
       this.sent.push(args)
@@ -154,7 +154,7 @@ class FakeWebContents extends EventEmitter {
 class FakeApp extends EventEmitter {
   constructor() {
     super()
-    this.name = 'DS Bot'
+    this.name = 'H bot'
     this.getVersion = () => '0.2.2'
     this.getLocale = () => 'en-US'
     this.getPath = (name) => paths[name] ?? join(root, String(name))

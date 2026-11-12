@@ -1,6 +1,6 @@
 ---
 name: issue-triage
-description: 给 DS Bot 仓库的 Issue 和 PR 分诊：打类型、优先级、领域标签，判断该关闭、追问、转讨论还是留着做，并把结论写回 GitHub。触发词：分诊、整理 Issue、打标签、打优先级、这个该不该关、追问报告人、needs-info 到期。
+description: 给 H bot 仓库的 Issue 和 PR 分诊：打类型、优先级、领域标签，判断该关闭、追问、转讨论还是留着做，并把结论写回 GitHub。触发词：分诊、整理 Issue、打标签、打优先级、这个该不该关、追问报告人、needs-info 到期。
 ---
 
 # Issue 分诊
@@ -71,7 +71,7 @@ node .agents/skills/issue-triage/scripts/snapshot.mjs --out /tmp/triage
 
 ```text
 感谢反馈。为了找到原因，请补充：
-1. DS Bot 和 DSH 的版本。
+1. H bot 和 DSH 的版本。
 2. ……（具体缺的东西）
 3. ……
 

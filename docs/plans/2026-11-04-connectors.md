@@ -16,7 +16,7 @@ OAuth 登录的顺序是定的：目录里写的客户端 → CIMD → DCR → �
 
 ## 状态与密钥
 
-密钥在 DS Bot 密钥里，首次写入 `scope: []`（不进任何 Bot shell）：GitHub 仍用 `GITHUB_TOKEN`，其他 `CONNECTOR_<ID>_TOKEN / _REFRESH / _CLIENT_SECRET / _KEY`，邮箱 `MAIL_<地址>_PASSWORD / _TOKEN / _REFRESH`。非密状态在 `state.connectors[id]`（账号、连接时间、client 元信息、token 过期、readOnly、offFor、custom）。令牌变化不触发重挂（指纹不含令牌）。
+密钥在 H bot 密钥里，首次写入 `scope: []`（不进任何 Bot shell）：GitHub 仍用 `GITHUB_TOKEN`，其他 `CONNECTOR_<ID>_TOKEN / _REFRESH / _CLIENT_SECRET / _KEY`，邮箱 `MAIL_<地址>_PASSWORD / _TOKEN / _REFRESH`。非密状态在 `state.connectors[id]`（账号、连接时间、client 元信息、token 过期、readOnly、offFor、custom）。令牌变化不触发重挂（指纹不含令牌）。
 
 ## 每个 Bot 的开关
 
@@ -32,7 +32,7 @@ OAuth 登录的顺序是定的：目录里写的客户端 → CIMD → DCR → �
 
 ## 导入与自定义
 
-`connector-import-scan` 只读扫 Claude Desktop、Cursor、VS Code 的 MCP 配置（不改源文件），返回名称和 env 名；`connector-import` 把 env 值移进 DS Bot 密钥（`CONNECTOR_<ID>_<ENV>`），配置里留 `$DSH_SECRET_` 引用。自定义 id 从名字派生，唯一、≤32 字符、不占目录 id；能力名校验同样拒绝连接器 id。
+`connector-import-scan` 只读扫 Claude Desktop、Cursor、VS Code 的 MCP 配置（不改源文件），返回名称和 env 名；`connector-import` 把 env 值移进 H bot 密钥（`CONNECTOR_<ID>_<ENV>`），配置里留 `$DSH_SECRET_` 引用。自定义 id 从名字派生，唯一、≤32 字符、不占目录 id；能力名校验同样拒绝连接器 id。
 
 ## 不做
 

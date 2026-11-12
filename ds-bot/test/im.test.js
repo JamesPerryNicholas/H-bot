@@ -217,7 +217,7 @@ test('outbound: assistant text and member lines go out; hidden turns, user and s
   const room = s.rt.roomOf('r1')
   s.rt.logRoom(room, { who: 'Writer', botId: 'b', text: 'member spoke' })
   s.rt.logRoom(room, { who: 'User', text: 'user spoke' })
-  s.rt.logRoom(room, { who: 'DS Bot', kind: 'notice', reason: 'x', text: 'nope' })
+  s.rt.logRoom(room, { who: 'H bot', kind: 'notice', reason: 'x', text: 'nope' })
   await s.flush()
   assert.equal(s.fake.sent.length, 2)
   assert.equal(s.fake.sent[1].text, '**Writer**: member spoke')

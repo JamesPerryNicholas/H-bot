@@ -270,7 +270,7 @@ export function install(rt) {
           unmark()
           return { error: removed.error }
         }
-        // The bundle is gone now; a failed install leaves no DS Bot unless the old one goes back.
+        // The bundle is gone now; a failed install leaves no H bot unless the old one goes back.
         const restore = async (failed) => {
           if (typeof previous !== 'string' || previous === '') return failed
           const back = await Promise.resolve(service.installBundle(previous, sourceOf(previous).kind === 'registry' && chosen.registry ? { registry: chosen.registry } : {})).catch(error => ({ error: { code: error?.message ?? 'restore failed' } }))

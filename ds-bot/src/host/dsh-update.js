@@ -1,4 +1,4 @@
-// DSH updates: a released DS Bot may name the DSH release it was verified
+// DSH updates: a released H bot may name the DSH release it was verified
 // against (`dsBot.verifiedDsh` in package.json); a release that names none
 // offers nothing. The newest released bot wins: offering that version and
 // nothing newer keeps the update path away from DSH releases we have not
@@ -74,7 +74,7 @@ export function install(rt) {
   const installKind = () =>
     typeof ctx.get?.('profileContext')?.packageManager?.command === 'string' ? 'app' : 'npm'
 
-  // The newest released DS Bot's `dsBot` block, through the same channel the bot
+  // The newest released H bot's `dsBot` block, through the same channel the bot
   // itself updates from: its registry, or the public repo's latest release.
   async function releasedDeclaration(source) {
     if (source.kind === 'registry') {

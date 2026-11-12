@@ -157,7 +157,7 @@ test('a folded preview also yields the whole code block it cut', () => {
   assert.equal(view.head, `Here:\n\`\`\`\n${lines(8)}\n\`\`\``)
   assert.equal(view.code, inner)
   // The markdown before the block, and the part of the block the preview keeps:
-  // the half block is drawn by DS Bot, so the host's copy control never sees it.
+  // the half block is drawn by H bot, so the host's copy control never sees it.
   assert.equal(view.prose, 'Here:')
   assert.equal(view.codeHead, lines(8))
   // A block that never closes yields to the end of the text.

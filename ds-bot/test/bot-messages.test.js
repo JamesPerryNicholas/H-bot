@@ -899,7 +899,7 @@ test('an image offload failure moves the Bot on, without its latest messages the
   t.after(stop)
   let made = 0
   ctx.sessionController.create = async () => ({ sessionId: `s${++made}` })
-  // Per Session, the events DS Bot reads back; only the previous turn's end matters.
+  // Per Session, the events H bot reads back; only the previous turn's end matters.
   const ends = new Map()
   const endedWith = (id, code) => ends.set(id, { 9: { type: 'turn/end', data: { reason: { kind: 'error', error: { code } } } } })
   const failTurn = async (id, code) => {

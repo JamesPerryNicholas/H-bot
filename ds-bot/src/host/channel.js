@@ -11,7 +11,7 @@ const LANGUAGES = { zh: 'Chinese (简体中文)', en: 'English' }
 const RUN_STATS = ['sessionStats', 'tokenUsage', 'contextPressure']
 
 const invalid = message => Object.assign(new Error(message), { code: 'bot/invalid' })
-// Programming and file system errors are DS Bot's own faults, logged with their stack;
+// Programming and file system errors are H bot's own faults, logged with their stack;
 // any other error is a refusal whose message is meant for the user.
 const isInternal = error => error instanceof TypeError || error instanceof ReferenceError || error instanceof RangeError
   || error instanceof SyntaxError || (typeof error?.code === 'string' && /^E[A-Z_]+$/.test(error.code))

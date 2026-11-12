@@ -69,11 +69,11 @@ export class BackgroundNotice {
         mkdirSync(dirname(this.#marker), { recursive: true })
         writeFileSync(this.#marker, '')
       } catch (error) {
-        this.#log.warn(`DS Bot: the tray notice was not remembered: ${error instanceof Error ? error.message : String(error)}`)
+        this.#log.warn(`H bot: the tray notice was not remembered: ${error instanceof Error ? error.message : String(error)}`)
       }
       hide()
     } catch (error) {
-      this.#log.warn(`DS Bot: the tray notice could not be shown: ${error instanceof Error ? error.message : String(error)}`)
+      this.#log.warn(`H bot: the tray notice could not be shown: ${error instanceof Error ? error.message : String(error)}`)
     } finally {
       this.#pending = false
     }

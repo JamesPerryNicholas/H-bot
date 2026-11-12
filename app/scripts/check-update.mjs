@@ -18,8 +18,8 @@ const manifest = process.platform === 'linux' ? 'latest-linux.yml' : 'latest.yml
 // The asset the fake release lists: what this install's update check waits for. The deb's file
 // name uses the Debian architecture (x64 → amd64).
 const asset = mac
-  ? version => `DS-Bot-${version}-mac-${process.arch}.zip`
-  : version => `DS-Bot-${version}-linux-${{ x64: 'amd64' }[process.arch] ?? process.arch}.deb`
+  ? version => `H-bot-${version}-mac-${process.arch}.zip`
+  : version => `H-bot-${version}-linux-${{ x64: 'amd64' }[process.arch] ?? process.arch}.deb`
 if (!executable || !source || !existsSync(executable)
   || (releasePage ? mode !== undefined : !existsSync(join(source, manifest)))) {
   console.error(`check-update: usage: ${releasePage
@@ -39,7 +39,7 @@ const server = createServer((request, response) => {
     served.push(pathname)
     response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify([{
       tag_name: `v${version}`,
-      html_url: `https://github.com/Fei2411/DS-Bot/releases/tag/v${version}`,
+      html_url: `https://github.com/JamesPerryNicholas/H-bot/releases/tag/v${version}`,
       draft: false,
       prerelease: false,
       assets: [{ name: asset(version) }],
@@ -128,10 +128,10 @@ try {
     stream.setEncoding('utf8')
     stream.on('data', (chunk) => { output += chunk; process.stdout.write(chunk) })
   }
-  const updateLine = `DS Bot: update ${String(version)} ${releasePage ? 'available' : 'downloaded'}`
+  const updateLine = `H bot: update ${String(version)} ${releasePage ? 'available' : 'downloaded'}`
   const end = Date.now() + (releasePage ? 3 : 5) * 60_000
   while (!output.includes(updateLine)) {
-    if (releasePage ? /DS Bot: update check failed/u.test(output) : /DS Bot: update failed/u.test(output)) {
+    if (releasePage ? /H bot: update check failed/u.test(output) : /H bot: update failed/u.test(output)) {
       throw new Error('the app reported a failed update')
     }
     if (app.exitCode !== null) {

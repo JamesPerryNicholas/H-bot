@@ -149,7 +149,7 @@ export function install(rt) {
   }
 
   // Backfill compatibility defaults onto custom routes (and catalog routes pointed at a
-  // custom gateway) that were saved before DS Bot wrote `compat`, or added through DSH's
+  // custom gateway) that were saved before H bot wrote `compat`, or added through DSH's
   // own Models page. Explicit user settings win per field.
   let repairing = Promise.resolve()
   async function ensureCustomCompat() {

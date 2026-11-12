@@ -14,7 +14,7 @@ import { checkShownView, showViewDescription, showViewParameters } from 'deep-vi
 export const output = { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: String(value) }] }
 export const GROUP_REF = { type: 'string', required: true, description: 'Exact group chat name from list_bots' }
 const BLOCKING_QUESTION_TOOL = 'ask_user_question'
-// DS Bot has its own group goals; DSH's session goal still does not survive conversation parts.
+// H bot has its own group goals; DSH's session goal still does not survive conversation parts.
 const GOAL_TOOLS = ['create_goal', 'update_goal', 'get_goal']
 // DSH's delegation tools start child agents the user cannot watch or stop, and they
 // end with the conversation part that started them; Bots hand work to other Bots.
@@ -30,7 +30,7 @@ const HIDDEN_TOOLS = HIDDEN_TOOL_GROUPS.flat()
 const HIDDEN_SECTIONS = new Set([...HIDDEN_TOOLS.map(name => `tool:${name}`), 'tool:goal', 'team:policy'])
 const GOAL_REFUSAL = 'Bot chats do not run /goal. To give a group a goal, use Set a goal in its + menu.'
 // DSH 0.2.2's schedule tools can deliver to a new Session, which is outside the team and
-// has no Bot; a Bot's tasks deliver to its own chat, which DS Bot moves on with each part.
+// has no Bot; a Bot's tasks deliver to its own chat, which H bot moves on with each part.
 const SCHEDULE_TARGET_TOOLS = ['schedule_create', 'schedule_edit']
 const SCHEDULE_TARGET_REFUSAL = 'A Bot’s scheduled tasks run in its own chat. Use target "this_session".'
 const DELEGATION_REFUSAL = 'Bots do not start subagents, teammates or workflows. Do the work yourself, or hand it to another Bot with message_bot.'

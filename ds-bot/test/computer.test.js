@@ -108,7 +108,7 @@ test('protected apps match by id, name and executable', () => {
     { id: 'io.github.fei2411.dsbot' },
     { id: 'com.apple.systempreferences' },
     { id: 'com.apple.keychainaccess' },
-    { name: 'DS Bot' },
+    { name: 'H bot' },
     { name: 'DSH Computer Use' },
     { name: 'DeepSeek Harness' },
     { name: 'Keychain Access' },
@@ -374,7 +374,7 @@ const maskingAgent = (ctx, id, denied) => ({
   },
 })
 
-test('a plain Session keeps DSH\'s own computer use while the DS Bot switch is off (#1101)', async (t) => {
+test('a plain Session keeps DSH\'s own computer use while the H bot switch is off (#1101)', async (t) => {
   const { ctx, home, rt } = setup()
   t.after(async () => { await ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const denied = []
@@ -404,7 +404,7 @@ test('with DSH\'s own provider in place Bots are refused and a plain Session is 
   assert.equal((await call('w1', 'cua', { method: 'getState', params: {} })).kind, 'deny')
 })
 
-test('a plain Session is refused on the provider DS Bot mounted', async (t) => {
+test('a plain Session is refused on the provider H bot mounted', async (t) => {
   const { ctx, home, rt } = setup()
   t.after(async () => { await ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   const services = { loader: { import: async name => ({ name }) }, agents: { list: () => [] } }
@@ -693,7 +693,7 @@ test('computer_handoff: the hold answers done, skip and takeover', async (t) => 
   assert.match(reply.message, /gave the computer back|handed/)
 })
 
-test('a cua call DS Bot never decided asks by card instead of saying revoked', async (t) => {
+test('a cua call H bot never decided asks by card instead of saying revoked', async (t) => {
   const { ctx, home, rt } = setup()
   t.after(async () => { await ctx.dispose(); rmSync(home, { recursive: true, force: true, maxRetries: 5 }) })
   await rt.load()
@@ -702,7 +702,7 @@ test('a cua call DS Bot never decided asks by card instead of saying revoked', a
   const gate = ctx.listeners.get('tools/pre-execute').find(fn => fn.name === 'computerGate')
   const track = ctx.listeners.get('tools/execute').find(fn => fn.name === 'computerTrack')
   const allow = async () => 'allowed'
-  // DSH's saved decision let getApp through; DS Bot's post-getApp consent asks
+  // DSH's saved decision let getApp through; H bot's post-getApp consent asks
   // by the same card before the model ever sees the handle.
   const got = track({ name: 'cua', arguments: { method: 'getApp', params: { selector: 'Notes' } }, agent: { id: 'w1' }, callId: 'g1' },
     async () => ({ isError: false, value: { appHandle: 'h1', pid: 9, authorization: { id: 'com.apple.Notes', name: 'Notes' } } }))

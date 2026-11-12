@@ -44,7 +44,7 @@ class FakeObserver {
   observe() {}
   disconnect() { this.off = true }
 }
-// The markdown the host's renderer is given, and what DS Bot's copy controls write.
+// The markdown the host's renderer is given, and what H bot's copy controls write.
 const markdownTexts = []
 const copiedTexts = []
 const clipboard = {}
@@ -1072,8 +1072,8 @@ test('a Retry after a failed turn shows as one event line', () => {
   assert.equal(text(out), 'Went on after the failed turn')
 })
 
-// #718: a folded message's cut code block is drawn by DS Bot, so no copy control
-// exists that holds only the part shown; DS Bot's own is bound to the whole
+// #718: a folded message's cut code block is drawn by H bot, so no copy control
+// exists that holds only the part shown; H bot's own is bound to the whole
 // block, and a short block keeps the host's normal rendering and copy.
 test('a folded code block leaves no copy of only its shown part', async () => {
   const inner = Array.from({ length: 40 }, (_, index) => `line ${index + 1}`).join('\n')
@@ -1088,7 +1088,7 @@ test('a folded code block leaves no copy of only its shown part', async () => {
   const out = bubble([`Here:\n\`\`\`js\n${inner}\n\`\`\``])
   // The markdown the host renders holds no fence, so it can draw no copy of the part.
   assert.ok(markdownTexts.length > 0 && markdownTexts.every(given => !given.includes('```')))
-  // DS Bot draws the part the preview keeps, and its copy holds the whole block.
+  // H bot draws the part the preview keeps, and its copy holds the whole block.
   assert.equal(text(find(out, item => item.type === 'pre')), 'line 1\nline 2\nline 3\nline 4\nline 5\nline 6\nline 7\nline 8')
   const [copy] = copyOf(out)
   assert.equal(copyOf(out).length, 1)

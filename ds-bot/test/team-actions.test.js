@@ -41,7 +41,7 @@ test('Retry after a failed turn asks the host to resume the Bot, with nothing bu
   assert.equal(pulls(), 1)
 })
 
-test('openModels opens DS Bot settings on the Models page and closes the menus', () => {
+test('openModels opens H bot settings on the Models page and closes the menus', () => {
   const { actions, ui } = bench()
   actions.openModels()
   assert.deepEqual(ui.getSnapshot().settings, { page: 'models', id: null })

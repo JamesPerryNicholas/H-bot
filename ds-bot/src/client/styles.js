@@ -400,7 +400,7 @@ html[data-windows-titlebar]:not([data-fullscreen]) :is(.bt-pane,.bt-panel)::befo
 .bt-fold{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin-top:4px;white-space:normal}
 .bt-fold-code{position:relative}
 .bt-fold-code>.bt-tool{position:absolute;right:6px;bottom:6px}
-/* The part of a cut code block the preview keeps, drawn by DS Bot so the host's
+/* The part of a cut code block the preview keeps, drawn by H bot so the host's
    Markdown draws no copy control of its own for it. */
 .bt-fold-code>.bt-fold-pre{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,currentColor 6%,transparent);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:20px;overflow-x:auto}
 .bt-fold-code>*+.bt-fold-pre{margin-top:6px}
@@ -543,7 +543,7 @@ body[data-ds-dark-theme] .bt-scrim{background:rgba(0,0,0,.5)}
 /* A DSH page opens on its own title, which the dialog head already shows. */
 .bt-dsh-section>[data-slot]>*>h2:first-child,.bt-dsh-section>[data-slot]>*>:first-child>h2:first-child{display:none}
 .bt-dsh-item{min-width:0}
-/* DSH's General rows draw their own row inside DS Bot's card: the card's inset and
+/* DSH's General rows draw their own row inside H bot's card: the card's inset and
    rules apply, an empty row takes no line, and Appearance is already the section title. */
 .bt-dsh-item>[data-slot]>*{padding-left:12px;padding-right:12px;border-bottom-width:0}
 .bt-dsh-item>[data-slot]>.bt-set-row{padding:10px 12px}
@@ -1060,7 +1060,7 @@ body[data-bt-layout=flat] .bt-think{max-width:calc(var(--bt-flat-w) * 100%)}
 /* A turn's process seat is a flow child of its own, not a flowItem: a seat whose
    member cells all emptied themselves (a hidden exchange turn, a turn whose
    calls draw nothing) still kept its margin, stacking a blank band per hidden
-   call. Only the slot a DS Bot cell marked counts, so a seat another renderer
+   call. Only the slot a H bot cell marked counts, so a seat another renderer
    fills — even with plain text and no element child — is never taken for empty. */
 [data-step-process]:has(> [data-step-process-body] [data-slot="conversation.chat.node"][data-bt-emptied]):not(:has(> [data-step-process-body] [data-slot="conversation.chat.node"]:not([data-bt-emptied]))){display:none!important}
 /* A generate_image result shows its picture in the chat flow, without bringing
@@ -1324,7 +1324,7 @@ div:has(> nav [class*="_marks"]){display:none!important}
 // module id from the start, so another plugin's claim or teardown never takes them.
 const PLUGIN_ID = 'ds-bot'
 
-// The part of a style sheet that only reaches DS Bot's own elements: selectors on a
+// The part of a style sheet that only reaches H bot's own elements: selectors on a
 // `.bt-` class, the `--bt-*` variables on the page root, and the keyframes they run.
 // Rules that re-skin the shell's own elements (the `[class*=…]` overrides) drop out, so
 // Settings can show in Agent mode without dressing DSH's page in Bot mode.

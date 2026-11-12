@@ -1,9 +1,9 @@
 {
   "name": "dsbot",
-  "productName": "DS Bot",
+  "productName": "H bot",
   "version": "0.3.5",
   "private": true,
-  "description": "DS Bot desktop app: the ds-bot team on its own pinned DeepSeek Harness.",
+  "description": "H bot desktop app: the ds-bot team on its own pinned DeepSeek Harness.",
   "author": "Fei2411",
   "homepage": "https://github.com/JamesPerryNicholas/H-bot",
   "desktopName": "dsbot.desktop",

@@ -1,6 +1,6 @@
-# DS Bot in Docker
+# H bot in Docker
 
-This directory deploys DS Bot as a Docker image: a `dsh web` server (DeepSeek
+This directory deploys H bot as a Docker image: a `dsh web` server (DeepSeek
 Harness) with the `ds-bot` plugin installed, ready for a NAS or any always-on
 box. The container is the sandbox boundary — see [Permissions](#permissions).
 For local source development with frontend rebuilds and host restarts, see
@@ -35,7 +35,7 @@ docker compose up -d --build
 docker compose logs ds-bot
 ```
 
-This builds the local image without pulling a published DS Bot image. The root
+This builds the local image without pulling a published H bot image. The root
 Compose file publishes host port **13080**, and stores data and workspace files
 in `docker/data` and `docker/workspace`.
 
@@ -48,7 +48,7 @@ use the host port from `ports:` when opening it. The token is a fresh
 process credential on every start. It exchanges itself for a signed cookie
 (valid 30 days), whose key persists in `/data`, so later restarts keep the
 browser logged in. Bookmark the root URL without `?token=…`. The first time
-the team opens, DS Bot creates a Main Bot called Chief.
+the team opens, H bot creates a Main Bot called Chief.
 
 An alternative for users who prefer `.env` is still available in `docker/`:
 
@@ -187,7 +187,7 @@ installs. `/tmp/ds-bot.tgz` links to it for profiles created by older images.
 A manual dependency install can therefore pick up the plugin bundled in the
 current image; restarting alone does not update the persisted profile.
 The image is built and tested with dsh `0.2.2-rc.1`, the version
-DS Bot is verified with. The entrypoint translates the default wildcard setting
+H bot is verified with. The entrypoint translates the default wildcard setting
 to the concrete container address this release requires. A `DSH_VERSION` build
 arg exists, but other releases are untested.
 
@@ -248,7 +248,7 @@ After building the image, run `node docker/test.mjs ds-bot:local` from the
 repository root. The test uses isolated, network-disabled containers and
 temporary Docker volumes, with no host directory mounts or model calls. It
 checks entrypoint permissions, first start, UID/GID changes, restored files,
-workspace ownership and the authenticated DS Bot API. It also checks that the
+workspace ownership and the authenticated H bot API. It also checks that the
 runtime user can read and repack the profile's plugin archive offline, and
 that legacy archive references work without rewriting the persisted profile.
 All test containers and volumes are removed when it finishes.
