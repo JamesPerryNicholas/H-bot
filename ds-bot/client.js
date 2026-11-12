@@ -1237,9 +1237,9 @@ var ZH = {
   // About
   "About H bot": "关于 H bot",
   "Version {version}": "版本 {version}",
-  "Star the upstream project on GitHub": "在 GitHub 上给上游项目点 Star",
-  "Support the upstream project with a star on GitHub.": "欢迎在 GitHub 上为上游项目点 Star。",
-  "Upstream source code": "上游源代码",
+  "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
+  "Support H bot with a star on GitHub.": "欢迎在 GitHub 上为 H bot 点 Star。",
+  "Source code": "源代码",
   "Upstream GitHub issue": "上游 GitHub issue",
   "Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.": "在上游仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
   "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
@@ -22068,14 +22068,14 @@ function AboutPage({ useUpdate, actions, run: run2, Section: Section2, Row: Row4
           href: repo,
           target: "_blank",
           rel: "noopener noreferrer",
-          title: t("Star the upstream project on GitHub"),
-          "aria-label": stars === null ? t("Star the upstream project on GitHub") : `${t("Star the upstream project on GitHub")} · ${t("{count} stars", { count: stars })}`
+          title: t("Star H bot on GitHub"),
+          "aria-label": stars === null ? t("Star H bot on GitHub") : `${t("Star H bot on GitHub")} · ${t("{count} stars", { count: stars })}`
         },
         (0, import_react47.createElement)("span", { className: "bt-star-main" }, (0, import_react47.createElement)("span", { className: "bt-star-icon" }, (0, import_react47.createElement)(StarLineIcon)), "Star"),
         stars === null ? null : (0, import_react47.createElement)("span", { className: "bt-star-count" }, starCount(stars))
       ) : null
     ),
-    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support the upstream project with a star on GitHub.")) : null,
+    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support H bot with a star on GitHub.")) : null,
     (0, import_react47.createElement)(
       Section2,
       { key: "updates", title: t("Updates") },
@@ -22085,7 +22085,7 @@ function AboutPage({ useUpdate, actions, run: run2, Section: Section2, Row: Row4
     (0, import_react47.createElement)(
       Section2,
       { key: "links", title: t("Links") },
-      repo ? (0, import_react47.createElement)(Row4, { label: t("Upstream source code"), hint: repo.replace(/^https:\/\//, "") }, (0, import_react47.createElement)("a", linkProps(repo), (0, import_react47.createElement)(GitHubMark), t("Open"))) : null,
+      repo ? (0, import_react47.createElement)(Row4, { label: t("Source code"), hint: repo.replace(/^https:\/\//, "") }, (0, import_react47.createElement)("a", linkProps(repo), (0, import_react47.createElement)(GitHubMark), t("Open"))) : null,
       update.notesUrl ? (0, import_react47.createElement)(Row4, { label: t("Release notes") }, (0, import_react47.createElement)("a", linkProps(update.notesUrl), t("Open"))) : null,
       (0, import_react47.createElement)(Row4, { label: t("Report a problem") }, (0, import_react47.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", onClick: () => actions.openSettings("feedback") }, t("Open")))
     )

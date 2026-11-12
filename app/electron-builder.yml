@@ -99,7 +99,7 @@ linux:
   # terminal command should not have.
   executableName: dsbot
   # A deb needs a maintainer; package.json's author has no email, so it goes here.
-  maintainer: Fei2411 <https://github.com/Fei2411>
+  maintainer: H bot <https://github.com/JamesPerryNicholas/H-bot>
   # Links the running window to the menu entry (WM_CLASS = app id).
   syncDesktopName: true
   icon: assets/icon.png

@@ -1189,9 +1189,9 @@ const ZH = {
   // About
   'About H bot': '关于 H bot',
   'Version {version}': '版本 {version}',
-  'Star the upstream project on GitHub': '在 GitHub 上给上游项目点 Star',
-  'Support the upstream project with a star on GitHub.': '欢迎在 GitHub 上为上游项目点 Star。',
-  'Upstream source code': '上游源代码',
+  'Star H bot on GitHub': '在 GitHub 上给 H bot 点 Star',
+  'Support H bot with a star on GitHub.': '欢迎在 GitHub 上为 H bot 点 Star。',
+  'Source code': '源代码',
   'Upstream GitHub issue': '上游 GitHub issue',
   'Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.': '在上游仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。',
   'Star H bot on GitHub': '在 GitHub 上给 H bot 点 Star',

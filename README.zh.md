@@ -8,7 +8,7 @@
 
 H bot 是一个跑在你自己电脑上的智能助手。你可以创建 bot、和它们对话，也可以让它们在群聊里一起干活。桌面应用自带运行环境，配好模型就能用，不用先装别的组件。
 
-本仓库是基于 [DS Bot](https://github.com/Fei2411/DS-Bot) 的二次开发，底层使用 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（简称 DSH）。原作者归属保留在 [LICENSE](LICENSE) 和 [NOTICE](NOTICE) 中。
+H bot 基于 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（简称 DSH）。所含开源代码的原作者声明保留在 [LICENSE](LICENSE) 和 [NOTICE](NOTICE) 中。
 
 ![和 Chief 说一句话，它就把 bot 和群聊建好](docs/images/team.zh.png)
 
@@ -119,7 +119,7 @@ bot 可以直接创建、检查和修改 Word（`.docx`）、PowerPoint（`.pptx
 - [DS Bot](https://github.com/Fei2411/DS-Bot)：H bot 基于该项目。版权归 2026 Fei2411 和 DS Bot 贡献者，详见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。
 - [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)：bot 所依赖的插件系统、会话、工具和模型。
 - [esbuild](https://esbuild.github.io/)：用来打包插件的界面代码。
-- 感谢下面这些项目公开的设计思路。上游项目参考了它们的思路，没有使用它们的代码：
+- 感谢下面这些项目公开的设计思路。H bot 参考了它们的思路，没有使用它们的代码：
   - [AgentMemoryRepo](https://github.com/AgentMemoryRepo/agentmemoryrepo)：bot 记忆的 Markdown 格式。
   - [OpenAI Codex](https://github.com/openai/codex)：压缩时把用户原话留在摘要旁边，以及搜索聊天记录用的消息锚点。
   - [OpenMausBot](https://github.com/milind-soni/OpenMausBot)：群聊轮流发言和 @ 接力。
@@ -133,6 +133,6 @@ bot 可以直接创建、检查和修改 Word（`.docx`）、PowerPoint（`.pptx
 
 ## 声明
 
-H bot 是独立的二次开发项目，**不是 DeepSeek 官方产品**，与 DeepSeek 没有隶属、认可或赞助关系，也不是官方 DS Bot 项目。“DeepSeek”“DeepSeek Harness”等名称是各自所有者的商标，这里只用来说明本项目的来源和运行依赖。
+H bot 是独立项目，**不是 DeepSeek 官方产品**，与 DeepSeek 没有隶属、认可或赞助关系。“DeepSeek”“DeepSeek Harness”等名称是各自所有者的商标，这里只用来说明本项目的运行依赖。所含开源代码的原作者声明见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。
 
 bot 会消耗你自己的模型额度，也会按你的要求读写文件、运行命令。重要的操作请自己检查。

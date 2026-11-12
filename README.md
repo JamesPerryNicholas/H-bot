@@ -8,7 +8,7 @@ English | [中文](README.zh.md)
 
 H bot is a local AI assistant you run on your own computer. You create bots, talk with them, and let them work together in group chats. The desktop app brings its own runtime, so you can set up a model and start using it without installing anything else first.
 
-This repository is a secondary-development fork of [DS Bot](https://github.com/Fei2411/DS-Bot), built on [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH). Original author attribution is kept in [LICENSE](LICENSE) and [NOTICE](NOTICE).
+H bot is built on [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH). Required attribution for included open-source code is kept in [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 ![Say one sentence to Chief, and it sets up the bots and the group chat](docs/images/team.png)
 
@@ -119,7 +119,7 @@ To run from this repository on Windows, use `./start.ps1`.
 - [DS Bot](https://github.com/Fei2411/DS-Bot): H bot is based on this project. Copyright 2026 Fei2411 and the DS Bot contributors; see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 - [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness): the plugin system, sessions, tools and models that bots run on.
 - [esbuild](https://esbuild.github.io/): bundles the plugin's interface code.
-- Thanks to these projects for the ideas they published. The upstream project learned from their designs and does not contain their code:
+- Thanks to these projects for the ideas they published. H bot learned from their designs and does not contain their code:
   - [AgentMemoryRepo](https://github.com/AgentMemoryRepo/agentmemoryrepo): the Markdown format of bot memory.
   - [OpenAI Codex](https://github.com/openai/codex): checkpoints that keep the user's messages next to the summary, and message anchors for chat search.
   - [OpenMausBot](https://github.com/milind-soni/OpenMausBot): group chat rounds and @mention relays.
@@ -133,6 +133,6 @@ To run from this repository on Windows, use `./start.ps1`.
 
 ## Disclaimer
 
-H bot is an independent secondary-development project. **It is not an official DeepSeek product**, and it is not affiliated with, endorsed by or sponsored by DeepSeek. It is also not the official DS Bot project. "DeepSeek", "DeepSeek Harness" and the other names are trademarks of their owners. They are used here only to say what this project is based on and works with.
+H bot is an independent project. **It is not an official DeepSeek product**, and it is not affiliated with, endorsed by or sponsored by DeepSeek. "DeepSeek", "DeepSeek Harness" and the other names are trademarks of their owners. They are used here only to say what this project works with. Required attribution for included open-source code is in [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 Bots use your own model quota, and they read and write files and run commands when you ask them to. Check important actions yourself.
