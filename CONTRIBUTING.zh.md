@@ -84,8 +84,8 @@
 - 仅测试台需要：pnpm `11`，以及插件测试所用 DSH 版本的 DeepSeek Harness 源码。
 
 ```sh
-git clone https://github.com/JamesPerryNicholas/H-bot.git h-bot-repo
-cd ds-bot-repo/ds-bot
+git clone https://github.com/JamesPerryNicholas/H-bot.git H-bot
+cd H-bot/ds-bot
 
 # 插件自己的构建工具（只有 esbuild）。
 npm ci
