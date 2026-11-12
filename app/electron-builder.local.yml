@@ -16,6 +16,6 @@ extraMetadata:
     identity:
       appId: io.github.fei2411.dsbot.local
       inheritLegacy: false
-      shellName: DS Bot Dev
+      shellName: H bot Dev
 nsis:
   guid: 86bb7439-3260-4cce-b063-9f207f4e6a63

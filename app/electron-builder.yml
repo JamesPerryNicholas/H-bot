@@ -1,7 +1,7 @@
 appId: io.github.fei2411.dsbot
-productName: DS Bot
+productName: H bot
 copyright: Copyright 2026 Fei2411 and the DS Bot contributors
-artifactName: DS-Bot-${version}-${os}-${arch}.${ext}
+artifactName: H-bot-${version}-${os}-${arch}.${ext}
 directories:
   output: dist-pack
 files:
