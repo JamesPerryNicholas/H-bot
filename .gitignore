@@ -40,3 +40,6 @@ __pycache__/
 
 # Local source snapshots and verification logs.
 /.h-bot-maintenance/
+
+# Sealed bundled API credit; do not publish
+/app/src/bundled-credit-envelope.json
