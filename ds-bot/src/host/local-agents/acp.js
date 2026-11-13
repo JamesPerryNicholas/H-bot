@@ -1,12 +1,13 @@
 // The Agent Client Protocol engine: one child process per route, ACP over
-// stdio. A process multiplexes sessions: each H bot Session maps to one ACP
+// stdio. A process multiplexes sessions: each DS Bot Session maps to one ACP
 // session, created or resumed with our loopback MCP server attached.
 import { JsonRpcPeer, wireProcess, EventQueue } from './jsonrpc.js'
 import { cleanEnv, spawnAgent } from './discover.js'
 import { acpMode } from './engines.js'
+import { stdioServer } from './mcp-stdio.js'
 
 const CLIENT = { name: 'ds-bot', version: '1' }
-// H bot's loopback MCP server, which carries the Bot's team tools.
+// DS Bot's loopback MCP server, which carries the Bot's team tools.
 const MCP_SERVER = 'dsbot'
 
 // Events a driver reports, normalized for the adapter:
@@ -112,7 +113,7 @@ export class AcpEngine {
       if (session === undefined) return Promise.reject({ code: -32603, message: 'unknown session' })
       const options = (params?.options ?? []).map(option => ({ optionId: option.optionId, name: option.name, kind: option.kind }))
       const call = callOf(session, params?.toolCall)
-      // Cursor and Devin ask before every MCP tool call. A call to H bot's own server
+      // Cursor and Devin ask before every MCP tool call. A call to DS Bot's own server
       // is approved once here: toolsFor() already narrowed what the Bot may call.
       // Other tools, and an agent that offers no one-time allow, still ask.
       const once = ownToolCall(call) ? options.find(option => option.kind === 'allow_once') : undefined
@@ -136,12 +137,11 @@ export class AcpEngine {
     return Promise.reject({ code: -32601, message: `method not found: ${method}` })
   }
 
-  // A new or resumed ACP session for one H bot Session.
+  // A new or resumed ACP session for one DS Bot Session.
   async open(dshSessionId, { cwd, mcp, resumeId, preset, model }) {
     const peer = await this.ensure()
     const session = this.sessionFor(dshSessionId)
-    const mcpServers = serversFor(mcp)
-    if (mcp !== undefined && this.caps.mcpHttp === false) throw Object.assign(new Error(`${this.engine.name} cannot use HTTP MCP servers; the team tools cannot reach it`), { code: 'NOT_SUPPORTED' })
+    const mcpServers = serversFor(mcp, this.caps)
     const params = { cwd, mcpServers }
     let reply
     if (resumeId !== undefined) {
@@ -224,14 +224,14 @@ export class AcpEngine {
   // Models the agent advertises on a probe session (configOptions 'model').
   async listModels({ cwd, mcp }) {
     const peer = await this.ensure()
-    const probe = await peer.request('session/new', { cwd, mcpServers: serversFor(mcp) }, { timeout: 60_000 })
+    const probe = await peer.request('session/new', { cwd, mcpServers: serversFor(mcp, this.caps) }, { timeout: 60_000 })
     this.remember(probe)
     const option = configOptionsOf(probe?.configOptions ?? [], 'model')
     return (option?.options ?? []).map(entry => ({ id: String(entry.id ?? entry.value ?? entry.name), name: String(entry.name ?? entry.id ?? entry.value) }))
   }
 }
 
-const serversFor = mcp => (mcp === undefined ? [] : [{ type: 'http', name: MCP_SERVER, url: mcp.url, headers: [{ name: 'Authorization', value: `Bearer ${mcp.token}` }] }])
+const serversFor = (mcp, caps) => (mcp === undefined ? [] : caps.mcpHttp === false ? [stdioServer(mcp, MCP_SERVER)] : [{ type: 'http', name: MCP_SERVER, url: mcp.url, headers: [{ name: 'Authorization', value: `Bearer ${mcp.token}` }] }])
 // ACP has no field for the MCP server of a call, so each agent says it its own way:
 // Cursor in the call's input, Devin in the permission rule the request names.
 const ownToolCall = call => call?.rawInput?.providerIdentifier === MCP_SERVER

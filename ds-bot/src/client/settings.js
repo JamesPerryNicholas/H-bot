@@ -2,6 +2,7 @@ import { Component, createElement as h, useCallback, useEffect, useRef, useState
 import { ACCENT_INKS, INKS } from './inks.js'
 import { isMainOf } from './sources.js'
 import { MESSAGE_WIDTH, allThemes, flatWidthOf, layoutOf, thinkingShown, widthOf } from './themes.js'
+import { COLOR_MODE_OPTIONS, colorModeOf } from './color-mode.js'
 import { CloseIcon, ChevronLeftIcon, ChevronRightIcon, ChatsIcon, ClockIcon, ConnectorIcon, GlobeIcon, InfoIcon, MonitorIcon, FileIcon, PageIcon, PlugIcon, PlusIcon, SlidersIcon, TerminalIcon, SETTINGS_ICONS } from './icons.js'
 import { IconAgentPresetOutlineMedium, IconArchiveOutlineMedium, IconPersonalizationOutlineMedium, IconSettingsOutlineMedium, IconUserOutlineMedium } from '@deepseek-ai/dsh-client-ui-primitives'
 import { AdminStar, BotAvatar, RoomAvatar } from './mark.js'
@@ -34,14 +35,16 @@ const capitalize = word => word[0].toUpperCase() + word.slice(1)
 
 // Settings dialog: a 198px page list beside the page. Bots and group chats each list
 // their members, and one opens on its own settings form. Usage widens the dialog.
-// H bot's pages come first; below a rule, the pages DSH and other plugins register
+// DS Bot's pages come first; below a rule, the pages DSH and other plugins register
 // (`settings.section`), then Feedback and About. DSH's General rows join General, and
-// its Models page opens from H bot's Models page as the advanced settings.
-const SETTINGS_PAGES = [['general', 'General'], ['models', 'Models'], ['local-agents', 'Local agents'], ['bots', 'Bots'], ['groups', 'Group chats'], ['connectors', 'Connectors'], ['im', 'IM'], ['capabilities', 'Capabilities'], ['browser', 'Browser'], ['computer', 'Computer use'], ['schedules', 'Scheduled tasks'], ['pages', 'Pages'], ['files', 'Saved files'], ['usage', 'Usage'], ['secrets', 'Secrets'], ['feedback', 'Feedback'], ['about', 'About H bot']]
+// its Models page opens from DS Bot's Models page as the advanced settings.
+const SETTINGS_PAGES = [['general', 'General'], ['models', 'Models'], ['local-agents', 'Local agents'], ['bots', 'Bots'], ['groups', 'Group chats'], ['connectors', 'Connectors'], ['im', 'IM'], ['capabilities', 'Capabilities'], ['browser', 'Browser'], ['computer', 'Computer use'], ['schedules', 'Scheduled tasks'], ['pages', 'Pages'], ['files', 'Saved files'], ['usage', 'Usage'], ['secrets', 'Secrets'], ['feedback', 'Feedback'], ['about', 'About DS Bot']]
 const LAST_PAGES = new Set(['feedback', 'about'])
-// DSH sections H bot's own pages already hold.
+// DSH sections DS Bot's own pages already hold.
 const MERGED_SECTIONS = new Set(['general', 'models'])
 // DSH General rows that sit under Appearance; the rest go under More.
+// DSH's appearance cubes are the same preference as Color mode below, so that
+// row is kept off this card and font-size stays.
 const LOOK_ITEMS = ['appearance', 'font-size']
 const DSH_ICONS = { account: IconUserOutlineMedium, 'agent-presets': IconAgentPresetOutlineMedium, plugins: IconPersonalizationOutlineMedium, 'archived-sessions': IconArchiveOutlineMedium }
 export const dshPages = dsh => (dsh?.sections ?? []).filter(row => row.id !== '' && !MERGED_SECTIONS.has(row.id))
@@ -84,6 +87,17 @@ function Choice({ label, value, options, pick }) {
   }, t(text))))
 }
 
+function useColorMode(source) {
+  const [value, setValue] = useState(() => colorModeOf(source?.getSnapshot?.()))
+  useEffect(() => {
+    if (typeof source?.subscribe !== 'function') return undefined
+    const sync = () => setValue(colorModeOf(source.getSnapshot?.()))
+    sync()
+    return source.subscribe(sync)
+  }, [source])
+  return value
+}
+
 // A width in percent of the column. A drag saves once it rests, as the custom accent
 // does; a change still waiting when the dialog closes is saved, not dropped.
 function WidthSlider({ label, value, save }) {
@@ -113,9 +127,10 @@ function WidthSlider({ label, value, save }) {
 
 function GeneralPage({ roster, actions, run, dsh }) {
   const items = (dsh?.items ?? []).map(row => row.id).filter(id => id !== '')
-  const look = LOOK_ITEMS.filter(id => items.includes(id))
+  const look = LOOK_ITEMS.filter(id => items.includes(id) && id !== 'appearance')
   const more = items.filter(id => !LOOK_ITEMS.includes(id))
   const prefs = roster.prefs ?? {}
+  const colorMode = useColorMode(actions.colorMode)
   const themes = allThemes()
   const current = themes[prefs.theme] ? prefs.theme : 'deepseek'
   const [custom, setCustom] = useState(prefs.accent ?? '#4d6bfe')
@@ -128,6 +143,8 @@ function GeneralPage({ roster, actions, run, dsh }) {
   }
   return [
     h(SetSection, { key: 'look', title: t('Appearance') },
+      h(SetRow, { label: t('Color mode') },
+        h(Choice, { label: t('Color mode'), value: colorMode, options: COLOR_MODE_OPTIONS, pick: id => actions.setColorMode?.(id) })),
       h(SetRow, { label: t('Theme'), hint: t('Colors for the whole team, on every device.') },
         h('select', { className: 'bt-select', 'aria-label': t('Theme'), value: current, onChange: event => run(actions.setPrefs({ theme: event.target.value })) },
           Object.entries(themes).map(([id, theme]) => h('option', { key: id, value: id }, t(theme.label))))),

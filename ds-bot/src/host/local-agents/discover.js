@@ -65,6 +65,7 @@ function searchDirs() {
   const dirs = (process.env.PATH ?? '').split(delimiter).filter(Boolean)
   for (const extra of [
     ...found.dirs,
+    ...(process.platform === 'win32' && process.env.LOCALAPPDATA ? [join(process.env.LOCALAPPDATA, 'agy', 'bin')] : []),
     join(home, '.local', 'bin'),
     join(home, '.local', 'share', 'devin', 'cli', '_versions', 'current', 'bin'),
     join(home, 'bin'),
@@ -153,6 +154,18 @@ export function probeVersion(executable, args, env) {
 // command can say false. The output and the file stay here; only the answer leaves.
 export function probeSignIn(executable, check, { home = homedir() } = {}) {
   if (check === undefined) return Promise.resolve(null)
+  if (check.windowsCredential) {
+    if (process.platform !== 'win32' || !process.env.SystemRoot) return Promise.resolve(null)
+    const target = check.windowsCredential
+    return new Promise(resolve => {
+      execFile(join(process.env.SystemRoot, 'System32', 'cmdkey.exe'), [`/list:${target}`],
+        { timeout: 3_000, windowsHide: true }, (error, stdout) => {
+          // The heading echoes the query even if nothing matched. Only a row
+          // ending in the exact target is a stored credential (any UI locale).
+          resolve(error ? null : stdout.split(/\r?\n/).some(line => line.trimEnd().endsWith(`: ${target}`)))
+        })
+    })
+  }
   if (check.file !== undefined) return Promise.resolve(existsSync(join(home, ...check.file)) ? true : null)
   return new Promise((resolve) => {
     try {

@@ -1,7 +1,7 @@
 // Generate an image with the current session's vendor, then show it in the chat.
 // The chat model itself cannot emit pixels; this tool calls that vendor's best
-// image model. Spend against the $20 cap is recorded only when the bundled
-// OpenAI credit is what paid for the call.
+// image model. Spend is recorded only when the bundled OpenAI credit is what
+// paid for the call. There is no in-app spend cap.
 import { splitRef } from './text.js'
 
 export const NO_IMAGE_MODEL_MESSAGE = '此模型厂商没有生图模型'
@@ -28,6 +28,8 @@ export const IMAGE_VENDORS = {
     style: 'openai',
     baseUrl: 'https://api.openai.com/v1',
     keyRefs: ['OPENAI_API_KEY'],
+    defaultQuality: 'medium',
+    defaultSize: '1024x1024',
   },
   zhipu: {
     name: '智谱',

@@ -169,3 +169,15 @@ test('generate_image output schema sets additionalProperties so the team tool ca
   const src = await readFile(new URL('../../ds-bot/src/host/image-gen.js', import.meta.url), 'utf8')
   assert.match(src, /schema:\s*\{\s*type:\s*'object',\s*additionalProperties:\s*true\s*\}/)
 })
+
+test('generate_image defaults to medium quality and tells the model not to expand prompts or bump quality', async () => {
+  const src = await readFile(new URL('../../ds-bot/src/host/image-gen.js', import.meta.url), 'utf8')
+  const core = await readFile(new URL('../../ds-bot/src/host/image-gen-core.js', import.meta.url), 'utf8')
+  assert.match(src, /generate only one image per request/)
+  assert.match(src, /do not expand it into a long, more detailed prompt/)
+  assert.match(src, /omit quality or pass medium/)
+  assert.match(src, /openai' \? 'medium'/)
+  assert.match(core, /keyRefs: \['OPENAI_API_KEY'\],\s*defaultQuality: 'medium',\s*defaultSize: '1024x1024'/)
+  assert.equal(selectImageTarget({ provider: 'openai' }).vendor.defaultQuality, 'medium')
+  assert.equal(selectImageTarget({ provider: 'openai' }).vendor.defaultSize, '1024x1024')
+})

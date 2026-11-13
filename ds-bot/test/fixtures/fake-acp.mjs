@@ -15,6 +15,8 @@
 // and refuses any other, as it does.
 const exitAfterTurn = process.argv.includes('--exit-after-turn')
 const cursorModes = process.argv.includes('--cursor-modes')
+// Antigravity exposes editor-provided HTTP MCP only in session workers.
+const mcpHttp = !process.argv.includes('--antigravity') || process.argv.includes('--process-per-session')
 const MODES = cursorModes ? ['agent', 'plan', 'ask'] : ['ask', 'accept-edits', 'bypass']
 let refusedModes = 0
 const sessions = new Map()
@@ -153,7 +155,7 @@ process.stdin.on('data', (chunk) => {
     const { id, method, params = {} } = message
     switch (method) {
       case 'initialize':
-        reply(id, { protocolVersion: 1, agentCapabilities: { mcpCapabilities: { http: true, sse: false }, loadSession: true }, authMethods: [] })
+        reply(id, { protocolVersion: 1, agentCapabilities: { mcpCapabilities: { http: mcpHttp, sse: false }, loadSession: true }, authMethods: [] })
         break
       case 'session/new': {
         const session = { id: `acp-${++nextId}`, mcp: undefined, mode: MODES[0] }

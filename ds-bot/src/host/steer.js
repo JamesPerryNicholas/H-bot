@@ -79,7 +79,7 @@ export function install(rt) {
   const noticeOf = (name, command, text) => createUserMessage({
     content: [{ type: 'text', text }],
     // Same source as DSH's job-completion notice so every chat renders it the
-    // same way, and H bot's routing ignores it.
+    // same way, and DS Bot's routing ignores it.
     source: { kind: 'tool-jobs', form: 'notice', summary: boundContextSummary(`${name} ${command} …`) },
   })
 

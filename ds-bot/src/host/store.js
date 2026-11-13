@@ -20,7 +20,7 @@ export function install(rt) {
   const { ctx, home, statePath } = rt
 
   /** @type {{version:1, workspaceId?:string, mainBotIds:string[], bots:Record<string,any>, privateArchives:any[], rooms:Record<string,any>, agents:Record<string,any>, sections:any[], capabilities:{items:Record<string,any>}, exchanges:any[], exchangeTurns:Record<string,number[]>, revision:number}} */
-  const state = { version: 1, mainBotIds: [], bots: {}, privateArchives: [], rooms: {}, agents: {}, sections: [], capabilities: { items: {} }, exchanges: [], exchangeTurns: {}, works: {}, requests: {}, questions: {}, views: {}, closedCards: {}, closedViews: {}, pages: {}, pageOpen: null, files: {}, fileOpen: null, prefs: {}, switching: {}, revision: 0 }
+  const state = { version: 1, mainBotIds: [], bots: {}, privateArchives: [], rooms: {}, agents: {}, sections: [], capabilities: { items: {} }, exchanges: [], exchangeTurns: {}, works: {}, requests: {}, questions: {}, views: {}, closedCards: {}, closedViews: {}, pitches: {}, pages: {}, pageOpen: null, files: {}, fileOpen: null, prefs: {}, switching: {}, revision: 0 }
   let loaded = null
   let writing = Promise.resolve()
   const { warn } = rt
@@ -117,6 +117,7 @@ export function install(rt) {
     state.prefs ??= {}
     // Teams saved before the DSH Agent existed carry no `agents`; corrupt values reset.
     if (state.agents === null || typeof state.agents !== 'object' || Array.isArray(state.agents)) state.agents = {}
+    if (state.pitches === null || typeof state.pitches !== 'object' || Array.isArray(state.pitches)) state.pitches = {}
     // `computer` is the computer-use switch; absent or corrupt means off.
     if (state.computer === null || typeof state.computer !== 'object' || Array.isArray(state.computer)) state.computer = {}
     let migrated = !hadCapabilities
@@ -379,7 +380,7 @@ export function install(rt) {
     if (!writable()) return required ? Promise.reject(new Error(`This host cannot save the Bot team: ${readOnly()}`)) : writing
     const run = writing.then(async () => {
       // Re-check writability once the queued write runs: an adopt queued before
-      // it may have made this host read-only (e.g. a file a newer H bot wrote).
+      // it may have made this host read-only (e.g. a file a newer DS Bot wrote).
       if (stuck !== undefined || holder !== undefined) {
         if (required) throw new Error(`This host cannot save the Bot team: ${readOnly()}`)
         warnReadOnly()

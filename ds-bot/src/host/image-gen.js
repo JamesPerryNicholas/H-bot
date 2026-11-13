@@ -41,11 +41,11 @@ export function install(rt) {
   const { ctx } = rt
   rt.teamTools.push(defineTool({
     name: 'generate_image',
-    description: 'Generate an image from a text prompt and show it in this chat. Use this when the user asks to draw, illustrate, design, or create a picture. The tool automatically uses the best image model from the same vendor as the current conversation. If that vendor has no image model, it reports that in Chinese and does not call another vendor.',
+    description: 'Generate one image from a text prompt and show it in this chat. Use this when the user asks to draw, illustrate, design, or create a picture. Use the best image model from the same vendor as the current conversation; if that vendor has no image model, report that in Chinese and do not call another vendor. To keep cost down: generate only one image per request; keep the prompt close to what the user asked and do not expand it into a long, more detailed prompt unless they asked for a very specific composition; omit quality or pass medium unless the user explicitly asks for fine detail, a poster, or high quality (then you may pass high); use 1024x1024 unless they ask for a poster, portrait, or landscape size.',
     parameters: {
-      prompt: { type: 'string', required: true, description: 'A detailed description of the image to generate.' },
-      size: { type: 'string', description: 'Optional size, such as 1024x1024 or 1280x1280. Ignored when the vendor does not accept it.' },
-      quality: { type: 'string', description: 'Optional quality. Ignored when the vendor does not accept it.' },
+      prompt: { type: 'string', required: true, description: 'A concise description of the image, close to what the user asked for. Do not pad it with extra scene details they did not request.' },
+      size: { type: 'string', description: 'Optional size. Prefer 1024x1024. Use 1024x1536 or 1536x1024 only when the user asks for a poster, portrait, or landscape image. Ignored when the vendor does not accept it.' },
+      quality: { type: 'string', description: 'Optional quality. Omit this or pass medium by default. Only pass high, xhigh, or max when the user explicitly asks for fine detail, a poster, or high quality. Ignored when the vendor does not accept it.' },
       background: { type: 'string', description: 'Optional background: auto, opaque, or transparent. OpenAI only.' },
     },
     output: {

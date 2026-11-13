@@ -7,12 +7,13 @@ import { Shimmer } from './cells.js'
 import { useEscape, usePaneLeft } from './overlay-hooks.js'
 import { t } from './i18n.js'
 import { openCapture, preparationStep, speechCatalog, transcribeWave, turnDetector } from './speech.js'
+import { createReplySpeaker, systemUtteranceSpeak } from './breeze-tts.js'
 
 // Voice chat: listen, send what the user said, read the Bot's answer aloud, listen
 // again. With DSH's Voice Input plugin on, its recognizer hears the user: one
 // recording ends after a pause and is transcribed whole. Otherwise the browser's
 // own speech recognition does. The browser's speech synthesis reads the answer.
-const plainSpeech = text => stripHeader(text).replace(/```[\s\S]*?```/g, ' ').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`#>|~-]+/g, ' ').replace(/\s+/g, ' ').trim()
+export const plainSpeech = text => stripHeader(text).replace(/```[\s\S]*?```/g, ' ').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`#>|~-]+/g, ' ').replace(/\s+/g, ' ').trim()
 const VOICE_LABELS = {
   listening: 'Listening', thinking: 'Thinking', speaking: 'Speaking', paused: 'Paused',
   setup: 'Voice input needs its speech model', preparing: 'Preparing voice input…',
@@ -98,16 +99,24 @@ export function VoiceMode({ sessionId, roster, actions, useSessions, useSessionS
   const [serviceLevel, setServiceLevel] = useState(0)
   const [cycle, setCycle] = useState(0)
   const waiting = useRef(null)
+  const spokenFinal = useRef(false)
   const reply = useRef(lastReply)
   reply.current = lastReply
+  const speaker = useRef(null)
+  if (speaker.current === null) {
+    speaker.current = createReplySpeaker({
+      systemSpeak: text => systemUtteranceSpeak(text),
+    })
+  }
   // Bumped on pause and close, so a transcript that arrives later is dropped.
   const turn = useRef(0)
   const paneLeft = usePaneLeft()
-  const close = () => { turn.current += 1; window.speechSynthesis?.cancel(); actions.closeVoice() }
+  const close = () => { turn.current += 1; speaker.current?.close(); window.speechSynthesis?.cancel(); actions.closeVoice() }
   useEscape(close)
   const submit = (text) => {
     setHeard(text)
     setPhase('thinking')
+    spokenFinal.current = false
     waiting.current = reply.current.split('|')[0]
     void actions.send(sessionId, text.trim()).catch(() => setPhase('listening'))
   }
@@ -200,37 +209,61 @@ export function VoiceMode({ sessionId, roster, actions, useSessions, useSessionS
       setServiceLevel(0)
     }
   }, [speech, catalog, listen, cycle])
+  // Warm the realtime TTS session when voice chat opens, so the first reply
+  // is not waiting on a fresh handshake. Prepare again while thinking in case
+  // the first connection dropped.
   useEffect(() => {
-    if (phase !== 'thinking' || running || waiting.current === null) return undefined
-    const count = lastReply.slice(0, lastReply.indexOf('|'))
-    const turn = Number(lastReply.slice(lastReply.indexOf('|') + 1))
-    if (count === waiting.current) return undefined
-    const speak = (text) => {
+    void speaker.current.prepare()
+    return undefined
+  }, [])
+  useEffect(() => {
+    if (phase !== 'thinking') return undefined
+    void speaker.current.prepare()
+    return undefined
+  }, [phase])
+  useEffect(() => {
+    if (phase !== 'thinking' && phase !== 'speaking') return undefined
+    if (waiting.current === null) return undefined
+    let cancelled = false
+    const finish = (mode) => {
+      if (cancelled) return
+      if (speaker.current.note()) setNote(t(speaker.current.note()))
       waiting.current = null
+      setPhase(current => (current === 'speaking' || current === 'thinking' ? 'listening' : current))
+      return mode
+    }
+    const tick = () => {
+      if (cancelled || spokenFinal.current || waiting.current === null) return
+      const live = actions.liveReply?.(sessionId)
+      if (live?.text) {
+        const spoken = plainSpeech(live.text)
+        if (spoken) {
+          setSaid(spoken)
+          setHeard('')
+          setPhase(current => (current === 'thinking' ? 'speaking' : current))
+          void speaker.current.update(spoken, { final: false })
+        }
+      }
+      if (running) return
+      const count = lastReply.slice(0, lastReply.indexOf('|'))
+      const turnId = Number(lastReply.slice(lastReply.indexOf('|') + 1))
+      if (count === waiting.current) return
+      const text = actions.closingReply(sessionId, turnId)
+      if (text === undefined) return
+      if (text === null) { waiting.current = null; setPhase('listening'); return }
       const spoken = plainSpeech(text)
       setSaid(spoken)
       setHeard('')
-      if (!window.speechSynthesis || !spoken) { setPhase('listening'); return }
-      const utterance = new SpeechSynthesisUtterance(spoken)
-      utterance.lang = /[\u3400-\u9fff]/.test(spoken) ? 'zh-CN' : 'en-US'
-      utterance.onend = () => setPhase(current => (current === 'speaking' ? 'listening' : current))
-      utterance.onerror = utterance.onend
+      if (!spoken) { finish(); return }
+      spokenFinal.current = true
       setPhase('speaking')
-      window.speechSynthesis.cancel()
-      window.speechSynthesis.speak(utterance)
+      void speaker.current.update(spoken, { final: true }).then(() => finish())
     }
-    // The outline commits at turn/end but only holds a bounded preview; the
-    // closing Assistant text can trail it, so the answer is read through the
-    // chat view's own changes until it lands (or the Session goes away).
-    return watchReply(
-      () => actions.closingReply(sessionId, turn),
-      listener => actions.watchTurns(sessionId, listener),
-      (text) => {
-        if (text === null) { waiting.current = null; setPhase('listening'); return }
-        speak(text)
-      })
+    const off = actions.watchTurns(sessionId, tick)
+    tick()
+    return () => { cancelled = true; off() }
   }, [phase, running, lastReply])
-  useEffect(() => () => window.speechSynthesis?.cancel(), [])
+  useEffect(() => () => { speaker.current?.close(); window.speechSynthesis?.cancel() }, [])
   const micLevel = useMicLevel(!speech && phase === 'listening' && dictation.listening)
   const level = speech ? serviceLevel : micLevel
   const markState = phase === 'thinking' || phase === 'transcribing' ? 'thinking' : phase === 'speaking' ? 'sending' : 'idle'
@@ -238,6 +271,7 @@ export function VoiceMode({ sessionId, roster, actions, useSessions, useSessionS
   const togglePause = () => {
     if (phase === 'paused') { setPhase('listening'); return }
     turn.current += 1
+    speaker.current?.cancel()
     window.speechSynthesis?.cancel()
     setPhase('paused')
   }

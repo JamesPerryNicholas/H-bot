@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
 import {
-  CREDIT_LIMIT_USD, addSpend, estimateCostUsd, mergeCredentialRefs, mergeModelPatch,
+  addSpend, creditStatus, estimateCostUsd, mergeCredentialRefs, mergeModelPatch,
   openSecret, readState, recordUsage, remainingUsd, sealSecret, sealSecrets, seedOpenAi,
   unlockCredit, writeState,
 } from '../src/bundled-credit.mjs'
@@ -103,13 +103,15 @@ test('the default model patch prefers OpenAI and keeps other entries', () => {
   assert.equal([...out.matchAll(/id: agent-default-model/g)].length, 1)
 })
 
-test('unlock writes the key and a later spend over the cap removes it', async () => {
+test('unlock writes the key and spend past the old $20 mark does not remove it', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'hbot-credit-'))
   try {
     const envelope = await sealSecret('sk-live-example', 'alpha-code')
     const { state, remaining } = await unlockCredit({ dataDir: dir, passphrase: 'alpha-code', envelope, now: new Date('2026-11-10T10:00:00Z') })
     assert.equal(state.unlocked, true)
-    assert.equal(remaining, CREDIT_LIMIT_USD)
+    assert.equal(remaining, null)
+    assert.equal(creditStatus(dir).limit, null)
+    assert.equal(creditStatus(dir).exhausted, false)
     const cred = await readFile(join(dir, '.credentials.yaml'), 'utf8')
     assert.match(cred, /OPENAI_API_KEY: sk-live-example/)
     const patch = await readFile(join(dir, 'profiles', 'ds-bot', 'cordis.patch.yml'), 'utf8')
@@ -120,10 +122,19 @@ test('unlock writes the key and a later spend over the cap removes it', async ()
     assert.equal(after.spentUsd, 12.5)
     assert.equal(after.exhausted, false)
     const done = recordUsage(dir, { model: 'gpt-4o', inputTokens: 1_000_000, outputTokens: 1_000_000 })
-    assert.equal(done.exhausted, true)
-    assert.equal(remainingUsd(done), 0)
+    assert.equal(done.spentUsd, 25)
+    assert.equal(done.exhausted, false)
+    assert.equal(remainingUsd(done), null)
     const credAfter = await readFile(join(dir, '.credentials.yaml'), 'utf8')
-    assert.equal(credAfter.includes('OPENAI_API_KEY'), false)
+    assert.match(credAfter, /OPENAI_API_KEY: sk-live-example/)
+
+    writeState(dir, { unlocked: true, spentUsd: 99, exhausted: true })
+    const ignored = recordUsage(dir, { model: 'gpt-4o', inputTokens: 1_000_000, outputTokens: 0 })
+    assert.equal(ignored.spentUsd, 101.5)
+    assert.equal(ignored.exhausted, false)
+    assert.equal(creditStatus(dir).exhausted, false)
+    const credStill = await readFile(join(dir, '.credentials.yaml'), 'utf8')
+    assert.match(credStill, /OPENAI_API_KEY: sk-live-example/)
   } finally {
     await rm(dir, { recursive: true, force: true })
   }

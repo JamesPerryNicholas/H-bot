@@ -53,7 +53,7 @@ export function teamActions({ call, after, partFor, roster, ui, live, cards, hel
     // Opening the conversation would move focus to its composer and blur the name field.
     renameBot: (id) => { ui.set(state => ({ ...state, details: id, view: 'details', renaming: true, tab: null, panelYield: yieldTo(state, 'details') })) },
     openSettings,
-    // H bot's own Models page: the providers DSH serves, their keys and models.
+    // DS Bot's own Models page: the providers DSH serves, their keys and models.
     openModels: () => openSettings('models'),
     closeSettings: () => { ui.set(state => (state.settings ? { ...state, settings: null } : state)) },
     openMemory: (id) => { ui.set(state => ({ ...state, memory: id, menu: null, palette: null })) },
@@ -81,7 +81,7 @@ export function teamActions({ call, after, partFor, roster, ui, live, cards, hel
       return after(call('side-close', { chatId }))
     },
     closePanel: () => { ui.set(state => (state.details ? { ...state, details: null, view: 'details', renaming: false, tab: null, side: null } : state)) },
-    quote: (sessionId, text) => ui.set(state => ({ ...state, quote: { sessionId, text, token: Date.now() } })),
+    quote: (sessionId, text, mention) => ui.set(state => ({ ...state, quote: { sessionId, text, ...(mention ? { mention } : {}), token: Date.now() } })),
     clearQuote: token => ui.set(state => (state.quote?.token === token ? { ...state, quote: null } : state)),
     setFlags: (id, flags) => after(call('set-flags', { id, ...flags })),
     saveSection: payload => after(call('section-save', payload)),

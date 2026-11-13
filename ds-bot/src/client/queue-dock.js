@@ -2,7 +2,7 @@ import { createElement as h, Fragment, useEffect, useId, useMemo, useRef, useSta
 import { t } from './i18n.js'
 import { ArrowUpIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, CloseIcon, PaperclipIcon, PencilIcon, QueueIcon, TrashIcon } from './icons.js'
 
-// The queue dock above the composer, drawn by H bot in place of the shell's own
+// The queue dock above the composer, drawn by DS Bot in place of the shell's own
 // (same slot, same id 'queue'). The session inbox also queues the team's mail —
 // requests, replies and reports a delivery sends with agent.followup arrive as
 // kind 'bot' — but they are the Bot's incoming messages, not drafts of the user.

@@ -1,3 +1,4 @@
+export { liveReplyText } from '../shared/breeze-tts.js'
 // The recognizer of DSH's Voice Input plugin (local SenseVoice). Its `speech` Remote
 // exists only while that plugin is on; the browser's own speech service stays the
 // fallback. The plugin takes one complete 16 kHz mono PCM16 WAV per request.

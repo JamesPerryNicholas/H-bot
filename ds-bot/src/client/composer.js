@@ -75,7 +75,8 @@ export function ComposerVoice({ sessionId, inputActions, actions, useUi, useRost
     if (!quote || !inputActions) return
     actions.clearQuote(quote.token)
     const excerpt = quote.text.replace(/\s+/g, ' ').trim()
-    const line = `> ${excerpt.length > 200 ? `${excerpt.slice(0, 200)}…` : excerpt}\n\n`
+    const mention = quote.mention ? `@${quote.mention} ` : ''
+    const line = `${mention}> ${excerpt.length > 200 ? `${excerpt.slice(0, 200)}…` : excerpt}\n\n`
     inputActions.insertText(line, inputActions.captureInsertion())
     const box = document.querySelector('[class*="_centerCol"] [role=textbox][contenteditable=true]')
     if (box instanceof HTMLElement) {
@@ -115,10 +116,13 @@ export function menuIcons(roster) {
 
 // The composer's "+" in a Bot's chat or a group chat: add files, reference another
 // chat, or set a scheduled task for this chat. It stands in for the shell's command
-// menu, whose plan, permission, model and compact rows reach past what H bot keeps
+// menu, whose plan, permission, model and compact rows reach past what DS Bot keeps
 // for its Bots; "/" still opens that menu. Files go through the shell's own file
 // input beside it.
 export function ComposerPlus({ sessionId, inputActions, useInput, useRoster, actions }) {
+  useEffect(() => {
+    if (sessionId !== undefined) actions.watchDraftAttachments(sessionId)
+  }, [actions, sessionId])
   const roster = useRoster(value => value)
   const [open, setOpen] = useState(null)
   const [shown, leaving] = useLinger(open, 120)

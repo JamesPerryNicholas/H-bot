@@ -520,6 +520,20 @@ test('the Bot footer lays out the account, another plugin\'s entry and the setti
   assert.equal(columnOf(document.querySelector('.x_settingsArea')), '3')
 })
 
+test('sidebar scroll contents keep their height instead of overlapping folders', () => {
+  const selectors = new Set(['.bt-list', '.bt-list>*', '.bt-list-loose,.bt-sec-ungrouped'])
+  const css = rulesOf(SHELL_CSS).filter(rule => selectors.has(rule.selector))
+    .map(rule => `${rule.selector}{${rule.body}}`).join('\n')
+  const dom = new JSDOM(`<style>${css}</style><div class="bt-list"><div class="bt-pin-grid"></div><div class="bt-list-loose"></div><div class="bt-sec-ungrouped"></div><div class="bt-sec"></div><button class="bt-row"></button><div class="bt-rail-sec"></div></div>`)
+  const { document } = dom.window
+  const list = document.querySelector('.bt-list')
+  assert.equal(dom.window.getComputedStyle(list).flexShrink, '1', 'only the scrolling viewport may shrink')
+  for (const child of list.children) {
+    assert.equal(dom.window.getComputedStyle(child).flexShrink, '0', `${child.className} must retain its content height`)
+  }
+  dom.window.close()
+})
+
 // 公开#502: the rail's icons keep the open column's rhythm — its row gap puts
 // the same ~20px between avatar edges that the open list's padding and gap do,
 // and the stacks and sections breathe on the same 6–8px steps.
@@ -532,7 +546,7 @@ test('the rail spaces its icons on the open column\'s rhythm', () => {
   assert.match(bodyOf('.bt-rail'), /(^|;)gap:6px/)
 })
 
-// #452: the Connect plugins button left the footer; what H bot puts there is
+// #452: the Connect plugins button left the footer; what DS Bot puts there is
 // the account menu and the way back from Agent mode.
 test('the Bot footer holds the account and the return button only', () => {
   const source = readFileSync(new URL('../src/client/index.js', import.meta.url), 'utf8')

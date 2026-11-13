@@ -52,7 +52,7 @@ export function install(rt) {
   // Where `input` leads from `base`, as a real path, the way DSH's working_directory resolves
   // a change; undefined when nothing is there.
   const folderAt = (base, input) => realpath(resolve(base, input)).catch(() => undefined)
-  // Where a Session works: the folder DSH has for it, else the one H bot made it for.
+  // Where a Session works: the folder DSH has for it, else the one DS Bot made it for.
   const sessionFolder = (session) => {
     const reported = session?.header === undefined ? undefined : ctx.get?.('workingDirectory')?.get?.(session) ?? session.header.cwd
     if (reported !== undefined) return reported

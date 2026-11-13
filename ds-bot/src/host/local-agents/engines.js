@@ -14,6 +14,8 @@ export const KINDS = ['acp', 'codex', 'claude']
 export const ROUTE_PREFIX = 'local-'
 
 const CLIS = {
+  // Antigravity requires a session worker for editor-provided HTTP MCP servers.
+  'antigravity': { name: 'Antigravity CLI', kind: 'acp', command: 'agy', args: ['acp', '--process-per-session'], version: ['--version'], signedIn: { windowsCredential: 'gemini:antigravity' } },
   'devin-cli': { name: 'Devin CLI', kind: 'acp', command: 'devin', args: ['acp'], version: ['--version'], signedIn: { args: ['auth', 'status'] } },
   'claude-code': { name: 'Claude Code', kind: 'claude', command: 'claude', args: [], version: ['--version'], signedIn: { file: ['.claude', '.credentials.json'] } },
   'codex-cli': { name: 'Codex CLI', kind: 'codex', command: 'codex', args: ['app-server', '--listen', 'stdio://'], version: ['--version'], signedIn: { args: ['login', 'status'] } },
@@ -73,7 +75,7 @@ export function validateCustom({ name, command, args }) {
   return clean
 }
 
-// The permission preset H bot gives the Bot, mapped to each driver's mode.
+// The permission preset DS Bot gives the Bot, mapped to each driver's mode.
 // An ACP agent that lists its modes gets one of them or none: an agent with no
 // matching mode keeps its own (see acp.js).
 export const MODES = {

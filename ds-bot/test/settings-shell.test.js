@@ -48,7 +48,7 @@ const { parse } = harnessRequire('yaml')
 const packageFile = (name, file) => harnessRequire.resolve(`${name}/package.json`).replace(/package\.json$/, file)
 
 // DSH's own settings shell, run as its browser module would: the child slots its
-// `sidebar.settings` entry and its General section declare are the ones H bot's seat
+// `sidebar.settings` entry and its General section declare are the ones DS Bot's seat
 // must declare in its place.
 function dshShellDeclarations() {
   const source = readFileSync(packageFile('@deepseek-ai/dsh-client-ui-settings-general', 'lib/client.js'), 'utf8')
@@ -68,7 +68,7 @@ function dshShellDeclarations() {
   return children
 }
 
-// Slots a newer DSH's shell declares than the oldest DSH H bot runs on. Declaring one
+// Slots a newer DSH's shell declares than the oldest DSH DS Bot runs on. Declaring one
 // an older shell lacks is harmless: nothing registers into it there.
 const NEWER_SLOTS = new Set(['settings.section.icon'])
 
@@ -109,7 +109,7 @@ test('the coordinator runs first-run steps on a blank main view, and a requested
   assert.equal(shell.pickStep({ steps, requested: 'a', active: false, completed: new Set(['a']) }).id, 'a')
 })
 
-test('a step\'s openSection lands on H bot\'s page for that section', () => {
+test('a step\'s openSection lands on DS Bot\'s page for that section', () => {
   assert.deepEqual([...shell.settingsPlace('models')], ['models'])
   assert.deepEqual([...shell.settingsPlace('general')], ['general'])
   assert.deepEqual([...shell.settingsPlace('plugins')], ['dsh', 'plugins'])
@@ -164,7 +164,7 @@ function dialog({ page = 'general', id = null, sections, items = [], actions = {
 }
 const navLabels = tree => walk(walk(tree, node => node.type === 'nav')[0], node => node.type === 'button').map(textOf)
 
-test('one Settings: H bot\'s pages, then DSH\'s, then Feedback and About; no Harness settings', () => {
+test('one Settings: DS Bot\'s pages, then DSH\'s, then Feedback and About; no Harness settings', () => {
   const labels = navLabels(dialog().tree)
   assert.ok(!labels.includes('Harness settings'))
   assert.deepEqual(labels.slice(-5), ['Account', 'Plugins', 'Agent presets', 'Feedback', 'About H bot'])
@@ -203,8 +203,53 @@ test('DSH\'s General rows join General: the look under Appearance, the rest unde
   const [general] = walk(dialog({ items }).tree, node => typeof node.type === 'function' && node.type.name === 'GeneralPage')
   const sections = general.type(general.props).filter(Boolean)
   const only = node => walk(node, item => item.type === 'slot').map(item => item.props.only)
-  assert.deepEqual(only(sections.find(node => node.props.key === 'look')), ['appearance', 'font-size'])
+  // Color mode replaces DSH's appearance cubes in this card; font-size stays.
+  assert.deepEqual(only(sections.find(node => node.props.key === 'look')), ['font-size'])
   assert.deepEqual(only(sections.find(node => node.props.key === 'more')), ['permission', 'language', 'developer-tools'])
+})
+
+function colorModeButtons(look) {
+  const [row] = walk(look, node => typeof node.type === 'function' && node.type.name === 'SetRow' && node.props.label === 'Color mode')
+  const [choice] = walk(row, node => typeof node.type === 'function' && node.type.name === 'Choice')
+  return walk(choice.type(choice.props), node => node.type === 'button')
+}
+
+test('Appearance leads with Color mode: follow system, light, or dark', () => {
+  const calls = []
+  const items = [{ id: 'appearance', order: 10 }, { id: 'font-size', order: 11 }]
+  const { tree } = dialog({
+    items,
+    actions: {
+      setColorMode: id => calls.push(id),
+      colorMode: { getSnapshot: () => 'system', subscribe: () => () => {} },
+    },
+  })
+  const [general] = walk(tree, node => typeof node.type === 'function' && node.type.name === 'GeneralPage')
+  const look = general.type(general.props).filter(Boolean).find(node => node.props.key === 'look')
+  assert.equal(walk(look, node => typeof node.type === 'function' && node.type.name === 'SetRow' && node.props.label === 'Color mode').length, 1)
+  const buttons = colorModeButtons(look)
+  assert.deepEqual(buttons.map(textOf), ['Follow system', 'Light appearance', 'Dark appearance'])
+  assert.equal(buttons[0].props['aria-pressed'], true)
+  buttons[2].props.onClick()
+  buttons[1].props.onClick()
+  assert.deepEqual(calls, ['dark', 'light'])
+  assert.deepEqual(walk(look, item => item.type === 'slot').map(item => item.props.only), ['font-size'])
+})
+
+test('Color mode keeps a saved light or dark preference and applies a change', () => {
+  const calls = []
+  const { tree } = dialog({
+    actions: {
+      setColorMode: id => calls.push(id),
+      colorMode: { getSnapshot: () => 'dark', subscribe: () => () => {} },
+    },
+  })
+  const [general] = walk(tree, node => typeof node.type === 'function' && node.type.name === 'GeneralPage')
+  const look = general.type(general.props).filter(Boolean).find(node => node.props.key === 'look')
+  const buttons = colorModeButtons(look)
+  assert.equal(buttons[2].props['aria-pressed'], true)
+  buttons[0].props.onClick()
+  assert.deepEqual(calls, ['system'])
 })
 
 test('header actions from DSH and plugins sit beside the title', () => {
@@ -225,10 +270,10 @@ test('General settings keeps the Classic Agent mode switch', () => {
   assert.deepEqual(calls, ['agent'])
 })
 
-// Settings in Agent mode carries H bot's own rules only: the DSH page around it keeps its look.
+// Settings in Agent mode carries DS Bot's own rules only: the DSH page around it keeps its look.
 const styles = load(await bundle("export { botOwnCss, SHELL_CSS } from './src/client/styles.js'"))
 
-test('the Agent-mode sheet keeps H bot\'s own rules and drops the shell overrides', () => {
+test('the Agent-mode sheet keeps DS Bot\'s own rules and drops the shell overrides', () => {
   const css = `body{--bt-ink:#111;-webkit-tap-highlight-color:transparent}
 [class*="_footArea"]{display:grid}
 .bt-row,[class*="_trigger"] span{color:red}

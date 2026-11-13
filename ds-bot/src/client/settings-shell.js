@@ -1,8 +1,8 @@
-// The settings shell: H bot holds `sidebar.settings`, the seat DSH's ui-settings-general
+// The settings shell: DS Bot holds `sidebar.settings`, the seat DSH's ui-settings-general
 // fills elsewhere (the bundle patch turns that row off). Holding the seat means declaring
 // its child slots, and only the declaring entry may render them, so DSH's own settings
 // pages (`settings.section`), their nav icons, header actions, onboarding steps and General
-// rows all draw inside H bot's settings dialog. This module also takes over what that
+// rows all draw inside DS Bot's settings dialog. This module also takes over what that
 // shell did besides: the sidebar-foot row with the connection and Desktop update status,
 // the onboarding coordinator, the Settings shortcut, the Host release prompt, the
 // configuration-file action and the code work view switch.
@@ -17,6 +17,7 @@ import { Switch } from './bot-settings.js'
 import { GearIcon } from './icons.js'
 import { useLinger } from './motion.js'
 import { t } from './i18n.js'
+import { bindColorMode } from './color-mode.js'
 
 // The child slots of the seat, as ui-settings declares their types.
 export const SETTINGS_CHILDREN = {
@@ -289,7 +290,7 @@ export function SettingsShell(props) {
     }, { only: step.id }) : null)
 }
 
-// Where one of DSH's section ids opens in H bot's Settings.
+// Where one of DSH's section ids opens in DS Bot's Settings.
 export function settingsPlace(id) {
   if (id === 'general') return ['general']
   if (id === 'models') return ['models']
@@ -393,7 +394,7 @@ export function DeveloperToolsRow({ useDeveloperTools, setEnabled }) {
     })))
 }
 
-// Registers the seat and its companions. `face` is H bot's own injected face; the
+// Registers the seat and its companions. `face` is DS Bot's own injected face; the
 // returned `openOnboarding` reaches a registered onboarding step by id.
 export function installSettingsShell(ctx, { face, actions, ui, held }) {
   const slots = ctx.slots
@@ -415,10 +416,12 @@ export function installSettingsShell(ctx, { face, actions, ui, held }) {
   const sections = ledgerSource(slots, locale, 'settings.section', sectionRows)
   const items = ledgerSource(slots, locale, 'settings.general.item', itemRows)
   const steps = ledgerSource(slots, locale, 'settings.onboarding', stepRows)
+  const color = bindColorMode(ctx.theme, listener => ctx.on?.('theme/change', listener))
   const shellFace = () => {
     const base = face()
     return {
       ...base,
+      actions: { ...base.actions, ...color },
       reconnect: () => ctx.get('connection')?.reconnect(),
       openDesktopUpdate: () => update.open(),
       openOnboarding,
@@ -433,14 +436,14 @@ export function installSettingsShell(ctx, { face, actions, ui, held }) {
   const disposers = [
     () => update.dispose(),
     // A profile that turned DSH's shell back on keeps it: the seat's child slots are then
-    // declared already, and H bot's dialog stays on its own pages.
+    // declared already, and DS Bot's dialog stays on its own pages.
     slots.inject('sidebar.settings', () => {
       try {
         const off = slots.register({ name: 'sidebar.settings', inject: shellFace, children: SETTINGS_CHILDREN }, SettingsShell)
         held?.set(true)
         return () => { held?.set(false); off() }
       } catch (error) {
-        console.warn('[ds-bot] DSH settings shell is on; H bot settings show its own pages only', error)
+        console.warn('[ds-bot] DSH settings shell is on; DS Bot settings show its own pages only', error)
         return () => {}
       }
     }),

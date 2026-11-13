@@ -14,7 +14,7 @@ import { checkShownView, showViewDescription, showViewParameters } from 'deep-vi
 export const output = { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: String(value) }] }
 export const GROUP_REF = { type: 'string', required: true, description: 'Exact group chat name from list_bots' }
 const BLOCKING_QUESTION_TOOL = 'ask_user_question'
-// H bot has its own group goals; DSH's session goal still does not survive conversation parts.
+// DS Bot has its own group goals; DSH's session goal still does not survive conversation parts.
 const GOAL_TOOLS = ['create_goal', 'update_goal', 'get_goal']
 // DSH's delegation tools start child agents the user cannot watch or stop, and they
 // end with the conversation part that started them; Bots hand work to other Bots.
@@ -30,14 +30,14 @@ const HIDDEN_TOOLS = HIDDEN_TOOL_GROUPS.flat()
 const HIDDEN_SECTIONS = new Set([...HIDDEN_TOOLS.map(name => `tool:${name}`), 'tool:goal', 'team:policy'])
 const GOAL_REFUSAL = 'Bot chats do not run /goal. To give a group a goal, use Set a goal in its + menu.'
 // DSH 0.2.2's schedule tools can deliver to a new Session, which is outside the team and
-// has no Bot; a Bot's tasks deliver to its own chat, which H bot moves on with each part.
+// has no Bot; a Bot's tasks deliver to its own chat, which DS Bot moves on with each part.
 const SCHEDULE_TARGET_TOOLS = ['schedule_create', 'schedule_edit']
 const SCHEDULE_TARGET_REFUSAL = 'A Bot’s scheduled tasks run in its own chat. Use target "this_session".'
 const DELEGATION_REFUSAL = 'Bots do not start subagents, teammates or workflows. Do the work yourself, or hand it to another Bot with message_bot.'
 const MODE_PARAM = {
   type: 'string',
   enum: ROOM_MODES,
-  description: '"everyone": every member answers a plain message in turn, admin first. "admin" (the default): a plain message goes to the admin, who calls others with @Name. @mentions always choose who answers.',
+  description: 'Every plain user message is answered by all members in turn, admin first, in both modes. "admin" (the default): the admin also coordinates their roles. "everyone": members contribute from their own roles. @mentions and assignments by name choose who answers.',
 }
 const WORK_DIR_PARAM = { type: 'string', description: 'Full path of the folder to work in, where commands and file tools start. Only when the user asks for it' }
 const SECTION_PARAM = { type: 'string', description: 'Sidebar section name to group Bots and group chats that work on the same project together; creates the section if it does not exist' }
@@ -65,7 +65,7 @@ export function install(rt) {
     const parts = [
       `members: ${members.join(', ')}`,
       section ? `section: ${section}` : '',
-      room.mode === 'admin' && room.admin ? 'plain messages go to the admin first' : 'every member replies in turn',
+      room.mode === 'admin' && room.admin ? 'every member replies in turn, admin first and coordinating roles' : 'every member replies in turn',
       room.notice ? `notice: ${room.notice.split('\n')[0].slice(0, 100)}` : '',
       room.workDir ? `members work in ${room.workDir} here` : '',
       room.permission ? `members work with the ${room.permission} permissions here` : '',
@@ -694,6 +694,7 @@ export function install(rt) {
       const id = exec.agent?.id
       if (rt.groupOwners.has(id)) return 'Question cards only work in your own chat. In a group, ask in your message instead.'
       if (!rt.chatOwners.has(id)) return `Only Bots on the team can use ask_user. Use ${BLOCKING_QUESTION_TOOL} if it is available in this session, or ask the user in your reply.`
+      if (rt.own(state.questions, id)?.kind === 'pitch') return 'A suggestion is already waiting in this chat. Wait for the user to answer it first.'
       const options = (Array.isArray(args.options) ? args.options : [])
         .map(option => (typeof option === 'string' ? { label: option } : option ?? {}))
         .map(option => ({

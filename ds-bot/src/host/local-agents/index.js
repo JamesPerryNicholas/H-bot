@@ -3,6 +3,7 @@
 // one DSH LLM adapter for the routes it found, keeps the custom agents and the
 // Session→CLI-session map in state, and serves the Settings page.
 import { mkdtempSync } from 'node:fs'
+import { spawn } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { defineTool } from '@deepseek-ai/dsh-tools'
@@ -16,6 +17,7 @@ import { ENGINES, customRoute, isLocalAgentRoute, validateCustom } from './engin
 import { cleanEnv, findExecutable, probeSignIn, probeVersion, refreshSearchDirs } from './discover.js'
 
 const SIGN_IN = {
+  antigravity: 'agy acp --login',
   'devin-cli': 'devin auth login',
   'claude-code': 'claude',
   'codex-cli': 'codex login',
@@ -149,7 +151,7 @@ export function install(rt) {
   // Helpers the rest of the host asks.
 
   const isLocalAgentRef = ref => isLocalAgentRoute(splitRef(ref)?.provider ?? '')
-  // What a ref runs on: the local agent's route, or 'model' for H bot's own models.
+  // What a ref runs on: the local agent's route, or 'model' for DS Bot's own models.
   // Two refs with the same answer share a conversation; two with different ones never do.
   const engineOf = (ref) => {
     if (!ref) return undefined
@@ -225,6 +227,19 @@ export function install(rt) {
         const models = await localAgentModels(String(body.route ?? ''))
         await rt.catalog?.({ fresh: true })
         return models
+      }
+      case 'antigravity-login': {
+        const path = findExecutable('agy')
+        if (!path) throw new Error('Antigravity CLI is unavailable')
+        const windows = process.platform === 'win32'
+        const child = windows
+          ? spawn(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'),
+            ['-NoProfile', '-NonInteractive', '-Command', "Start-Process -FilePath $env:AGY_LOGIN_EXE -ArgumentList @('acp','--login') -WindowStyle Normal"],
+            { env: cleanEnv({ AGY_LOGIN_EXE: path }), stdio: 'ignore', windowsHide: true })
+          : spawn(path, ['acp', '--login'], { env: cleanEnv({}), detached: true, stdio: 'ignore' })
+        await new Promise((resolve, reject) => { child.once('spawn', resolve); child.once('error', reject) })
+        child.unref()
+        return true
       }
       case 'local-agent-add': {
         const clean = validateCustom(body)

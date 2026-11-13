@@ -33,7 +33,7 @@ runInNewContext(bundle.outputFiles[0].text, {
 })
 const { AboutPage, ownAppRow } = module.exports
 
-// The H bot row in Settings → About, with the row's hint and its buttons' text, class
+// The DS Bot row in Settings → About, with the row's hint and its buttons' text, class
 // and clicks. `update` is the value the update source holds.
 function page(update) {
   const calls = []
@@ -53,15 +53,15 @@ function page(update) {
   }
 }
 
-// 公开#499: in the desktop app the H bot row shows the app's own update state.
-test('the six app update states set the H bot row\'s hint and button', () => {
+// 公开#499: in the desktop app the DS Bot row shows the app's own update state.
+test('the six app update states set the DS Bot row\'s hint and button', () => {
   const cases = [
     [{ phase: 'checking' }, 'Checking for updates…', []],
     [{ phase: 'current' }, 'Up to date', [{ text: 'Check for updates', className: 'bt-soft bt-soft-sm', action: 'checkOwnApp' }]],
     [{ phase: 'downloading', version: '0.2.2' }, 'Downloading 0.2.2…', []],
     [{ phase: 'downloaded', version: '0.2.2' }, '0.2.2 is ready; it installs when you restart',
       [{ text: 'Restart to update', className: 'bt-fb-primary', action: 'installOwnApp' }]],
-    [{ phase: 'available', version: '0.2.2', page: 'https://github.com/JamesPerryNicholas/H-bot/releases/tag/v0.2.2' }, '0.2.2 is available',
+    [{ phase: 'available', version: '0.2.2', page: 'https://github.com/Fei2411/DS-Bot/releases/tag/v0.2.2' }, '0.2.2 is available',
       [{ text: 'Download', className: 'bt-soft bt-soft-sm', action: 'openOwnApp' }]],
     [{ phase: 'failed' }, 'Could not check for updates.', [{ text: 'Check for updates', className: 'bt-soft bt-soft-sm', action: 'checkOwnApp' }]],
   ]

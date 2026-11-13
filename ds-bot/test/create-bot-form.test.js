@@ -85,7 +85,7 @@ const MODELS = [
   { ref: 'local-codex-cli/default', provider: 'local-codex-cli', id: 'default', name: 'CLI default', providerName: 'Codex CLI' },
 ]
 
-test('the form opens on H bot models and can create at once', () => {
+test('the form opens on DS Bot models and can create at once', () => {
   render({ models: MODELS })
   assert.equal(button('H bot model').props['aria-pressed'], true)
   assert.equal(button('Local agent').props['aria-pressed'], false)

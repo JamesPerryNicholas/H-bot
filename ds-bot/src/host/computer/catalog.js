@@ -30,7 +30,7 @@ const DRIVER_OBSERVE = new Set([
 // Tools that exist to bring a window to the user or to take over the visible pointer.
 
 // Raising windows and moving the visible cursor are foreground; so is session
-// escalation. Anything the driver adds that H bot does not know fails closed to
+// escalation. Anything the driver adds that DS Bot does not know fails closed to
 // foreground — never silently allowed.
 const DRIVER_BACKGROUND = new Set([
   'launch_app', 'kill_app', 'set_window_frame', 'invoke_menu', 'click', 'double_click',

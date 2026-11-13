@@ -71,7 +71,7 @@ function start({ home = mkdtempSync(join(tmpdir(), 'ds-bot-rounds-')) } = {}) {
   let route
   const register = ctx.connection.fetch.register
   ctx.connection.fetch.register = (options) => {
-    route = options
+    if (options.path === '/api/bot') route = options
     return register(options)
   }
   rt = createRuntime(ctx, { home })
@@ -233,7 +233,7 @@ test('a message sent during the last speaker\'s turn is still answered in the ro
   assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'User', 'Chief', 'Writer'])
 })
 
-test('in admin mode a plain mid-round message goes to the admin', async (t) => {
+test('in admin mode a plain mid-round message reaches every member', async (t) => {
   const { call, emit, userMessage, compose, relay, answer, stop, sent } = start()
   t.after(stop)
   const room = await team(call, sent)
@@ -241,7 +241,7 @@ test('in admin mode a plain mid-round message goes to the admin', async (t) => {
 
   await emit(room.id, userMessage('Start'))
   const running = relay(room.id, 'relay')
-  // The admin answers alone and calls the Writer.
+  // A direct handoff starts the Writer before the user's next message.
   const first = await turnFor(sent)
   await answer(first.sessionId, first.message.source.exchangeId, '@Writer your call', 1)
   const second = await turnFor(sent, first)
@@ -252,8 +252,12 @@ test('in admin mode a plain mid-round message goes to the admin', async (t) => {
   assert.equal(third.sessionId, first.sessionId, 'the admin answers the user')
   assert.match(third.message.content[0].text, /what do you think\?/)
   await answer(third.sessionId, third.message.source.exchangeId, 'Admin here', 3)
+  const fourth = await turnFor(sent, first, second, third)
+  assert.ok(fourth, 'the Writer also answers the new user message')
+  assert.match(fourth.message.content[0].text, /Give your own brief reply/)
+  await answer(fourth.sessionId, fourth.message.source.exchangeId, 'Writer here too', 4)
   const result = JSON.parse(await running)
-  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'User', 'Chief'])
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'User', 'Chief', 'Writer'])
 })
 
 test('a message with an image or a chat reference waits for its own round, and so does what follows it', async (t) => {
@@ -744,7 +748,7 @@ test('calls parked under the old relay limit run in the group\'s next round', as
   // The user's next message opens the round: its own speaker, the admin, and the
   // parked call start together.
   sent.length = 0
-  await emit(room.id, userMessage('Status, please'))
+  await emit(room.id, userMessage('@Chief status, please'))
   assert.equal(state().paused.length, 1, 'still parked until a round runs')
   const running = relay(room.id, 'relay')
   const first = await turnFor(sent)
@@ -780,7 +784,7 @@ test('calls the idle guard parked wait for the user\'s message, also one that jo
   assert.equal(first.sessionId, state().sessions[chief])
   assert.equal(state().paused.length, 1, 'a Bot\'s post does not bring the parked call in')
 
-  await compose(room.id, 'Go on, both of you')
+  await compose(room.id, '@Chief go on')
   await answer(first.sessionId, first.message.source.exchangeId, 'Thanks.', 1)
   const parked = await waitFor(() => sent.find(entry => entry !== first && entry.message.source.role === 'room' && /Chief mentioned you/.test(entry.message.content[0].text)))
   assert.ok(parked, 'the user\'s message brings the parked call in')
@@ -797,7 +801,7 @@ test('a member the reply timeout cut short is told to the group, not left as sil
   const room = await team(call, sent)
   await call('update-room', { id: room.id, mode: 'admin' })
 
-  await emit(room.id, userMessage('Start'))
+  await emit(room.id, userMessage('@Chief start'))
   const running = relay(room.id, 'relay')
   const turn = await turnFor(sent)
   // The 4-minute reply timeout, fired now instead of in four minutes: the round
@@ -813,8 +817,7 @@ test('a member the reply timeout cut short is told to the group, not left as sil
   assert.match(lineText(notices[0]), /late reply/)
 })
 
-// #512: in admin mode the user's message goes to the admin alone. When the admin
-// passes, the round ends with nothing said, so the group says what to do about it.
+// A direct call to the admin still reports a silent turn.
 test('in admin mode a sole admin that passes leaves the group a notice', async (t) => {
   const { call, emit, userMessage, relay, answer, stop, sent, rt } = start()
   t.after(stop)
@@ -822,8 +825,7 @@ test('in admin mode a sole admin that passes leaves the group a notice', async (
   const chief = (await call('state', {})).value.mainBotId
   await call('update-room', { id: room.id, mode: 'admin' })
 
-  // The user names a member without "@": nobody is called, the admin alone answers.
-  await emit(room.id, userMessage('Writer, what do you think?'))
+  await emit(room.id, userMessage('@Chief what do you think?'))
   const running = relay(room.id, 'relay')
   const first = await turnFor(sent)
   assert.ok(first, 'the admin gets the turn alone')
@@ -846,7 +848,7 @@ test('in admin mode a sole admin that passes leaves the group a notice', async (
   assert.match(lineText(notices[0]), /@Name/)
 
   // The notice is in the group: the next member to speak reads it.
-  await emit(room.id, userMessage('Anyone there?'))
+  await emit(room.id, userMessage('@Chief anyone there?'))
   const next = relay(room.id, 'relay-2')
   const turn = await turnFor(sent, first)
   assert.match(turn.message.content[0].text, /did not answer or call anyone/)
@@ -860,7 +862,7 @@ test('in admin mode an admin that answers leaves the group no notice', async (t)
   const room = await team(call, sent)
   await call('update-room', { id: room.id, mode: 'admin' })
 
-  await emit(room.id, userMessage('Writer, what do you think?'))
+  await emit(room.id, userMessage('@Chief what do you think?'))
   const running = relay(room.id, 'relay')
   const first = await turnFor(sent)
   await answer(first.sessionId, first.message.source.exchangeId, 'On it.', 1)
@@ -955,6 +957,55 @@ async function trio(call, sent) {
   return room
 }
 
+test('the group admin sees member roles, delegates different parts and reviews both results', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent, rt } = start()
+  t.after(stop)
+  const chief = (await call('state', {})).value.mainBotId
+  const writer = (await call('create-bot', { name: 'Writer', role: '文档', instructions: 'Private worker instructions.' })).value
+  const tester = (await call('create-bot', { name: 'Tester', role: '测试' })).value
+  const room = (await call('create-room', { name: 'Team', members: [chief, writer.id, tester.id] })).value
+  sent.length = 0
+  await emit(room.id, userMessage('把发布文档和测试检查好，分工完成后给我结论。'))
+  const running = relay(room.id, 'delegation')
+  const admin = await turnFor(sent)
+  const planPrompt = admin.message.content[0].text
+  assert.match(planPrompt, /Writer \(role: 文档\)/)
+  assert.match(planPrompt, /Tester \(role: 测试\)/)
+  assert.doesNotMatch(planPrompt, /Private worker instructions/)
+  assert.match(planPrompt, /delegate suitable parts before executing them yourself/)
+  assert.match(planPrompt, /owner, scope, expected result and how to check it/)
+  assert.match(planPrompt, /Do not treat an acknowledgment or a promise as completion/)
+  await answer(admin.sessionId, admin.message.source.exchangeId, '@Writer 检查发布文档的命令和链接，返回检查结果。@Tester 独立运行测试，返回命令和结果。', 1)
+  const first = await turnFor(sent, admin)
+  const second = await turnFor(sent, admin, first)
+  assert.deepEqual(new Set([first.sessionId, second.sessionId]), new Set([
+    rt.state.rooms[room.id].sessions[writer.id], rt.state.rooms[room.id].sessions[tester.id],
+  ]), 'both assigned members start before either has finished')
+  assert.match(first.message.content[0].text, /Carry out the part assigned to you in this turn/)
+  const work = async (entry, turn, result) => {
+    await emit(entry.sessionId, { type: 'turn/start', data: { turn } })
+    await emit(entry.sessionId, { type: 'user/message', data: { source: entry.message.source, content: entry.message.content } })
+    await emit(entry.sessionId, { type: 'tool/call', data: { callId: `work-${turn}`, name: 'read', arguments: '{}' } })
+    await emit(entry.sessionId, { type: 'tool/result', data: { callId: `work-${turn}` } })
+    await emit(entry.sessionId, { type: 'assistant/message', data: { message: { content: [{ type: 'text', text: result }] } } })
+    await emit(entry.sessionId, { type: 'turn/end', data: { reason: { kind: 'stop' } } })
+  }
+  const writerTurn = [first, second].find(entry => entry.sessionId === rt.state.rooms[room.id].sessions[writer.id])
+  const testerTurn = [first, second].find(entry => entry.sessionId === rt.state.rooms[room.id].sessions[tester.id])
+  await work(writerTurn, 2, '文档命令和链接检查通过。')
+  await settle()
+  assert.equal(sent.filter(entry => entry.sessionId === admin.sessionId && entry.message.source.role === 'room').length, 1, 'the admin waits for the complete batch')
+  await work(testerTurn, 3, 'npm test 通过，退出码 0。')
+  const summary = await turnFor(sent, admin, first, second)
+  assert.ok(summary, 'the admin receives the completed batch')
+  assert.equal(summary.sessionId, admin.sessionId)
+  assert.match(summary.message.content[0].text, /文档命令和链接检查通过/)
+  assert.match(summary.message.content[0].text, /npm test 通过/)
+  await answer(summary.sessionId, summary.message.source.exchangeId, '文档检查和测试均通过，发布检查完成。', 4)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name), ['Chief', 'Writer', 'Tester', 'Chief'])
+})
+
 test('members called in one message start together, each told who else answers', async (t) => {
   const { call, emit, userMessage, relay, answer, stop, sent } = start()
   t.after(stop)
@@ -977,18 +1028,18 @@ test('members called in one message start together, each told who else answers',
   assert.deepEqual(result.replies.map(reply => reply.text), ['@Writer @Tester search it', 'Second found it.', 'First found it too.'])
 })
 
-test('a user message mid-round reaches the admin at once while a member still answers', async (t) => {
+test('a user mention mid-round reaches the admin at once while a member still answers', async (t) => {
   const { call, emit, userMessage, compose, relay, answer, stop, sent, rt } = start()
   t.after(stop)
   const room = await trio(call, sent)
   const chief = rt.state.mainBotIds[0]
-  await emit(room.id, userMessage('Start'))
+  await emit(room.id, userMessage('@Chief start'))
   const running = relay(room.id, 'relay')
   const admin = await turnFor(sent)
   await answer(admin.sessionId, admin.message.source.exchangeId, '@Writer go', 1)
   const writer = await turnFor(sent, admin)
   // The Writer is still answering when the user writes; DSH reports the inbox change.
-  await compose(room.id, 'why is the Tester idle?')
+  await compose(room.id, '@Chief why is the Tester idle?')
   await emit(room.id, { type: 'agent/inbox/spliced', data: { target: 'next-turn', inserted: [] } })
   const again = await turnFor(sent, admin, writer)
   assert.equal(again.sessionId, rt.state.rooms[room.id].sessions[chief], 'the admin answers the user without waiting for the Writer')
@@ -1316,4 +1367,229 @@ test('the idle pause survives a restart and the user lifts it', async (t) => {
   await resumed
   await quiet
   assert.equal(state().idlePaused, undefined)
+})
+
+test('a bare-name assignment in a group where everyone answers calls only the assigned member', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent, rt } = start()
+  t.after(stop)
+  const room = await trio(call, sent)
+  await call('update-room', { id: room.id, mode: 'everyone' })
+  await emit(room.id, userMessage('Writer, please update the README'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.ok(first, 'the assigned member gets a turn')
+  const writer = (await call('state', {})).value.bots.find(bot => bot.name === 'Writer').id
+  assert.equal(first.sessionId, rt.state.rooms[room.id].sessions[writer])
+  assert.match(first.message.content[0].text, /Writer, please update the README/)
+  await settle()
+  assert.equal(sent.filter(entry => entry.message.source.role === 'room').length, 1, 'no other member is called')
+  await answer(first.sessionId, first.message.source.exchangeId, 'Updating the README.', 1)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Writer'])
+  assert.deepEqual(result.passed, [])
+})
+
+test('later members still get a reply turn after one claims the work in a user round', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await trio(call, sent)
+  await call('update-room', { id: room.id, mode: 'everyone' })
+  await emit(room.id, userMessage('改一下文档'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.match(first.message.content[0].text, /You are number 1 of 3/)
+  await answer(first.sessionId, first.message.source.exchangeId, '我来改文档', 1)
+  const second = await turnFor(sent, first)
+  assert.ok(second, 'the claim does not auto-pass the other members')
+  assert.match(second.message.content[0].text, /without repeating their work, claiming it, or calling tools for it/)
+  assert.doesNotMatch(second.message.content[0].text, /A member has already posted in this round\. Reply \[PASS\]/)
+  await answer(second.sessionId, second.message.source.exchangeId, '收到，我补充文案建议。', 2)
+  const third = await turnFor(sent, first, second)
+  assert.ok(third)
+  await answer(third.sessionId, third.message.source.exchangeId, '收到，我关注验收标准。', 3)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name), ['Chief', 'Writer', 'Tester'])
+  assert.deepEqual(result.passed, [])
+})
+
+test('a handoff names the owner while other members still reply to the user', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent, rt } = start()
+  t.after(stop)
+  const room = await trio(call, sent)
+  await call('update-room', { id: room.id, mode: 'everyone' })
+  const writer = (await call('state', {})).value.bots.find(bot => bot.name === 'Writer').id
+  await emit(room.id, userMessage('改一下文档'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  await answer(first.sessionId, first.message.source.exchangeId, '@Writer 请改文档，把 README 更新到最新说明。', 1)
+  const next = await waitFor(() => sent.find(entry => entry !== first && entry.message.source.role === 'room' && entry.sessionId === rt.state.rooms[room.id].sessions[writer]))
+  assert.ok(next, 'the handed-off member still answers')
+  assert.equal(next.sessionId, rt.state.rooms[room.id].sessions[writer])
+  assert.match(next.message.content[0].text, /@Writer 请改文档/)
+  await answer(next.sessionId, next.message.source.exchangeId, 'README 已更新。', 2)
+  const third = await turnFor(sent, first, next)
+  assert.ok(third, 'the unassigned member is also called to reply')
+  assert.match(third.message.content[0].text, /without repeating their work, claiming it, or calling tools for it/)
+  await answer(third.sessionId, third.message.source.exchangeId, '收到，我关注验收标准。', 3)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer', 'Tester'])
+  assert.deepEqual(result.passed, [])
+})
+
+
+test('in admin mode a group-wide plain ask calls every member in turn, without an @', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('都说收到'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.match(first.message.content[0].text, /Members answer this message one at a time/)
+  assert.match(first.message.content[0].text, /You are number 1 of 2/)
+  await settle()
+  assert.equal(sent.filter(entry => entry.message.source.role === 'room').length, 1, 'members take turns; the next one has not started yet')
+  await answer(first.sessionId, first.message.source.exchangeId, '收到', 1)
+  const second = await turnFor(sent, first)
+  assert.notEqual(second.sessionId, first.sessionId, 'the other member is called without an @')
+  assert.match(second.message.content[0].text, /You are number 2 of 2/)
+  await answer(second.sessionId, second.message.source.exchangeId, '收到', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+})
+
+test('in admin mode 在的扣1 also calls every member in turn', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('在的扣1'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  await answer(first.sessionId, first.message.source.exchangeId, '1', 1)
+  const second = await turnFor(sent, first)
+  assert.ok(second, 'the other member answers the check-in')
+  await answer(second.sessionId, second.message.source.exchangeId, '1', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+})
+
+test('in admin mode an ordinary plain question calls every member in turn', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('这个怎么用？'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.ok(first, 'the admin gets the turn')
+  assert.match(first.message.content[0].text, /Members answer this message one at a time/)
+  await answer(first.sessionId, first.message.source.exchangeId, '先打开桌面版。', 1)
+  const second = await turnFor(sent, first)
+  assert.ok(second, 'ordinary questions also reach the other member')
+  assert.notEqual(second.sessionId, first.sessionId)
+  assert.match(second.message.content[0].text, /Give your own brief reply/)
+  await answer(second.sessionId, second.message.source.exchangeId, '也可以从设置查看使用说明。', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+  assert.deepEqual(result.passed, [])
+})
+
+test('in admin mode a bare-name assignment still calls only the assigned member', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent, rt } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+  const writer = Object.values(rt.state.bots).find(bot => bot.name === 'Writer')
+
+  await emit(room.id, userMessage('Writer, please update the README'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.equal(first.sessionId, rt.state.rooms[room.id].sessions[writer.id])
+  await settle()
+  assert.equal(sent.filter(entry => entry.message.source.role === 'room').length, 1, 'the admin is not also called')
+  await answer(first.sessionId, first.message.source.exchangeId, 'Updating the README.', 1)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Writer'])
+})
+
+test('in admin mode @all still calls every member', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('@all count off'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  const second = await turnFor(sent, first)
+  assert.ok(first && second, 'both members start for @all')
+  assert.ok([first, second].every(entry => !/one at a time/.test(entry.message.content[0].text)))
+  await answer(first.sessionId, first.message.source.exchangeId, 'one', 1)
+  await answer(second.sessionId, second.message.source.exchangeId, 'two', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User').sort(), ['Chief', 'Writer'])
+})
+
+test('in admin mode a plain 你们 question calls every member in turn, without an @', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('你们知道是先有鸡还是先有蛋吗？'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  assert.match(first.message.content[0].text, /Members answer this message one at a time/)
+  assert.match(first.message.content[0].text, /You are number 1 of 2/)
+  await settle()
+  assert.equal(sent.filter(entry => entry.message.source.role === 'room').length, 1, 'members take turns; the next one has not started yet')
+  await answer(first.sessionId, first.message.source.exchangeId, '先有蛋。', 1)
+  const second = await turnFor(sent, first)
+  assert.notEqual(second.sessionId, first.sessionId, 'the other member is called without an @')
+  assert.match(second.message.content[0].text, /You are number 2 of 2/)
+  await answer(second.sessionId, second.message.source.exchangeId, '先有鸡。', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+})
+
+test('in admin mode a singular 你 question without a named recipient also reaches everyone', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await team(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+
+  await emit(room.id, userMessage('你看你的api还剩多少钱'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  await answer(first.sessionId, first.message.source.exchangeId, '还够用。', 1)
+  const second = await turnFor(sent, first)
+  assert.ok(second)
+  await answer(second.sessionId, second.message.source.exchangeId, '可以在模型服务商的用量页查看。', 2)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name ?? 'User'), ['Chief', 'Writer'])
+})
+
+test('the reported 全部都在吗 check-in reaches all members, even after a status reply', async (t) => {
+  const { call, emit, userMessage, relay, answer, stop, sent } = start()
+  t.after(stop)
+  const room = await trio(call, sent)
+  await call('update-room', { id: room.id, mode: 'admin' })
+  await emit(room.id, userMessage('全部都在吗？回复到'))
+  const running = relay(room.id, 'relay')
+  const first = await turnFor(sent)
+  await answer(first.sessionId, first.message.source.exchangeId, '到。', 1)
+  const second = await turnFor(sent, first)
+  assert.ok(second)
+  assert.match(second.message.content[0].text, /For a greeting or check-in, give your own acknowledgment/)
+  await answer(second.sessionId, second.message.source.exchangeId, '到。', 2)
+  const third = await turnFor(sent, first, second)
+  assert.ok(third)
+  await answer(third.sessionId, third.message.source.exchangeId, '到。', 3)
+  const result = JSON.parse(await running)
+  assert.deepEqual(result.replies.map(reply => reply.name), ['Chief', 'Writer', 'Tester'])
+  assert.deepEqual(result.passed, [])
 })

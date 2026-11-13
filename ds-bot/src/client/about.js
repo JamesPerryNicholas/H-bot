@@ -1,4 +1,4 @@
-// Settings → About H bot: the version, updates for H bot and DSH, and the links to
+// Settings → About DS Bot: the version, updates for DS Bot and DSH, and the links to
 // the repository. The sidebar's cloud button shows the same update state.
 import { createElement as h, useEffect, useState } from 'react'
 import { GitHubMark } from './connector-marks.js'
@@ -17,12 +17,12 @@ const CHEER_MS = 1800
 const starCount = count => new Intl.NumberFormat(dateLocale(), { notation: 'compact', maximumFractionDigits: 1 }).format(count)
 
 function botHint(update) {
-  if (update.phase === 'installing') return t('Updating H bot…')
-  if (update.phase === 'installed') return t('Restart DSH to start using H bot {version}.', { version: update.installed ?? update.latest })
-  if (update.phase === 'updated') return t('H bot {version} is installed.', { version: update.installed ?? update.latest })
+  if (update.phase === 'installing') return t('Updating DS Bot…')
+  if (update.phase === 'installed') return t('Restart DSH to start using DS Bot {version}.', { version: update.installed ?? update.latest })
+  if (update.phase === 'updated') return t('DS Bot {version} is installed.', { version: update.installed ?? update.latest })
   if (update.phase === 'failed') return t('The update did not finish: {reason}', { reason: hostText(update.error ?? '') })
-  if (update.available) return t('H bot {version} is available', { version: update.latest })
-  if (update.source === 'app') return t('Updates come with the H bot app.')
+  if (update.available) return t('DS Bot {version} is available', { version: update.latest })
+  if (update.source === 'app') return t('Updates come with the DS Bot app.')
   if (update.enabled === false) return t('Update checks are off.')
   if (update.source === 'path') return t('Installed from a local folder; update it there.')
   if (!update.checkedAt) return null
@@ -31,7 +31,7 @@ function botHint(update) {
   return `${update.latest ? t('Up to date') : t('Could not check for updates.')} · ${checked}`
 }
 
-// The H bot row in the desktop app shows the app's own update state, kept as ownApp on
+// The DS Bot row in the desktop app shows the app's own update state, kept as ownApp on
 // the update value. Anything that is not a state object (DSH Desktop, DSH Web, an
 // unpackaged app) leaves the row with today's "comes with the app" text.
 export function ownAppRow(ownApp) {
@@ -52,7 +52,7 @@ function dshHint(dsh, shown) {
   if (dsh.phase === 'installing') return t('Updating DSH…')
   if (dsh.phase === 'installed') return t('Restart DSH to start using DSH {version}.', { version: dsh.installed ?? dsh.verified })
   if (dsh.phase === 'failed') return t('The update did not finish: {reason}', { reason: hostText(dsh.error ?? '') })
-  if (dsh.available === false && dsh.blockedBy) return t('Update H bot {version} first.', { version: dsh.blockedBy })
+  if (dsh.available === false && dsh.blockedBy) return t('Update DS Bot {version} first.', { version: dsh.blockedBy })
   if (shown) return t('DSH {version} is available', { version: dsh.verified })
   return t('Version {version}', { version: dsh.current })
 }
@@ -116,12 +116,12 @@ export function AboutPage({ useUpdate, actions, run, Section, Row }) {
         h('span', { className: 'bt-about-name' }, PRODUCT_NAME),
         update.current ? h('span', { className: 'bt-about-version' }, t('Version {version}', { version: update.current })) : null),
       repo ? h('a', {
-        className: 'bt-star', href: repo, target: '_blank', rel: 'noopener noreferrer', title: t('Star H bot on GitHub'),
-        'aria-label': stars === null ? t('Star H bot on GitHub') : `${t('Star H bot on GitHub')} · ${t('{count} stars', { count: stars })}`,
+        className: 'bt-star', href: repo, target: '_blank', rel: 'noopener noreferrer', title: t('Star the project on GitHub'),
+        'aria-label': stars === null ? t('Star the project on GitHub') : `${t('Star the project on GitHub')} · ${t('{count} stars', { count: stars })}`,
       },
       h('span', { className: 'bt-star-main' }, h('span', { className: 'bt-star-icon' }, h(StarLineIcon)), 'Star'),
       stars === null ? null : h('span', { className: 'bt-star-count' }, starCount(stars))) : null),
-    repo ? h('p', { key: 'ask', className: 'bt-about-ask' }, t('Support H bot with a star on GitHub.')) : null,
+    repo ? h('p', { key: 'ask', className: 'bt-about-ask' }, t('Support the project with a star on GitHub.')) : null,
     h(Section, { key: 'updates', title: t('Updates') },
       h(Row, { label: PRODUCT_NAME, hint: ownRow?.hint ?? botHint(update) }, botControl, update.available && update.notesUrl ? h('a', linkProps(update.notesUrl), t("What's new")) : null),
       dsh?.current ? h(Row, { label: 'DeepSeek Harness', hint: dshHint(dsh, dshShown) }, dshControl) : null),

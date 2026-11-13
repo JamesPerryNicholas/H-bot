@@ -157,7 +157,8 @@ export function installReview(rt, memory) {
       const label = labelOf(scope, keeper.id)
       const text = cleanEntry(change?.text)
       const until = cleanDay(change?.until)
-      const meta = { source, ...(scope.kind === 'team' ? { by: keeper.name } : {}), added: today(), ...(until === undefined ? {} : { until }) }
+      const standing = change?.standing === true && until === undefined
+      const meta = { source, ...(scope.kind === 'team' ? { by: keeper.name } : {}), added: today(), ...(until === undefined ? {} : { until }), ...(standing ? { standing: 'yes' } : {}) }
       // A change memory cannot keep is set aside and said, so what was not saved
       // shows in the diagnostics; the rest of the answer is kept all the same —
       // the same lines read again would meet the same limit. A secret's text is

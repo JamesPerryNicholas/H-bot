@@ -143,11 +143,11 @@ test('an own chat\'s approval races DSH\'s card and is listed while it waits', a
   assert.deepEqual([approval.botId, approval.roomId, approval.answerable], ['a', undefined, true])
   assert.equal((await host.call('approval-answer', { id: approval.id, choice: 'allow' })).ok, true)
   assert.equal(await outcome, 'allowed-once')
-  // DSH's card answering late is ignored once H bot settled the race.
+  // DSH's card answering late is ignored once DS Bot settled the race.
   release('rejected')
   assert.equal((await host.call('approval-answer', { id: approval.id, choice: 'allow' })).error.code, 'bot/stale')
   assert.deepEqual((await host.call('state', {})).value.work.approvals, [])
-  // Sessions off the team are not H bot's to answer.
+  // Sessions off the team are not DS Bot's to answer.
   assert.equal(await host.askApproval('elsewhere'), 'from-dsh')
 })
 

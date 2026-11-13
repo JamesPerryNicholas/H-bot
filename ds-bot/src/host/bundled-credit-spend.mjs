@@ -1,10 +1,11 @@
-// In-app $20 cap: apply spend against the unlocked bundled credit in DSH_HOME.
+// Record spend against the unlocked bundled credit in DSH_HOME.
 // Kept next to the host usage ledger so every model call can meter it, including
 // Session turns that the usage page already records, and GPT-Image-2.6 generations.
+// There is no in-app hard stop: spend is history only. Official-key use follows
+// the OpenAI account itself, not this meter.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-export const CREDIT_LIMIT_USD = 20
 const STATE_FILE = 'bundled-credit.json'
 
 const RATES_PER_MILLION = {
@@ -82,29 +83,20 @@ function writeState(dataDir, state) {
   const next = {
     unlocked: state.unlocked === true,
     spentUsd: Math.max(0, Number(state.spentUsd) || 0),
-    exhausted: state.exhausted === true,
+    // Historical exhausted flags are not a hard stop; do not persist one from this meter.
+    exhausted: false,
     usedSlots: state.usedSlots ?? [],
     ...(state.unlockedAt ? { unlockedAt: state.unlockedAt } : {}),
     ...(state.slotId ? { slotId: state.slotId } : {}),
   }
-  if (next.spentUsd >= CREDIT_LIMIT_USD) next.exhausted = true
   writeFileSync(statePath(dataDir), `${JSON.stringify(next, null, 2)}\n`, 'utf8')
   return next
-}
-
-function removeBundledKey(dataDir) {
-  const credFile = join(dataDir, '.credentials.yaml')
-  if (!existsSync(credFile)) return
-  const text = readFileSync(credFile, 'utf8').replace(/\r\n/g, '\n')
-  const lines = text.split('\n')
-  const next = lines.filter(line => !/^\s+OPENAI_API_KEY\s*:/.test(line))
-  if (next.length !== lines.length) writeFileSync(credFile, `${next.join('\n').replace(/\n+$/, '\n')}`, 'utf8')
 }
 
 export function noteBundledSpend(dataDir, { model, usage, kind, costUsd } = {}) {
   if (!dataDir) return undefined
   const state = readState(dataDir)
-  if (!state.unlocked || state.exhausted) return state
+  if (!state.unlocked) return state
   let cost = Number(costUsd)
   if (!Number.isFinite(cost) || cost <= 0) {
     const inputTokens = count(usage?.inputTokens) + count(usage?.cacheReadTokens) + count(usage?.cacheWriteTokens)
@@ -120,7 +112,5 @@ export function noteBundledSpend(dataDir, { model, usage, kind, costUsd } = {}) 
     })
   }
   if (cost <= 0) return state
-  const next = writeState(dataDir, { ...state, spentUsd: state.spentUsd + cost })
-  if (next.exhausted) removeBundledKey(dataDir)
-  return next
+  return writeState(dataDir, { ...state, spentUsd: state.spentUsd + cost })
 }

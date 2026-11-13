@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 import { createRuntime } from '../index.js'
 import { fakeContext } from './fake-ctx.js'
-import { ROOM_WORK_GRACE_MS } from '../src/host/constants.js'
+import { ROOM_WORK_GRACE_MS, ROUTE } from '../src/host/constants.js'
 
 // Chief, the admin of group 'r1', speaks there from 'ga'; Writer from 'gb'; Tester from 'gc'.
 const seed = (room = {}, extraRooms = {}) => ({
@@ -59,9 +59,9 @@ async function start(t, room, services, extraRooms) {
     sessionTitle: { rename: async () => {} },
     sessions: { flush: async () => {} },
   })
-  let route
+  const routes = {}
   const register = ctx.connection.fetch.register
-  ctx.connection.fetch.register = (options) => { route = options; return register(options) }
+  ctx.connection.fetch.register = (options) => { routes[options.path] = options; return register(options) }
   const rt = createRuntime(ctx, { home })
   t.after(async () => {
     await ctx.dispose()
@@ -75,7 +75,7 @@ async function start(t, room, services, extraRooms) {
     }
   }
   const tool = (name, args, sessionId, exec = {}) => (rt.teamTools.find(d => d.name === name) ?? ctx.registeredTools.get(name)).execute(args, { agent: { id: sessionId }, ...exec })
-  const call = async (endpoint, payload) => (await route.fetch(new Request('http://localhost/api/bot', { method: 'POST', body: JSON.stringify({ endpoint, payload }) }))).json()
+  const call = async (endpoint, payload) => (await routes[ROUTE].fetch(new Request('http://localhost/api/bot', { method: 'POST', body: JSON.stringify({ endpoint, payload }) }))).json()
   const begin = (sessionId) => {
     const message = agentOf(sessionId).calls.at(-1)
     agentOf(sessionId).inbox.nextTurn.length = 0
@@ -262,12 +262,18 @@ test('the admin and member prompts carry the goal block', async (t) => {
   assert.match(admin, /- Writer: write the draft \[not started\]/)
   assert.match(admin, /\[next\] 2\. Check: Tester/)
   assert.match(admin, /You run this goal\./)
+  assert.match(admin, /Advance by complete stages/)
+  assert.match(admin, /sending a message, paying, deleting something, or using someone else's account/)
+  assert.match(admin, /do not pull ordinary small changes out for review again and again/)
+  assert.match(admin, /check the results against the stage's "done when" yourself/)
   host.finish('ga', '@Writer write the draft')
   await settle(() => host.agentOf('gb').calls.length === 1)
   const member = text(host.begin('gb'))
   assert.match(member, /<group_goal status="active" stage="1\/2">/)
   // The admin's @Writer call already moved the task to working before this prompt.
   assert.match(member, /Your task in it: write the draft \(working\)\./)
+  assert.doesNotMatch(member, /You run this goal/)
+  assert.doesNotMatch(member, /Advance by complete stages/)
   host.finish('gb', 'draft written')
   await settle(() => result() !== undefined)
 
@@ -291,6 +297,9 @@ test('a goal draft opens as the user\'s line and calls only the admin', async (t
   assert.match(prompt, /the user wants to set a goal for this group/)
   assert.match(prompt, /<group_goal status="drafting">/)
   assert.match(prompt, /goal-grill/)
+  assert.match(prompt, /complete slice of the outcome/)
+  assert.match(prompt, /Do not split small work into many tiny stages or repeated review steps/)
+  assert.match(prompt, /Still check before sending a message, paying, deleting something, or using someone else's account/)
   host.finish('ga', 'Aligned, starting it.')
   await settle(() => result() !== undefined)
   assert.deepEqual(host.agentOf('gb').calls.filter(call => call.source?.role !== 'post'), [])
@@ -299,6 +308,17 @@ test('a goal draft opens as the user\'s line and calls only the admin', async (t
   assert.deepEqual(log.filter(line => line.text === 'Ship the thing').map(line => line.who), ['User'])
   assert.ok(log.some(line => line.reason === 'goal' && line.event === 'draft'))
   assert.ok(result().replies.some(reply => reply.kind === 'user' && reply.text === 'Ship the thing'))
+})
+
+test('group_goal stages describe complete slices and keep the required checks', async (t) => {
+  const host = await start(t)
+  const tool = host.rt.teamTools.find(d => d.name === 'group_goal')
+  assert.ok(tool)
+  assert.match(tool.parameters.properties.stages.description, /Each stage is a complete slice of the outcome/)
+  assert.match(tool.parameters.properties.stages.description, /Do not split small work into many tiny stages or repeated review steps/)
+  assert.match(tool.description, /how to check it is done/)
+  assert.match(tool.description, /pass \(the current stage meets its check; evidence required\)/)
+  assert.match(tool.description, /complete \(every stage passed and the overall check is met; evidence and summary required\)/)
 })
 
 test('a group with no admin refuses a goal draft', async (t) => {

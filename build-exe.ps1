@@ -7,31 +7,41 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $previousPath = $env:PATH
-$keyFile = $env:HBOT_OPENAI_KEY_FILE
-if (-not $keyFile) { $keyFile = 'C:\Users\admin\agent-tools\hbot-credit\secrets\openai-key.txt' }
-$codesFile = $env:HBOT_UNLOCK_CODES_FILE
-if (-not $codesFile) { $codesFile = 'C:\Users\admin\agent-tools\hbot-credit\secrets\unlock-codes.txt' }
 $outDir = 'C:\Users\admin\OneDrive\Desktop\H bot 安装包'
+
+function Clear-BundledCredit {
+    $src = Join-Path $PSScriptRoot 'app\src'
+    foreach ($name in @('bundled-credit-envelope.json', 'bundled-credit-open-wrap.json')) {
+        $p = Join-Path $src $name
+        if (Test-Path -LiteralPath $p) { Remove-Item -LiteralPath $p -Force }
+    }
+}
 
 function Invoke-Pack([string]$Name) {
     $config = if ($Name -eq 'open') { 'electron-builder.open.yml' } else { 'electron-builder.unlock.yml' }
-    $seal = Join-Path $PSScriptRoot 'app\scripts\seal-bundled-credit.mjs'
-    if ($Name -eq 'open') {
-        & node $seal open $keyFile
-    } else {
-        & node $seal unlock $keyFile $codesFile
-    }
-    if ($LASTEXITCODE -ne 0) { throw "Sealing $Name credit failed ($LASTEXITCODE)." }
+    Clear-BundledCredit
     Push-Location (Join-Path $PSScriptRoot 'app')
     try {
         & node $script:builder --win nsis --x64 --publish never --config $config --config.electronDist=node_modules/electron/dist
         if ($LASTEXITCODE -ne 0) { throw "EXE build failed for $Name ($LASTEXITCODE)." }
         $dist = Join-Path (Get-Location) 'dist-pack'
-        $pattern = if ($Name -eq 'open') { 'H-bot-*-开放版-win-x64.exe' } else { 'H-bot-*-校验版-win-x64.exe' }
-        $exe = Get-ChildItem -LiteralPath $dist -Filter $pattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-        if (-not $exe) { throw "Packed $Name installer was not found in $dist" }
+        & node (Join-Path $PSScriptRoot 'app/scripts/check-packed-ssh.mjs') (Join-Path $dist 'win-unpacked')
+        if ($LASTEXITCODE -ne 0) { throw "Packed SSH dependencies are incomplete for $Name." }
+        $version = (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'app/package.json') -Raw | ConvertFrom-Json).version
+        $fileName = if ($Name -eq 'open') { "H-bot-$version-win-x64.exe" } else { "H-bot-$version-校验版-win-x64.exe" }
+        $exe = Get-Item -LiteralPath (Join-Path $dist $fileName)
         New-Item -ItemType Directory -Force -Path $outDir | Out-Null
-        Copy-Item -LiteralPath $exe.FullName -Destination (Join-Path $outDir $exe.Name) -Force
+        $destination = Join-Path $outDir $exe.Name
+        Copy-Item -LiteralPath $exe.FullName -Destination $destination -Force
+        if ((Get-FileHash -LiteralPath $exe.FullName).Hash -ne (Get-FileHash -LiteralPath $destination).Hash) {
+            throw 'Installer copy verification failed; keeping previous installers.'
+        }
+        if ($Name -eq 'open') {
+            # Keep the previous installer until the new copy has passed its integrity check.
+            Get-ChildItem -LiteralPath $outDir -File | Where-Object {
+                $_.Name -match '^H-bot-.+-win-x64\.exe$' -and $_.FullName -ne $destination
+            } | ForEach-Object { Remove-Item -LiteralPath $_.FullName -Force }
+        }
         Write-Host "copied $($exe.Name) to $outDir"
     } finally { Pop-Location }
 }
@@ -45,7 +55,5 @@ try {
     $script:builder = Join-Path $PSScriptRoot 'app/node_modules/electron-builder/out/cli/cli.js'
     $names = if ($Variant -eq 'all') { @('open', 'unlock') } else { @($Variant) }
     foreach ($name in $names) { Invoke-Pack $name }
-    $seal = Join-Path $PSScriptRoot 'app\scripts\seal-bundled-credit.mjs'
-    & node $seal unlock $keyFile $codesFile
-    if ($LASTEXITCODE -ne 0) { throw "Restoring the unlock envelope in source failed ($LASTEXITCODE)." }
+    Clear-BundledCredit
 } finally { $env:PATH = $previousPath }

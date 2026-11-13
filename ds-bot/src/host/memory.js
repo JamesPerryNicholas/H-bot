@@ -33,7 +33,7 @@ import { defineTool } from '@deepseek-ai/dsh-tools'
 import { replaceFile } from './files.js'
 import { inside, pendingPath, read as readPending, record as pendingRecord, relativePath, serialize as serializePending } from './memory-pending.js'
 import { estimateTokens, splitRef, textOf, unquote } from './text.js'
-import { EMPTY_MAIN, GONE, DENIED, HEADING, MAIN, MEMORY_LIMITS, NO_MATCH, ROUTED, addLink, bodySize, cleanDay, cleanEntry, cleanTopic, entryId, fitWindow, formatEntry, insertEntry, isExpired, isPinned, joinLines, looksSecret, matchEntries, newEntryId, parseAsk, parseMemory, promptEntry, TEAM_SHARED, removeLink, splitMeta, squash, topicAbout, WINDOW_SHARE } from './memory-entries.js'
+import { EMPTY_MAIN, GONE, DENIED, HEADING, MAIN, MEMORY_LIMITS, NO_MATCH, ROUTED, addLink, bodySize, cleanDay, cleanEntry, cleanTopic, entryId, fitWindow, formatEntry, insertEntry, isExpired, isPinned, isStanding, joinLines, keepPriority, looksSecret, matchEntries, newEntryId, parseAsk, parseMemory, promptEntry, TEAM_SHARED, removeLink, splitMeta, squash, topicAbout, WINDOW_SHARE } from './memory-entries.js'
 import { pickRecalled, rankEntries } from './memory-search.js'
 import { GROUP_HEADING, GROUP_MEMORY_SOURCE, MEMORY_RECALL_SOURCE, MEMORY_UPDATE_SOURCE, RECALL_HEADING, RECALL_NOTE, SUMMARY_SYSTEM, UPDATE_HEADING, UPDATE_NOTE, askRequest, askSystem, groupNote, groupSummaryRequest, memoryRules, summaryRequest, teamRule } from './memory-copy.js'
 import { installReview } from './memory-review.js'
@@ -432,8 +432,10 @@ export function install(rt) {
     while (grew && bodyOf(linked()) > limit) {
       const entries = parseMemory(joinLines(kept)).entries.filter(entry => kept[entry.line] !== keep && !isPinned(entry))
       if (entries.length === 0) break
-      const age = entry => (isExpired(entry, today()) ? '' : String(entry.meta.added ?? ''))
-      const oldest = entries.reduce((a, b) => (age(b) < age(a) ? b : a))
+      // Dated and unmarked entries leave first; standing profile facts stay in MEMORY.md.
+      const rank = entry => keepPriority(entry, today())
+      const age = entry => String(entry.meta.added ?? '')
+      const oldest = entries.reduce((a, b) => (rank(b) > rank(a) || (rank(b) === rank(a) && age(b) < age(a)) ? b : a))
       moved = [...moved, kept[oldest.line]]
       kept = kept.filter((_line, at) => at !== oldest.line)
       placed = placeMoved(files, moved)
@@ -524,7 +526,10 @@ export function install(rt) {
       writable(scope, actor)
       const files = loadScope(scope)
       const old = findOne(files, topic, match, label)
-      const line = formatEntry(text, { id: entryId(old), ...meta, ...(old.meta.pinned === undefined ? {} : { pinned: old.meta.pinned }) })
+      const { standing: _standing, until: _until, ...restMeta } = meta
+      const until = cleanDay(meta.until)
+      const standing = (meta.standing !== undefined ? meta.standing : old.meta.standing)
+      const line = formatEntry(text, { id: entryId(old), ...restMeta, ...(until === undefined ? {} : { until }), ...(old.meta.pinned === undefined ? {} : { pinned: old.meta.pinned }), ...(isStanding({ meta: { standing } }) && until === undefined ? { standing: 'yes' } : {}) })
       const lines = [...old.file.lines]
       const before = lines[old.line]
       lines[old.line] = line
@@ -998,6 +1003,7 @@ export function install(rt) {
       replace: { type: 'string', description: 'An entry already saved that this one replaces, because the fact changed: its text, or a part only it contains' },
       topic: { type: 'string', description: 'A topic for details not every conversation needs, such as "travel" or "project-x"; omit for MEMORY.md, which every conversation reads' },
       until: { type: 'string', description: 'The day this stops holding, YYYY-MM-DD, for a temporary arrangement or a plan with an end. After it the entry no longer shows' },
+      standing: { type: 'boolean', description: 'True for a lasting profile fact or preference: a name, a timezone, how the user likes to work, a stated style, format, or tool habit. Those stay in MEMORY.md when room is tight. Do not set it on a dated or one-off fact; use until or a topic instead.' },
       pin: { type: 'boolean', description: 'True only when the user says to always keep this. A pinned entry is never moved or changed automatically' },
       always: { type: 'boolean', description: 'With scope "team": true only when the user says every Bot must always know this, so it goes in what every Bot reads in every conversation. Without it the entry waits where any Bot can find it with recall' },
       scope: SCOPE_WRITE,
@@ -1016,7 +1022,7 @@ export function install(rt) {
       const replace = String(args.replace ?? '').trim()
       try {
         const until = cleanDay(args.until)
-        const meta = { ...await metaFor(context.caller, context.scope), ...(until === undefined ? {} : { until }), ...(args.pin === true ? { pinned: 'user' } : {}) }
+        const meta = { ...await metaFor(context.caller, context.scope), ...(until === undefined ? {} : { until }), ...(args.standing === true && until === undefined ? { standing: 'yes' } : {}), ...(args.pin === true ? { pinned: 'user' } : {}) }
         const shared = context.scope.kind === 'team' && args.always !== true && topic === undefined ? TEAM_SHARED : args.always === true && context.scope.kind === 'team' ? undefined : topic
         const result = replace === ''
           ? await addEntry({ ...context, topic: shared, text, meta })
@@ -1149,7 +1155,7 @@ export function install(rt) {
   const panelEntries = (files, scope) => allEntries(files).map(entry => ({
     scope, topic: entry.file.topic ?? null, text: entry.text, id: entryId(entry),
     added: entry.meta.added ?? null, by: entry.meta.by ?? null, source: entry.meta.source ?? null,
-    until: entry.meta.until ?? null, pinned: isPinned(entry), expired: isExpired(entry, today()),
+    until: entry.meta.until ?? null, standing: isStanding(entry), pinned: isPinned(entry), expired: isExpired(entry, today()),
   }))
 
   async function modelFor(bot) {

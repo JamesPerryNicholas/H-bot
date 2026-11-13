@@ -370,7 +370,7 @@ export function install(rt) {
   const showCall = (id, entry) => {
     const name = [...(entry.calls?.values() ?? [])].at(-1)?.name
     entry.tool = name
-    if (name !== undefined) setActivity(id, name === 'ask_user' || name === 'show_view' ? undefined : activityOf(name))
+    if (name !== undefined) setActivity(id, name === 'ask_user' || name === 'pitch_in' || name === 'show_view' ? undefined : activityOf(name))
     else if (entry.turn !== undefined) setActivity(id, 'thinking')
   }
   const startCall = (id, entry, callId, name, args) => {
