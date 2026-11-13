@@ -1,7 +1,7 @@
 // Connectors: outside services every Bot can use. One engine mounts each
 // connected service's MCP server on the plugin context through the local
 // gateway (gateway.js), so every Bot gets mcp__<id>__* tools while credentials
-// stay H bot secrets that never reach the mcp-client config. OAuth sign-in is
+// stay DS Bot secrets that never reach the mcp-client config. OAuth sign-in is
 // in oauth.js, the service list in catalog.js, mail in mail/.
 import { randomBytes, randomUUID } from 'node:crypto'
 import { createServer } from 'node:http'

@@ -105,7 +105,8 @@ function EntryRow({ entry, remove, pin, layer }) {
   }, [confirming])
   const by = entry.source === 'memory panel' ? t('by you') : entry.by ? t('by {name}', { name: entry.by }) : null
   const until = entry.until ? t(entry.expired ? 'ended {day}' : 'until {day}', { day: entry.until }) : null
-  const meta = [entry.added, by, until].filter(Boolean).join(' · ')
+  const standing = entry.standing ? t('Standing') : null
+  const meta = [entry.added, by, standing, until].filter(Boolean).join(' · ')
   const click = async () => {
     if (!confirming) { setConfirming(true); return }
     setBusy(true)

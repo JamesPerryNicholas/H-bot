@@ -50,9 +50,10 @@ function fakeChild(code) {
 }
 
 const registryLatest = dsBot => ({ [`https://registry.npmjs.org/${PKG.name}/latest`]: { version: PKG.version, dsBot } })
+const REPO = /github\.com[/:]([\w.-]+\/[\w.-]+?)(?:\.git)?$/i.exec(String(PKG.repository?.url ?? ''))?.[1] ?? 'JamesPerryNicholas/H-bot'
 const githubLatest = (tag, manifest) => ({
-  'https://api.github.com/repos/JamesPerryNicholas/H-bot/releases/latest': { tag_name: tag },
-  [`https://raw.githubusercontent.com/JamesPerryNicholas/H-bot/${tag}/ds-bot/package.json`]: manifest,
+  [`https://api.github.com/repos/${REPO}/releases/latest`]: { tag_name: tag },
+  [`https://raw.githubusercontent.com/${REPO}/${tag}/ds-bot/package.json`]: manifest,
 })
 
 test('the newest released bot declares the verified DSH, offered to an older npm install', async () => {
@@ -98,13 +99,13 @@ test('a minBot newer than the running bot gates the DSH update until the bot goe
 })
 
 test('a git or local install asks the public repo\'s latest release for its declaration', async () => {
-  for (const source of ['github:JamesPerryNicholas/H-bot#v0.1.0&path:/ds-bot', 'link:/work/ds-bot', undefined]) {
+  for (const source of ['github:Fei2411/DS-Bot#v0.1.0&path:/ds-bot', 'link:/work/ds-bot', undefined]) {
     const { rt, fetched } = start({ source, answers: githubLatest('v9.0.0', { dsBot: { verifiedDsh: '8.8.8' } }) })
     const view = await rt.dshUpdateCheck()
     assert.equal(view.verified, '8.8.8')
     assert.deepEqual(fetched, [
-      'https://api.github.com/repos/JamesPerryNicholas/H-bot/releases/latest',
-      'https://raw.githubusercontent.com/JamesPerryNicholas/H-bot/v9.0.0/ds-bot/package.json',
+      `https://api.github.com/repos/${REPO}/releases/latest`,
+      `https://raw.githubusercontent.com/${REPO}/v9.0.0/ds-bot/package.json`,
     ])
   }
 })

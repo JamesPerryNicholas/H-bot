@@ -263,12 +263,12 @@ var ZH = {
   "Add a provider": "添加服务商",
   "Needs an API key": "需要 API key",
   "Key set": "已设置 key",
-  "Key set outside H bot": "key 在 H bot 之外设置",
+  "Key set outside DS Bot": "key 在 DS Bot 之外设置",
   "No models": "没有模型",
   "{count} models": "{count} 个模型",
   // What a Bot runs on
   "Runs on": "运行方式",
-  "H bot model": "H bot 模型",
+  "DS Bot model": "DS Bot 模型",
   "Local agent": "本地 Agent",
   "CLI default": "CLI 默认",
   "Signed in": "已登录",
@@ -276,7 +276,7 @@ var ZH = {
   "Sign-in unknown": "登录状态未知",
   "Looking for agent CLIs…": "正在查找 Agent CLI…",
   "Reading models…": "正在读取模型…",
-  "Answers with a model served by H bot, with H bot's tools.": "用 H bot 里的模型回答，用 H bot 的工具。",
+  "Answers with a model served by DS Bot, with DS Bot's tools.": "用 DS Bot 里的模型回答，用 DS Bot 的工具。",
   "Answers through this CLI on your computer, with its own tools and sign-in.": "通过这台电脑上的 CLI 回答，用它自己的工具和登录。",
   "Change what {name} runs on?": "更换 {name} 的运行方式？",
   "Its own chat starts a new part with a handoff before the next turn.": "下一轮开始前，它的私聊会开新的一段并做好交接。",
@@ -310,7 +310,7 @@ var ZH = {
   "Current session": "当前会话",
   "This page could not be shown.": "这个页面无法显示。",
   "Current": "当前",
-  "This key comes from outside H bot, such as an environment variable, and cannot be changed here.": "这个 key 来自 H bot 之外（例如环境变量），这里改不了。",
+  "This key comes from outside DS Bot, such as an environment variable, and cannot be changed here.": "这个 key 来自 DS Bot 之外（例如环境变量），这里改不了。",
   "and {count} more": "还有 {count} 个",
   "Remove {name}? Bots on its models need another model.": "删除 {name}？用它的模型的 Bot 要换一个模型。",
   "Remove provider": "删除服务商",
@@ -357,7 +357,8 @@ var ZH = {
   "Could not reach the model service.": "连不上模型服务。",
   "Too many requests. Wait a moment, then try again.": "请求太频繁，稍等一会儿再试。",
   "The model service failed.": "模型服务出错了。",
-  "DeepSeek Harness stopped before this turn finished.": "这一轮还没完成，DeepSeek Harness 就停下了。",
+  "Compacting context": "正在整理上下文",
+  "H bot stopped before this turn finished.": "这一轮还没完成，H bot 就停下了。",
   "This turn failed.": "这一轮运行失败了。",
   "The model service": "模型服务",
   "DeepSeek account": "DeepSeek 账号",
@@ -377,7 +378,7 @@ var ZH = {
   "HTTP status": "HTTP 状态码",
   "Request ID": "请求 ID",
   "Provider message": "原文",
-  "H bot": "H bot",
+  "DS Bot": "DS Bot",
   // Header
   "Message {name}": "给 {name} 发消息",
   Message: "发消息",
@@ -443,7 +444,7 @@ var ZH = {
   "Show less": "收起",
   "Show more": "展开",
   "Admin leads": "管理员主持",
-  "Plain messages go to the admin, who calls others with @Name.": "普通消息先给管理员，由管理员用 @名字 点名其他成员。",
+  "Every ordinary message is answered by all members in turn. The admin speaks first and coordinates their roles. Use @Name to choose who answers.": "普通消息由全体成员轮流回复，管理员先说并协调分工。需要指定回复人时使用 @名字。",
   Everyone: "所有人",
   "Every member answers in turn, admin first.": "每位成员轮流回答，管理员先说。",
   "Members · {count}": "成员 · {count}",
@@ -476,7 +477,7 @@ var ZH = {
   Rename: "重命名",
   "Add instructions in Bot settings": "在 Bot 设置里添加说明",
   "No scheduled tasks yet. To add one, tell the Bot in its chat what to do and when.": "还没有定时任务。要添加，在对话里告诉 Bot 做什么、什么时候做。",
-  "The browser is in DSH Desktop and the H bot app.": "浏览器在 DSH 桌面版和 H bot 应用里。",
+  "The browser is in DSH Desktop and the DS Bot app.": "浏览器在 DSH 桌面版和 DS Bot 应用里。",
   "New tab": "新标签页",
   "Close tab": "关闭标签页",
   "Open {title}": "打开 {title}",
@@ -676,6 +677,10 @@ var ZH = {
   "Group chats": "群聊",
   Secrets: "密钥",
   Appearance: "外观",
+  "Color mode": "深浅色",
+  "Follow system": "跟随系统",
+  "Light appearance": "浅色",
+  "Dark appearance": "深色",
   Theme: "主题",
   "Colors for the whole team, on every device.": "整个团队的配色，所有设备同步。",
   Accent: "强调色",
@@ -704,7 +709,7 @@ var ZH = {
   "No group chats yet.": "还没有群聊。",
   "A group chat lets several Bots work on one thing with you.": "在群聊里，几个 Bot 和你一起做一件事。",
   "Back to group chats": "返回群聊列表",
-  "H bot settings": "H bot 设置",
+  "DS Bot settings": "DS Bot 设置",
   "Settings pages": "设置页面",
   "Advanced settings": "高级设置",
   "Back to models": "返回模型",
@@ -773,14 +778,14 @@ var ZH = {
   "{n} h": "{n} 小时",
   "{n} d": "{n} 天",
   // Plugin updates
-  "H bot {version} is available": "H bot {version} 可以更新",
-  "Updating H bot…": "正在更新 H bot…",
-  "H bot {version} is installed. Restart DSH to use it.": "H bot {version} 已安装，重启 DSH 后生效",
-  "H bot {version} is installed.": "H bot {version} 已安装。",
-  "H bot update": "H bot 更新",
-  "H bot {version}": "H bot {version}",
+  "DS Bot {version} is available": "DS Bot {version} 可以更新",
+  "Updating DS Bot…": "正在更新 DS Bot…",
+  "DS Bot {version} is installed. Restart DSH to use it.": "DS Bot {version} 已安装，重启 DSH 后生效",
+  "DS Bot {version} is installed.": "DS Bot {version} 已安装。",
+  "DS Bot update": "DS Bot 更新",
+  "DS Bot {version}": "DS Bot {version}",
   "Update installed": "更新已安装",
-  "Restart DSH to start using H bot {version}.": "重启 DSH 后开始使用 H bot {version}。",
+  "Restart DSH to start using DS Bot {version}.": "重启 DSH 后开始使用 DS Bot {version}。",
   "You have {version}.": "当前版本 {version}。",
   "The update did not finish: {reason}": "更新没有完成：{reason}",
   "What's new": "更新说明",
@@ -790,7 +795,7 @@ var ZH = {
   "DSH update": "DSH 更新",
   "DSH {version}": "DSH {version}",
   "Restart DSH to start using DSH {version}.": "重启 DSH 后开始使用 DSH {version}。",
-  "Update H bot {version} first.": "先更新 H bot {version}。",
+  "Update DS Bot {version} first.": "先更新 DS Bot {version}。",
   "Open updates": "打开更新",
   // Command palette
   Messages: "消息",
@@ -961,6 +966,11 @@ var ZH = {
   // Questions
   "Your own answer": "你自己的回答",
   "Type your own answer": "输入你自己的回答",
+  "I can take this on": "我可以接着做",
+  "Go ahead": "开始做",
+  "Not this time": "这次先不用",
+  "Start this work now.": "现在就开始做这件事。",
+  "Leave it until I ask.": "先搁着，等你开口再说。",
   Selected: "已选",
   Skip: "跳过",
   Submit: "提交",
@@ -1078,6 +1088,7 @@ var ZH = {
   "by {name}": "由 {name} 添加",
   "Remove from memory": "从记忆中删除",
   "until {day}": "有效至 {day}",
+  Standing: "长期",
   "Tidied: {merged} merged, {moved} moved, {retired} archived": "已整理：合并 {merged} 条，移动 {moved} 条，归档 {retired} 条",
   "Only when needed": "需要时才读",
   "Every conversation": "每次都带",
@@ -1235,16 +1246,19 @@ var ZH = {
   "Compared with the {count} days before": "与再往前 {count} 天相比",
   "{share}% of all usage from {span}": "占 {span} 全部用量的 {share}%",
   // About
-  "About H bot": "关于 H bot",
+  "About DS Bot": "关于 DS Bot",
   "Version {version}": "版本 {version}",
-  "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
-  "Support H bot with a star on GitHub.": "欢迎在 GitHub 上为 H bot 点 Star。",
-  "Source code": "源代码",
-  "Upstream GitHub issue": "上游 GitHub issue",
-  "Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.": "在上游仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
-  "Star H bot on GitHub": "在 GitHub 上给 H bot 点 Star",
+  "Star the upstream project on GitHub": "在 GitHub 上给项目点 Star",
+  "Support the upstream project with a star on GitHub.": "欢迎在 GitHub 上为项目点 Star。",
+  "Upstream source code": "源代码",
+  "Star the project on GitHub": "在 GitHub 上给项目点 Star",
+  "Support the project with a star on GitHub.": "欢迎在 GitHub 上为项目点 Star。",
+  "Upstream GitHub issue": "GitHub issue",
+  "Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.": "在项目仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
+  "Opens a new issue in the project repository with all of this filled in. Nothing is sent until you submit it there.": "在项目仓库新建 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
+  "Star DS Bot on GitHub": "在 GitHub 上给 DS Bot 点 Star",
   "{count} stars": "{count} 个 Star",
-  "If H bot helps you, a star on GitHub helps more people find it.": "如果 H bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。",
+  "If DS Bot helps you, a star on GitHub helps more people find it.": "如果 DS Bot 对你有用，欢迎在 GitHub 上点个 Star，让更多人看到它。",
   Updates: "更新",
   "Check for updates": "检查更新",
   "Checking…": "正在检查…",
@@ -1259,7 +1273,7 @@ var ZH = {
   "{version} is available": "{version} 已发布",
   "Installed from a local folder; update it there.": "从本地文件夹安装，请在那里更新。",
   "Updates are not offered for this install.": "这种安装方式不提供更新。",
-  "Updates come with the H bot app.": "随 H bot 应用一起更新。",
+  "Updates come with the DS Bot app.": "随 DS Bot 应用一起更新。",
   Links: "链接",
   "Source code": "源代码",
   "Release notes": "发布说明",
@@ -1275,7 +1289,7 @@ var ZH = {
   Show: "查看",
   Hide: "收起",
   "GitHub issue": "GitHub issue",
-  "Opens a new issue in the H bot repository with all of this filled in. Nothing is sent until you submit it there.": "在 H bot 仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
+  "Opens a new issue in the DS Bot repository with all of this filled in. Nothing is sent until you submit it there.": "在项目仓库新建一个 issue，并填好以上内容。你在 GitHub 上提交之前，什么都不会发出。",
   "Report on GitHub": "在 GitHub 上报告",
   "Copied the diagnostics.": "已复制诊断信息。",
   "Could not copy. Select the text below and copy it.": "无法复制。请选中下面的文字手动复制。",
@@ -1287,7 +1301,7 @@ var ZH = {
   "Recent errors": "最近的错误",
   "Recent errors · {count}": "最近的错误 · {count}",
   "No errors recorded.": "没有错误记录。",
-  "Failed model calls and H bot problems show here, newest first.": "模型调用失败和 H bot 的问题会显示在这里，最新的在前。",
+  "Failed model calls and DS Bot problems show here, newest first.": "模型调用失败和 DS Bot 的问题会显示在这里，最新的在前。",
   "Model call": "模型调用",
   "This window": "这个窗口",
   "Error log": "错误日志",
@@ -1563,7 +1577,7 @@ var ZH = {
 var HOST_ERRORS = [
   [/^Could not reach the mail server at (.+)\. Check the server address\.$/, "连不上邮件服务器 $1，请检查服务器地址。"],
   [/^Model (.+) is not available\. Available: (.*)$/, "模型 $1 不可用。可用的：$2"],
-  [/^The API key for (.+) is set outside H bot and cannot be changed here$/, "$1 的 API key 是在 H bot 之外设置的，这里改不了"],
+  [/^The API key for (.+) is set outside DS Bot and cannot be changed here$/, "$1 的 API key 是在 DS Bot 之外设置的，这里改不了"],
   [/^(.+) takes no API key here$/, "$1 不能在这里填 API key"],
   [/^(.+) is already set up$/, "$1 已经设置过了"],
   [/^DSH offers no provider (.+)$/, "DSH 没有服务商 $1"],
@@ -1659,14 +1673,14 @@ var HOST_ZH = {
   "This side chat is no longer here.": "这个侧边对话已经不在了。",
   "This side question is no longer here.": "这个侧边提问已经不在了。",
   "This Bot has not called a model yet. Send a normal message first.": "这个 Bot 还没有调用过模型，请先正常发一条消息。",
-  "H bot restarted before this answer finished.": "H bot 在回答完成前重启了。",
+  "DS Bot restarted before this answer finished.": "DS Bot 在回答完成前重启了。",
   "The model called a tool again after being told not to, so this aside was not answered.": "模型在被要求不要调用工具之后又调用了工具，所以这次没有回答。",
   "The model wrote nothing.": "模型没有写任何内容。",
   "Nothing to ask": "没有要问的内容",
   "Nothing to open": "没有要打开的内容",
   "Nothing to cancel": "没有要取消的内容",
   "Nothing to close": "没有要关闭的内容",
-  "H bot is still loading this chat.": "H bot 还在加载这个对话。",
+  "DS Bot is still loading this chat.": "DS Bot 还在加载这个对话。",
   // Computer use
   "Computer use": "电脑操控",
   "Computer": "电脑",
@@ -1716,7 +1730,7 @@ var HOST_ZH = {
   "{name} waits for the computer": "{name} 等你停手"
 };
 Object.assign(ZH, HOST_ZH);
-var brandCopy = (text) => text.replace(/\bH bot\b/g, PRODUCT_NAME);
+var brandCopy = (text) => text.replace(/\bDS Bot\b/g, PRODUCT_NAME);
 var fill = (text, params) => params ? text.replace(/\{(\w+)\}/g, (match, name) => name in params ? String(params[name]) : match) : text;
 var service = null;
 var bound = null;
@@ -1741,7 +1755,7 @@ function t(key, params) {
 function hostText(message) {
   if (Object.hasOwn(ZH, message)) return t(message);
   if (!language().startsWith("zh")) {
-    return message.replace(/ is set outside H bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`);
+    return message.replace(/ is set outside DS Bot and cannot be changed here$/, ` is set outside ${PRODUCT_NAME} and cannot be changed here`);
   }
   for (const [pattern, template] of HOST_ERRORS) {
     if (pattern.test(message)) return message.replace(pattern, brandCopy(template));
@@ -2172,7 +2186,7 @@ function teamActions({ call: call2, after, partFor, roster, ui: ui2, live, cards
       ui2.set((state) => ({ ...state, details: id, view: "details", renaming: true, tab: null, panelYield: yieldTo(state, "details") }));
     },
     openSettings,
-    // H bot's own Models page: the providers DSH serves, their keys and models.
+    // DS Bot's own Models page: the providers DSH serves, their keys and models.
     openModels: () => openSettings("models"),
     closeSettings: () => {
       ui2.set((state) => state.settings ? { ...state, settings: null } : state);
@@ -2210,7 +2224,7 @@ function teamActions({ call: call2, after, partFor, roster, ui: ui2, live, cards
     closePanel: () => {
       ui2.set((state) => state.details ? { ...state, details: null, view: "details", renaming: false, tab: null, side: null } : state);
     },
-    quote: (sessionId, text) => ui2.set((state) => ({ ...state, quote: { sessionId, text, token: Date.now() } })),
+    quote: (sessionId, text, mention) => ui2.set((state) => ({ ...state, quote: { sessionId, text, ...mention ? { mention } : {}, token: Date.now() } })),
     clearQuote: (token) => ui2.set((state) => state.quote?.token === token ? { ...state, quote: null } : state),
     setFlags: (id, flags) => after(call2("set-flags", { id, ...flags })),
     saveSection: (payload) => after(call2("section-save", payload)),
@@ -3293,6 +3307,8 @@ body[data-bt-motion=quiet] .bt-mark[data-poke]{cursor:default}
 .bt-round:hover{background:var(--bt-hover)}
 .bt-round:active{transform:scale(.94)}
 .bt-list{display:flex;flex-direction:column;gap:3px;overflow-y:auto;min-height:0;flex:1 1 auto}.bt-list-loose,.bt-sec-ungrouped{flex:1 1 auto;min-height:48px;border-radius:12px}.bt-list-loose[data-drop=true],.bt-sec-ungrouped[data-drop=true]{background:var(--bt-hover);outline:1.5px dashed var(--bt-line);outline-offset:-2px}
+/* Scroll the list as a whole; shrinking its groups lets overflowing rows cover the next folder. */
+.bt-list>*{flex-shrink:0}
 /* Chromium ignores ::-webkit-scrollbar when scrollbar-width or scrollbar-color (inherited) is non-auto. */
 .bt-side:not(.bt-rail)>.bt-list{margin-right:-12px;scrollbar-gutter:stable;scrollbar-width:auto;scrollbar-color:auto}
 .bt-side:not(.bt-rail)>.bt-list::-webkit-scrollbar{width:12px}
@@ -3568,7 +3584,7 @@ html[data-windows-titlebar]:not([data-fullscreen]) :is(.bt-pane,.bt-panel)::befo
 .bt-fold{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin-top:4px;white-space:normal}
 .bt-fold-code{position:relative}
 .bt-fold-code>.bt-tool{position:absolute;right:6px;bottom:6px}
-/* The part of a cut code block the preview keeps, drawn by H bot so the host's
+/* The part of a cut code block the preview keeps, drawn by DS Bot so the host's
    Markdown draws no copy control of its own for it. */
 .bt-fold-code>.bt-fold-pre{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,currentColor 6%,transparent);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:20px;overflow-x:auto}
 .bt-fold-code>*+.bt-fold-pre{margin-top:6px}
@@ -3711,12 +3727,13 @@ body[data-ds-dark-theme] .bt-scrim{background:rgba(0,0,0,.5)}
 /* A DSH page opens on its own title, which the dialog head already shows. */
 .bt-dsh-section>[data-slot]>*>h2:first-child,.bt-dsh-section>[data-slot]>*>:first-child>h2:first-child{display:none}
 .bt-dsh-item{min-width:0}
-/* DSH's General rows draw their own row inside H bot's card: the card's inset and
-   rules apply, an empty row takes no line, and Appearance is already the section title. */
+/* DSH's General rows draw their own row inside DS Bot's card: the card's inset and
+   rules apply, an empty row takes no line, and Appearance is already the section title.
+   Color mode replaces DSH's appearance cubes, so that item stays hidden if it is drawn. */
 .bt-dsh-item>[data-slot]>*{padding-left:12px;padding-right:12px;border-bottom-width:0}
 .bt-dsh-item>[data-slot]>.bt-set-row{padding:10px 12px}
 .bt-dsh-item:has(>[data-slot]:empty){display:none}
-.bt-dsh-item[data-item=appearance]>[data-slot]>*>:first-child{display:none}
+.bt-dsh-item[data-item=appearance]{display:none}
 .bt-advanced{width:100%;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;justify-content:space-between}
 .bt-advanced:hover{background:var(--bt-hover)}
 .bt-advanced>svg{flex:none;color:var(--bt-ink-3)}
@@ -4227,7 +4244,7 @@ body[data-bt-layout=flat] .bt-think{max-width:calc(var(--bt-flat-w) * 100%)}
 /* A turn's process seat is a flow child of its own, not a flowItem: a seat whose
    member cells all emptied themselves (a hidden exchange turn, a turn whose
    calls draw nothing) still kept its margin, stacking a blank band per hidden
-   call. Only the slot a H bot cell marked counts, so a seat another renderer
+   call. Only the slot a DS Bot cell marked counts, so a seat another renderer
    fills — even with plain text and no element child — is never taken for empty. */
 [data-step-process]:has(> [data-step-process-body] [data-slot="conversation.chat.node"][data-bt-emptied]):not(:has(> [data-step-process-body] [data-slot="conversation.chat.node"]:not([data-bt-emptied]))){display:none!important}
 /* A generate_image result shows its picture in the chat flow, without bringing
@@ -4966,6 +4983,7 @@ var PREFIX = "local-";
 var CUSTOM_PREFIX = `${PREFIX}acp-`;
 var cliOf = (route) => typeof route === "string" && route.startsWith(PREFIX) ? route.slice(PREFIX.length) : void 0;
 var AGENT_BADGES = {
+  "antigravity": ["AG", "blue"],
   "devin-cli": ["DV", "violet"],
   "claude-code": ["CC", "tangerine"],
   "codex-cli": ["CX", "green"],
@@ -5568,10 +5586,127 @@ function useDockHold(sessionId, kind, requestId, actions, inline) {
   };
 }
 
+// src/shared/pitch.js
+var PITCH_TOOL = "pitch_in";
+var PITCH_ACCEPT = "Go ahead";
+var PITCH_DECLINE = "Not this time";
+var PITCH_WORK_MAX = 400;
+var PITCH_WHY_MAX = 200;
+var clipPitch = (value, max) => String(value ?? "").trim().slice(0, max);
+var isPitchAccept = (question, answer) => {
+  if (question?.kind !== "pitch") return false;
+  const custom = typeof answer?.custom === "string" ? answer.custom.trim() : "";
+  if (custom !== "") return true;
+  const selected = Array.isArray(answer?.selected) ? answer.selected : [];
+  return selected.includes(PITCH_ACCEPT) && !selected.includes(PITCH_DECLINE);
+};
+var isPitchDecline = (question, answer) => {
+  if (question?.kind !== "pitch") return false;
+  const custom = typeof answer?.custom === "string" ? answer.custom.trim() : "";
+  if (custom !== "") return false;
+  const selected = Array.isArray(answer?.selected) ? answer.selected : [];
+  return selected.includes(PITCH_DECLINE) && !selected.includes(PITCH_ACCEPT);
+};
+function pitchProblem({ work, why, isGroup, isBotChat, hiddenExchange, openQuestion, pitchState } = {}) {
+  if (isGroup) return "Pitch-in only works in your own chat. In a group, suggest it in your message instead.";
+  if (!isBotChat) return "Only Bots on the team can use pitch_in.";
+  if (hiddenExchange) return "Pitch-in is for the user. Do not suggest work in a Bot-to-Bot turn.";
+  const trimmed2 = clipPitch(work, PITCH_WORK_MAX);
+  if (trimmed2 === "") return "Say what you would do, in one or two short sentences.";
+  if (String(work ?? "").trim().length > PITCH_WORK_MAX) return `Keep the work to ${PITCH_WORK_MAX} characters.`;
+  if (why !== void 0 && why !== null && String(why).trim().length > PITCH_WHY_MAX) return `Keep the reason to ${PITCH_WHY_MAX} characters.`;
+  if (openQuestion !== void 0) return "A card is already waiting in this chat. Wait for the user to answer it first.";
+  if (pitchState?.pendingId) return "A suggestion is already waiting in this chat.";
+  if (pitchState?.pitchedSinceUserMsg) {
+    return "You already made a suggestion since the user last wrote. Wait until they send a new message before suggesting again.";
+  }
+  return void 0;
+}
+function buildPitchQuestion({ work, why, callId, hidden, id, now } = {}) {
+  const trimmed2 = clipPitch(work, PITCH_WORK_MAX);
+  const reason = clipPitch(why, PITCH_WHY_MAX);
+  return {
+    id,
+    kind: "pitch",
+    work: trimmed2,
+    question: trimmed2,
+    ...reason ? { why: reason, detail: reason } : {},
+    options: [
+      { label: PITCH_ACCEPT, description: "Start this work now." },
+      { label: PITCH_DECLINE, description: "Leave it until the user asks." }
+    ],
+    allowCustom: true,
+    askedAt: now,
+    ...callId && !hidden ? { callId } : {}
+  };
+}
+function pitchCardText(args) {
+  const work = clipPitch(args?.work ?? args?.question, PITCH_WORK_MAX);
+  if (work === "") return "";
+  const why = clipPitch(args?.why ?? args?.detail, PITCH_WHY_MAX);
+  return why ? `[Suggestion] ${work} (${why})` : `[Suggestion] ${work}`;
+}
+function pitchReplyText(question, answer) {
+  const work = clipPitch(question?.work ?? question?.question, PITCH_WORK_MAX);
+  const custom = typeof answer?.custom === "string" ? answer.custom.trim() : "";
+  const task = custom !== "" ? custom : work;
+  if (task === "") return "[Accepted suggestion] The user accepted. Do only the work you suggested, and nothing else that would send messages, spend money, or delete things unless that work already needs it.";
+  if (custom !== "") {
+    return `[Accepted suggestion] The user accepted, with this change: ${custom}
+Do this work now, and only this work. A suggestion is not permission to send messages, spend money, or delete things beyond what this work needs.`;
+  }
+  return `[Accepted suggestion] The user accepted.
+Do this work now, and only this work: ${work}. A suggestion is not permission to send messages, spend money, or delete things beyond what this work needs.`;
+}
+function askedPitchOf(question, args) {
+  const work = clipPitch(question?.work ?? question?.question ?? args?.work ?? args?.question, PITCH_WORK_MAX);
+  const why = clipPitch(question?.why ?? question?.detail ?? args?.why ?? args?.detail, PITCH_WHY_MAX);
+  return {
+    kind: "pitch",
+    question: work,
+    work,
+    ...why ? { detail: why, why } : {},
+    options: [
+      { label: PITCH_ACCEPT, description: "Start this work now." },
+      { label: PITCH_DECLINE, description: "Leave it until the user asks." }
+    ],
+    allowCustom: true
+  };
+}
+function settlePitchState(current, outcome, now = Date.now()) {
+  const next = { ...current };
+  delete next.pendingId;
+  next.lastOutcome = outcome;
+  next.lastAt = now;
+  if (outcome === "replied") delete next.pitchedSinceUserMsg;
+  return next;
+}
+function noteUserSpokeState(current, now = Date.now()) {
+  const next = { ...current };
+  delete next.pitchedSinceUserMsg;
+  next.userSpokeAt = now;
+  return next;
+}
+function openPitchState(current, pendingId, work, now = Date.now()) {
+  return {
+    ...current,
+    pendingId,
+    lastWork: work,
+    lastAt: now,
+    pitchedSinceUserMsg: true
+  };
+}
+
 // src/client/questions.js
 var import_react9 = require("react");
 var keyLetter = (index) => String.fromCharCode(65 + index);
 var optionsOf = (question) => (question?.options ?? []).map((option) => typeof option === "string" ? { label: option } : option);
+var pitchLabel = (label) => {
+  if (label === PITCH_ACCEPT) return t("Go ahead");
+  if (label === PITCH_DECLINE) return t("Not this time");
+  return label;
+};
+var shownLabel = (question, label) => question?.kind === "pitch" ? pitchLabel(label) : label;
 var isTypingTarget = (node) => node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement || node instanceof HTMLSelectElement || node instanceof HTMLElement && node.isContentEditable;
 var optionKeyCards = createSource(0);
 function useOptionKeys(count, onPick, ownRef) {
@@ -5668,8 +5803,8 @@ function QuestionView({ question, onAnswer, onDismiss, onInteract, busy = false,
       (0, import_react9.createElement)(
         "span",
         { className: "bt-q-body" },
-        (0, import_react9.createElement)("span", { className: "bt-q-label" }, option.label),
-        option.description ? (0, import_react9.createElement)("span", { className: "bt-q-desc" }, option.description) : null
+        (0, import_react9.createElement)("span", { className: "bt-q-label" }, shownLabel(question, option.label)),
+        option.description ? (0, import_react9.createElement)("span", { className: "bt-q-desc" }, question.kind === "pitch" && option.label === PITCH_ACCEPT ? t("Start this work now.") : question.kind === "pitch" && option.label === PITCH_DECLINE ? t("Leave it until I ask.") : option.description) : null
       ),
       selected && !raised ? (0, import_react9.createElement)("span", { className: "bt-q-check", title: t("Selected") }, (0, import_react9.createElement)(CheckIcon)) : null
     );
@@ -5712,7 +5847,12 @@ function QuestionView({ question, onAnswer, onDismiss, onInteract, busy = false,
       (0, import_react9.createElement)(
         "div",
         { className: "bt-q-text" },
-        (0, import_react9.createElement)("p", { className: "bt-q-title", id: titleId }, question.header ? `${question.header} · ` : "", question.question),
+        question.kind === "pitch" ? (0, import_react9.createElement)(
+          import_react9.Fragment,
+          null,
+          (0, import_react9.createElement)("p", { className: "bt-q-title", id: titleId }, t("I can take this on")),
+          question.question ? (0, import_react9.createElement)("div", { className: "bt-q-detail" }, question.question) : null
+        ) : (0, import_react9.createElement)("p", { className: "bt-q-title", id: titleId }, question.header ? `${question.header} · ` : "", question.question),
         question.detail ? (0, import_react9.createElement)("div", { className: "bt-q-detail" }, question.detail) : null,
         raised && multi ? (0, import_react9.createElement)("div", { className: "bt-q-detail" }, t("Choose all that apply")) : null
       ),
@@ -5739,20 +5879,28 @@ function SettledQuestion({ question, answer, closed }) {
     ...selected.map((label) => ({ label, at: options.findIndex((option) => option.label === label) })),
     ...custom !== "" ? [{ label: custom, at: options.length }] : []
   ] : [];
+  const title = question?.kind === "pitch" ? t("I can take this on") : prompt;
+  const aria = question?.kind === "pitch" ? [t("I can take this on"), prompt].filter(Boolean).join(" ") : prompt;
   return (0, import_react9.createElement)(
     "div",
-    { className: answered ? "bt-q bt-q-settled bt-q-answered" : "bt-q bt-q-settled bt-q-dismissed", role: "group", "aria-label": prompt },
+    { className: answered ? "bt-q bt-q-settled bt-q-answered" : "bt-q bt-q-settled bt-q-dismissed", role: "group", "aria-label": aria },
     (0, import_react9.createElement)(
       "div",
       { className: "bt-q-head" },
-      (0, import_react9.createElement)("div", { className: "bt-q-text" }, prompt ? (0, import_react9.createElement)("p", { className: "bt-q-title" }, prompt) : null),
+      (0, import_react9.createElement)(
+        "div",
+        { className: "bt-q-text" },
+        title ? (0, import_react9.createElement)("p", { className: "bt-q-title" }, title) : null,
+        question?.kind === "pitch" && prompt ? (0, import_react9.createElement)("div", { className: "bt-q-detail" }, prompt) : null,
+        question?.kind === "pitch" && question.detail ? (0, import_react9.createElement)("div", { className: "bt-q-detail" }, question.detail) : null
+      ),
       answered ? null : (0, import_react9.createElement)("span", { className: "bt-q-badge" }, closedLabel(closed))
     ),
     chosen.length > 0 ? (0, import_react9.createElement)("div", { className: "bt-q-list", role: "group", "aria-label": t("Your answer") }, chosen.map(({ label, at }, index) => (0, import_react9.createElement)(
       "div",
       { key: `${label}-${index}`, className: "bt-q-opt", title: t("Selected") },
       at >= 0 ? (0, import_react9.createElement)("span", { className: "bt-key", "aria-hidden": true }, keyLetter(at)) : null,
-      (0, import_react9.createElement)("span", { className: "bt-q-body" }, (0, import_react9.createElement)("span", { className: "bt-q-label" }, label))
+      (0, import_react9.createElement)("span", { className: "bt-q-body" }, (0, import_react9.createElement)("span", { className: "bt-q-label" }, shownLabel(question, label)))
     ))) : null
   );
 }
@@ -10188,7 +10336,7 @@ function CliList({ agents, known, scanning, refresh, selected, onPick, actions }
 var RunModeSwitch = ({ mode, setMode }) => (0, import_react20.createElement)(
   Segmented,
   { label: t("Runs on"), value: mode },
-  (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "model", onClick: () => setMode("model") }, t("H bot model")),
+  (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "model", onClick: () => setMode("model") }, t("DS Bot model")),
   (0, import_react20.createElement)("button", { type: "button", "aria-pressed": mode === "local", onClick: () => setMode("local") }, t("Local agent"))
 );
 var ReadingModels = () => (0, import_react20.createElement)(
@@ -10228,8 +10376,8 @@ function RunModeCard({ bot, roster, actions, run: run2, Card: Card3 }) {
       (0, import_react20.createElement)(
         "span",
         { className: "bt-set-copy" },
-        (0, import_react20.createElement)("span", { className: "bt-bs-label" }, bot.engine === void 0 ? t("H bot model") : engineName, bot.engine === void 0 ? null : (0, import_react20.createElement)(AgentBadge, { engine: bot.engine })),
-        (0, import_react20.createElement)("span", { className: "bt-set-hint" }, bot.engine === void 0 ? t("Answers with a model served by H bot, with H bot's tools.") : t("Answers through this CLI on your computer, with its own tools and sign-in."))
+        (0, import_react20.createElement)("span", { className: "bt-bs-label" }, bot.engine === void 0 ? t("DS Bot model") : engineName, bot.engine === void 0 ? null : (0, import_react20.createElement)(AgentBadge, { engine: bot.engine })),
+        (0, import_react20.createElement)("span", { className: "bt-set-hint" }, bot.engine === void 0 ? t("Answers with a model served by DS Bot, with DS Bot's tools.") : t("Answers through this CLI on your computer, with its own tools and sign-in."))
       ),
       (0, import_react20.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", "aria-expanded": open, onClick: () => open ? setOpen(false) : start() }, open ? t("Cancel") : t("Change"))
     ),
@@ -11287,7 +11435,8 @@ function EntryRow({ entry, remove, pin, layer }) {
   }, [confirming]);
   const by = entry.source === "memory panel" ? t("by you") : entry.by ? t("by {name}", { name: entry.by }) : null;
   const until = entry.until ? t(entry.expired ? "ended {day}" : "until {day}", { day: entry.until }) : null;
-  const meta = [entry.added, by, until].filter(Boolean).join(" · ");
+  const standing = entry.standing ? t("Standing") : null;
+  const meta = [entry.added, by, standing, until].filter(Boolean).join(" · ");
   const click = async () => {
     if (!confirming) {
       setConfirming(true);
@@ -12998,8 +13147,8 @@ function MailSendCard({ sessionId, bot, request, roster, actions, inline = false
     if (busyRef.current) return;
     busyRef.current = true;
     setBusy(true);
-    const send = values?.canceled !== true && values?.fields !== void 0;
-    void Promise.resolve(actions.mailSendAnswer(request.id, send ? "send" : "cancel", send ? { fields: values.fields, rule } : { rule })).catch(() => {
+    const send2 = values?.canceled !== true && values?.fields !== void 0;
+    void Promise.resolve(actions.mailSendAnswer(request.id, send2 ? "send" : "cancel", send2 ? { fields: values.fields, rule } : { rule })).catch(() => {
     }).finally(() => {
       busyRef.current = false;
       setBusy(false);
@@ -13913,7 +14062,7 @@ function Bubble({ text, index, roster, selfId, actions, sessionId, msgKey, menti
         control ? (0, import_react32.createElement)("div", { className: "bt-fold-body" }, area) : area,
         control
       ),
-      live ? null : (0, import_react32.createElement)(MessageTools, { text: folded ? text : shown, name: roster.byId[selfId]?.name ?? t("Bot"), sessionId, react: key ? (emoji) => actions.toggleReaction(msgKey, index, emoji) : void 0, actions, open: toolsOpen })
+      live ? null : (0, import_react32.createElement)(MessageTools, { text: folded ? text : shown, name: roster.byId[selfId]?.name ?? t("Bot"), sessionId, mention: roster.roomsById?.[sessionId] ? roster.byId[selfId]?.name : void 0, react: key ? (emoji) => actions.toggleReaction(msgKey, index, emoji) : void 0, actions, open: toolsOpen })
     ),
     picked.length ? (0, import_react32.createElement)("div", { className: "bt-reacts" }, picked.map((emoji) => (0, import_react32.createElement)("button", {
       key: emoji,
@@ -13949,7 +14098,7 @@ function useDismiss(open, close, refs) {
     };
   }, [open]);
 }
-function MessageTools({ text, name, sessionId, react, actions, open: tapped }) {
+function MessageTools({ text, name, sessionId, mention, react, actions, open: tapped }) {
   const [panel, setPanel] = (0, import_react32.useState)(null);
   const [copied, setCopied] = (0, import_react32.useState)(false);
   const tools = (0, import_react32.useRef)(null);
@@ -13990,7 +14139,7 @@ function MessageTools({ text, name, sessionId, react, actions, open: tapped }) {
     "div",
     { ref: tools, className: "bt-tools", "data-open": panel !== null || tapped || void 0 },
     react ? (0, import_react32.createElement)("button", { type: "button", className: "bt-tool", "aria-label": t("Add reaction"), title: t("Add reaction"), "aria-expanded": panel?.kind === "react", onClick: (event) => open("react", event) }, (0, import_react32.createElement)(SmileIcon)) : null,
-    sessionId ? (0, import_react32.createElement)("button", { type: "button", className: "bt-tool", "aria-label": t("Reply"), title: t("Reply"), onClick: () => actions.quote(sessionId, text) }, (0, import_react32.createElement)(ReplyIcon)) : null,
+    sessionId ? (0, import_react32.createElement)("button", { type: "button", className: "bt-tool", "aria-label": t("Reply"), title: t("Reply"), onClick: () => actions.quote(sessionId, text, mention) }, (0, import_react32.createElement)(ReplyIcon)) : null,
     (0, import_react32.createElement)("button", { type: "button", className: "bt-tool", "aria-label": t("More message actions"), title: t("More"), "aria-haspopup": "menu", "aria-expanded": panel?.kind === "more", onClick: (event) => open("more", event) }, copied ? (0, import_react32.createElement)(CheckIcon) : (0, import_react32.createElement)(DotsIcon)),
     panel?.kind === "react" ? (0, import_react_dom3.createPortal)((0, import_react32.createElement)(
       "div",
@@ -14129,7 +14278,6 @@ function AssistantCell({ node, groupPart, sessionId, openFile, fileMentions, use
       });
     }),
     head ? (0, import_react32.createElement)(SpeakerHead, { bot: speaker, time: data.time }) : null,
-    liveWork ? (0, import_react32.createElement)(AgentActLive, { line: activity.at(-1), bot: roster.byId[sessionId] }) : null,
     reasoning ? (0, import_react32.createElement)(ThinkingRow, {
       text: reasoning,
       live: thinking !== void 0,
@@ -14147,6 +14295,7 @@ function activityName(line) {
 }
 function activityLabel(line) {
   const name = String(line ?? "").trim();
+  if (name === "contextCompaction") return t("Compacting context");
   const token = activityName(name);
   if (/^[A-Za-z][\w./-]*$/.test(token)) {
     const found = toolActivity(token, () => void 0, () => void 0);
@@ -14157,15 +14306,6 @@ function activityLabel(line) {
 function activityMarkState(line) {
   const token = activityName(line);
   return /^[A-Za-z][\w./-]*$/.test(token) ? toolState(token) : "working";
-}
-function AgentActLive({ line, bot }) {
-  const text = activityLabel(line);
-  return (0, import_react32.createElement)(
-    "div",
-    { className: "bt-activity" },
-    bot ? (0, import_react32.createElement)(BotMark, { bot, size: 28, state: activityMarkState(line), live: true }) : (0, import_react32.createElement)("span", { className: "bt-agent-act-mark", "data-live": true, "aria-hidden": true }),
-    (0, import_react32.createElement)(Shimmer, null, `${text}…`)
-  );
 }
 function AgentActRow({ line, id, live }) {
   const [open, setOpen] = (0, import_react32.useState)(false);
@@ -14730,6 +14870,7 @@ var GROUP_PHRASES = { create_group: "Creating a group", update_group: "Updating 
 function toolActivity(name, arg, findBot, self) {
   switch (name) {
     case "ask_user":
+    case PITCH_TOOL:
       return null;
     case "request_secret":
       return null;
@@ -14925,8 +15066,8 @@ function GroupReplies({ sessionId, callId, done, content, roster, actions, useUi
   );
 }
 var isComputerCall = (name) => name === "cua" || name?.startsWith("cua_driver_native__") === true;
-var DRAWN = /* @__PURE__ */ new Set(["message_bot", "stop_bot", "create_bot", "update_bot", "group_relay", "create_group", "update_group", "delete_group", "post_to_group", "ask_user", "request_secret", "request_connector", "mail_send", "ask_user_question", "show_view", "browser_handoff", "read_group_chat", "remember", "forget"]);
-var CARDS = /* @__PURE__ */ new Set(["ask_user", "request_secret", "request_connector", "mail_send", "show_view", "browser_handoff", "computer_handoff"]);
+var DRAWN = /* @__PURE__ */ new Set(["message_bot", "stop_bot", "create_bot", "update_bot", "group_relay", "create_group", "update_group", "delete_group", "post_to_group", "ask_user", PITCH_TOOL, "request_secret", "request_connector", "mail_send", "ask_user_question", "show_view", "browser_handoff", "read_group_chat", "remember", "forget"]);
+var CARDS = /* @__PURE__ */ new Set(["ask_user", PITCH_TOOL, "request_secret", "request_connector", "mail_send", "show_view", "browser_handoff", "computer_handoff"]);
 function toolResultImages(content) {
   const images = [];
   for (const block of Array.isArray(content) ? content : []) {
@@ -15035,12 +15176,13 @@ function renderCall(call2, { sessionId, roster, actions, useUi, useWork, findBot
       const room2 = roster.rooms.find((entry) => entry.name === name);
       return (0, import_react32.createElement)(GroupEvent, { prefix: t(verbs[0]), room: tool === "delete_group" ? void 0 : room2, name, roster, actions });
     }
-    case "ask_user": {
+    case "ask_user":
+    case PITCH_TOOL: {
       const question = roster.questions?.[sessionId];
       if (!question || question.callId !== call2.callId) {
         const closed = roster.closedCards?.[sessionId]?.[call2.callId];
         if (closed === void 0) return (0, import_react32.createElement)(CellEmpty, { className: "bt-q-gone" });
-        const asked = { question: arg("question") ?? "", detail: arg("detail"), options: argValue("options") ?? [], multiSelect: argValue("multiSelect") === true };
+        const asked = tool === PITCH_TOOL ? askedPitchOf(void 0, { work: arg("work"), why: arg("why"), question: arg("question"), detail: arg("detail") }) : { question: arg("question") ?? "", detail: arg("detail"), options: argValue("options") ?? [], multiSelect: argValue("multiSelect") === true };
         return (0, import_react32.createElement)("div", { className: "bt-q-inline" }, (0, import_react32.createElement)(SettledQuestion, { question: asked, closed }));
       }
       if (heldCards?.[heldCardKey("question", question.id)] > 0) return (0, import_react32.createElement)(CellEmpty);
@@ -16015,7 +16157,7 @@ function BotRow({ bot, roster, actions, useSessions, useSessionStatus, useSessio
   const preview = useSessions((list) => previewOf(list, part, roster.exchangeTurns[part]));
   const running = useSessionStatus((map) => map.get(part)?.running === true);
   const active = useSessionRetainInfo(part, (info) => (info?.retainedBy?.mainView ?? 0) > 0);
-  const unread = unreadIncoming?.[part] === true || useSessionStatus((map) => map.get(part)?.pendingInteraction !== void 0) || marked;
+  const unread = useSessionStatus((map) => map.get(part)?.pendingInteraction !== void 0) || unreadIncoming?.[part] === true || marked;
   useMarkedUnread(id, active, marked, actions);
   const main = isMainOf(roster, id);
   const tile = asTile === true || roster.mainBotId === id;
@@ -17056,10 +17198,10 @@ function UpdateButton({ useUpdate, actions }) {
     setDshError("");
     void actions.installDshUpdate().catch((failure) => setDshError(hostText(failure?.message ?? String(failure))));
   };
-  const label = phase === "installing" ? t("Updating H bot…") : dshPhase === "installing" ? t("Updating DSH…") : phase === "installed" ? t("H bot {version} is installed. Restart DSH to use it.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("H bot {version} is installed.", { version: update.installed ?? update.latest }) : dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : update?.available ? t("H bot {version} is available", { version: update.latest }) : t("DSH {version} is available", { version: dsh?.verified });
+  const label = phase === "installing" ? t("Updating DS Bot…") : dshPhase === "installing" ? t("Updating DSH…") : phase === "installed" ? t("DS Bot {version} is installed. Restart DSH to use it.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("DS Bot {version} is installed.", { version: update.installed ?? update.latest }) : dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : update?.available ? t("DS Bot {version} is available", { version: update.latest }) : t("DSH {version} is available", { version: dsh?.verified });
   const message = error || (phase === "failed" ? update.error : "");
   const dshMessage = dshError || (dshPhase === "failed" ? dsh?.error : "");
-  const dshText = dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : dsh?.available === false && dsh?.blockedBy ? t("Update H bot {version} first.", { version: dsh.blockedBy }) : t("You have {version}.", { version: dsh?.current });
+  const dshText = dshPhase === "installed" ? t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified }) : dsh?.available === false && dsh?.blockedBy ? t("Update DS Bot {version} first.", { version: dsh.blockedBy }) : t("You have {version}.", { version: dsh?.current });
   return (0, import_react37.createElement)(
     import_react37.Fragment,
     null,
@@ -17076,12 +17218,12 @@ function UpdateButton({ useUpdate, actions }) {
     }, (0, import_react37.createElement)(CloudDownloadIcon, { done: phase === "installed" || phase === "updated" }), phase === "failed" || dshPhase === "failed" ? (0, import_react37.createElement)("span", { className: "bt-update-dot", "aria-hidden": true }) : null),
     shown && box ? (0, import_react_dom5.createPortal)((0, import_react37.createElement)(
       "div",
-      { className: "bt-update-pop", role: "dialog", "aria-label": update?.available || phase !== "idle" ? t("H bot update") : t("DSH update"), style: box, "data-leaving": leaving || void 0 },
+      { className: "bt-update-pop", role: "dialog", "aria-label": update?.available || phase !== "idle" ? t("DS Bot update") : t("DSH update"), style: box, "data-leaving": leaving || void 0 },
       update?.available || phase !== "idle" ? (0, import_react37.createElement)(
         import_react37.Fragment,
         null,
-        (0, import_react37.createElement)("div", { className: "bt-update-title" }, phase === "installed" || phase === "updated" ? t("Update installed") : t("H bot {version}", { version: update.latest })),
-        (0, import_react37.createElement)("div", { className: "bt-update-text" }, phase === "installed" ? t("Restart DSH to start using H bot {version}.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("H bot {version} is installed.", { version: update.installed ?? update.latest }) : t("You have {version}.", { version: update.current })),
+        (0, import_react37.createElement)("div", { className: "bt-update-title" }, phase === "installed" || phase === "updated" ? t("Update installed") : t("DS Bot {version}", { version: update.latest })),
+        (0, import_react37.createElement)("div", { className: "bt-update-text" }, phase === "installed" ? t("Restart DSH to start using DS Bot {version}.", { version: update.installed ?? update.latest }) : phase === "updated" ? t("DS Bot {version} is installed.", { version: update.installed ?? update.latest }) : t("You have {version}.", { version: update.current })),
         message ? (0, import_react37.createElement)("div", { className: "bt-update-error", role: "alert" }, t("The update did not finish: {reason}", { reason: message })) : null,
         (0, import_react37.createElement)(
           "div",
@@ -17478,7 +17620,7 @@ var SIDEBAR_CSS = `
 [class*="_footArea"]:has(.bt-foot-account)>[class*="_settingsArea"]{grid-column:3}
 [class*="_footArea"]:has(.bt-foot-account)>[class*="_settingsArea"] button[class*="_trigger"] [class*="_label"]{display:none!important}
 
-/* The update cloud springs in when a newer H bot shows up; its arrow drops in a
+/* The update cloud springs in when a newer DS Bot shows up; its arrow drops in a
    loop while the install runs. */
 .bt-round.bt-update{position:relative;color:var(--bt-accent,#4D6BFE);animation:bt-update-in ${SPRING_SHAPE.duration}ms ${SPRING_SHAPE.easing}}
 .bt-round.bt-update svg{width:17px;height:17px}
@@ -17593,6 +17735,48 @@ var SIDEBAR_CSS = `
 @media (prefers-reduced-motion:reduce){.bt-sec-body,.bt-sec-chev,.bt-sec-act,.bt-rail-folder{transition:none}.bt-sec-pile{animation:none}}
 `;
 
+// src/client/color-mode.js
+var COLOR_MODES = Object.freeze(["system", "light", "dark"]);
+var DEFAULT_COLOR_MODE = "system";
+var COLOR_MODE_OPTIONS = Object.freeze([
+  ["system", "Follow system"],
+  ["light", "Light appearance"],
+  ["dark", "Dark appearance"]
+]);
+function colorModeOf(value) {
+  return COLOR_MODES.includes(value) ? value : DEFAULT_COLOR_MODE;
+}
+function resolvedColorScheme(preference, systemDark) {
+  const mode = colorModeOf(preference);
+  if (mode === "light") return "light";
+  if (mode === "dark") return "dark";
+  return systemDark ? "dark" : "light";
+}
+function themeSourceOf(preference) {
+  const mode = colorModeOf(preference);
+  return mode === "system" ? "system" : mode;
+}
+function colorModeSource(theme, onChange) {
+  return {
+    getSnapshot: () => colorModeOf(theme?.getTheme?.()?.preference),
+    subscribe: (listener) => {
+      if (typeof onChange !== "function") return () => {
+      };
+      const off = onChange(listener);
+      return typeof off === "function" ? off : () => {
+      };
+    }
+  };
+}
+function bindColorMode(theme, onChange) {
+  return {
+    colorMode: colorModeSource(theme, onChange),
+    setColorMode: (id) => {
+      theme?.setTheme?.(colorModeOf(id));
+    }
+  };
+}
+
 // src/client/permission-picker.js
 var import_react38 = require("react");
 var LABELS = { "read-only": "Read only", "workspace-write": "Workspace", "danger-full-access": "Full access" };
@@ -17606,13 +17790,13 @@ function PermissionPicker({ catalog, saved, onPick, repick = false }) {
     const flying = flight.current.value;
     if (pending === saved && (flying === void 0 || flying === pending)) setPending(null);
   }, [pending, saved]);
-  const send = (value) => {
+  const send2 = (value) => {
     flight.current.value = value;
     void Promise.resolve(onPick(value)).then((done) => done !== false, () => false).then((ok) => {
       const wanted = flight.current.latest;
       flight.current.latest = void 0;
       if (wanted !== void 0 && !(wanted === value && ok)) {
-        send(wanted);
+        send2(wanted);
         return;
       }
       flight.current.value = void 0;
@@ -17627,7 +17811,7 @@ function PermissionPicker({ catalog, saved, onPick, repick = false }) {
       flight.current.latest = value;
       return;
     }
-    send(value);
+    send2(value);
   };
   return (0, import_react38.createElement)(
     Segmented,
@@ -17646,7 +17830,7 @@ function PermissionPicker({ catalog, saved, onPick, repick = false }) {
 // src/client/group-settings.js
 var import_react39 = require("react");
 var ROOM_MODES = [
-  ["admin", "Admin leads", "Plain messages go to the admin, who calls others with @Name."],
+  ["admin", "Admin leads", "Every ordinary message is answered by all members in turn. The admin speaks first and coordinates their roles. Use @Name to choose who answers."],
   ["everyone", "Everyone", "Every member answers in turn, admin first."]
 ];
 var shownMode = (room2, roster) => roster.byId[room2.admin] ? room2.mode : "everyone";
@@ -21797,7 +21981,7 @@ function entrySummary(entry) {
   if (entry.source === "turn") return failureLabel(entry.code, entry.text);
   return entry.text;
 }
-var SOURCES = { turn: "Model call", host: "H bot", api: "H bot", browser: "This window" };
+var SOURCES = { turn: "Model call", host: "DS Bot", api: "DS Bot", browser: "This window" };
 var issueWindow = reserveWindow;
 function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
   const [what, setWhat] = (0, import_react46.useState)("");
@@ -21866,7 +22050,7 @@ function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
       preview ? (0, import_react46.createElement)("div", { className: "bt-set-row bt-fb-preview" }, (0, import_react46.createElement)("pre", { tabIndex: 0, "aria-label": t("Diagnostics") }, report?.markdown || t("Loading…"))) : null,
       (0, import_react46.createElement)(
         Row4,
-        { label: t("Upstream GitHub issue"), hint: t("Opens a new issue in the upstream repository with all of this filled in. Nothing is sent until you submit it there.") },
+        { label: t("GitHub issue"), hint: t("Opens a new issue in the project repository with all of this filled in. Nothing is sent until you submit it there.") },
         (0, import_react46.createElement)("button", { type: "button", className: "bt-fb-primary", onClick: openIssue }, t("Report on GitHub"))
       )
     ),
@@ -21879,7 +22063,7 @@ function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
     (0, import_react46.createElement)(
       Section2,
       { key: "errors", title: report ? t("Recent errors · {count}", { count: total }) : t("Recent errors") },
-      shown.length === 0 ? (0, import_react46.createElement)(Row4, { label: t("No errors recorded."), hint: t("Failed model calls and H bot problems show here, newest first.") }) : shown.map((entry, index) => (0, import_react46.createElement)(
+      shown.length === 0 ? (0, import_react46.createElement)(Row4, { label: t("No errors recorded."), hint: t("Failed model calls and DS Bot problems show here, newest first.") }) : shown.map((entry, index) => (0, import_react46.createElement)(
         "div",
         { key: `${entry.time}-${index}`, className: "bt-set-row bt-fb-entry", title: entry.text },
         (0, import_react46.createElement)("span", { className: "bt-fb-dot", "data-level": entry.level, "aria-hidden": true }),
@@ -21887,7 +22071,7 @@ function FeedbackPage({ actions, run: run2, Section: Section2, Row: Row4 }) {
           "div",
           { className: "bt-set-copy" },
           (0, import_react46.createElement)("span", { className: "bt-fb-text" }, entrySummary(entry)),
-          (0, import_react46.createElement)("span", { className: "bt-set-hint" }, [whenText3(entry.time), entry.bot, entry.where, t(SOURCES[entry.source] ?? "H bot")].filter(Boolean).join(" · "))
+          (0, import_react46.createElement)("span", { className: "bt-set-hint" }, [whenText3(entry.time), entry.bot, entry.where, t(SOURCES[entry.source] ?? "DS Bot")].filter(Boolean).join(" · "))
         ),
         entry.code ? (0, import_react46.createElement)("span", { className: "bt-tag bt-fb-code" }, entry.status ? `${entry.code} ${entry.status}` : entry.code) : null
       )),
@@ -21959,12 +22143,12 @@ var import_react47 = require("react");
 var CHEER_MS = 1800;
 var starCount = (count) => new Intl.NumberFormat(dateLocale(), { notation: "compact", maximumFractionDigits: 1 }).format(count);
 function botHint(update) {
-  if (update.phase === "installing") return t("Updating H bot…");
-  if (update.phase === "installed") return t("Restart DSH to start using H bot {version}.", { version: update.installed ?? update.latest });
-  if (update.phase === "updated") return t("H bot {version} is installed.", { version: update.installed ?? update.latest });
+  if (update.phase === "installing") return t("Updating DS Bot…");
+  if (update.phase === "installed") return t("Restart DSH to start using DS Bot {version}.", { version: update.installed ?? update.latest });
+  if (update.phase === "updated") return t("DS Bot {version} is installed.", { version: update.installed ?? update.latest });
   if (update.phase === "failed") return t("The update did not finish: {reason}", { reason: hostText(update.error ?? "") });
-  if (update.available) return t("H bot {version} is available", { version: update.latest });
-  if (update.source === "app") return t("Updates come with the H bot app.");
+  if (update.available) return t("DS Bot {version} is available", { version: update.latest });
+  if (update.source === "app") return t("Updates come with the DS Bot app.");
   if (update.enabled === false) return t("Update checks are off.");
   if (update.source === "path") return t("Installed from a local folder; update it there.");
   if (!update.checkedAt) return null;
@@ -21996,7 +22180,7 @@ function dshHint(dsh, shown) {
   if (dsh.phase === "installing") return t("Updating DSH…");
   if (dsh.phase === "installed") return t("Restart DSH to start using DSH {version}.", { version: dsh.installed ?? dsh.verified });
   if (dsh.phase === "failed") return t("The update did not finish: {reason}", { reason: hostText(dsh.error ?? "") });
-  if (dsh.available === false && dsh.blockedBy) return t("Update H bot {version} first.", { version: dsh.blockedBy });
+  if (dsh.available === false && dsh.blockedBy) return t("Update DS Bot {version} first.", { version: dsh.blockedBy });
   if (shown) return t("DSH {version} is available", { version: dsh.verified });
   return t("Version {version}", { version: dsh.current });
 }
@@ -22068,14 +22252,14 @@ function AboutPage({ useUpdate, actions, run: run2, Section: Section2, Row: Row4
           href: repo,
           target: "_blank",
           rel: "noopener noreferrer",
-          title: t("Star H bot on GitHub"),
-          "aria-label": stars === null ? t("Star H bot on GitHub") : `${t("Star H bot on GitHub")} · ${t("{count} stars", { count: stars })}`
+          title: t("Star the project on GitHub"),
+          "aria-label": stars === null ? t("Star the project on GitHub") : `${t("Star the project on GitHub")} · ${t("{count} stars", { count: stars })}`
         },
         (0, import_react47.createElement)("span", { className: "bt-star-main" }, (0, import_react47.createElement)("span", { className: "bt-star-icon" }, (0, import_react47.createElement)(StarLineIcon)), "Star"),
         stars === null ? null : (0, import_react47.createElement)("span", { className: "bt-star-count" }, starCount(stars))
       ) : null
     ),
-    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support H bot with a star on GitHub.")) : null,
+    repo ? (0, import_react47.createElement)("p", { key: "ask", className: "bt-about-ask" }, t("Support the project with a star on GitHub.")) : null,
     (0, import_react47.createElement)(
       Section2,
       { key: "updates", title: t("Updates") },
@@ -22170,7 +22354,7 @@ function ProvidersPage({ actions, run: run2, Section: Section2, advanced = null 
 function keyState(key) {
   if (key === null) return null;
   if (!key.configured) return ["missing", t("Needs an API key")];
-  return key.writable ? ["set", t("Key set")] : ["outside", t("Key set outside H bot")];
+  return key.writable ? ["set", t("Key set")] : ["outside", t("Key set outside DS Bot")];
 }
 function ProviderRow({ provider, apply: apply2, actions, open, onToggle }) {
   const [confirm, setConfirm] = (0, import_react48.useState)(false);
@@ -22198,7 +22382,7 @@ function ProviderRow({ provider, apply: apply2, actions, open, onToggle }) {
       "div",
       { className: "bt-secret-edit" },
       provider.key?.writable ? (0, import_react48.createElement)(KeyEditor, { provider, apply: apply2, actions }) : null,
-      provider.key && !provider.key.writable ? (0, import_react48.createElement)("div", { className: "bt-set-hint" }, t("This key comes from outside H bot, such as an environment variable, and cannot be changed here.")) : null,
+      provider.key && !provider.key.writable ? (0, import_react48.createElement)("div", { className: "bt-set-hint" }, t("This key comes from outside DS Bot, such as an environment variable, and cannot be changed here.")) : null,
       provider.models.length > 0 ? (0, import_react48.createElement)(
         "div",
         { className: "bt-secret-edit-block" },
@@ -22434,7 +22618,7 @@ function AgentForm({ initial, submit, close }) {
     )
   );
 }
-function AgentSignInRow({ agent, Row: Row4 }) {
+function AgentSignInRow({ agent, Row: Row4, run: run2 }) {
   const [note, setNote] = (0, import_react49.useState)(null);
   const copy2 = () => {
     const done = (copied) => setNote({ copied, command: agent.signIn });
@@ -22466,7 +22650,7 @@ function AgentSignInRow({ agent, Row: Row4 }) {
     (0, import_react49.createElement)(
       "div",
       { className: "bt-set-actions" },
-      agent.signIn ? (0, import_react49.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", title: t("Copies the sign-in command"), onClick: copy2 }, t("Sign in")) : null,
+      agent.signIn ? (0, import_react49.createElement)("button", { type: "button", className: "bt-soft bt-soft-sm", title: agent.route === "local-antigravity" ? t("Sign in") : t("Copies the sign-in command"), onClick: agent.route === "local-antigravity" ? () => run2(call("antigravity-login")) : copy2 }, t("Sign in")) : null,
       (0, import_react49.createElement)("span", { className: "bt-tag" }, agent.signedIn === true ? t("Signed in") : agent.signedIn === false ? t("Not signed in") : agent.path ? t("Found") : t("Not found"))
     )
   );
@@ -22486,7 +22670,7 @@ function LocalAgentsPage({ run: run2, Section: Section2, Row: Row4 }) {
       Section2,
       { key: "found", title: t("Detected agents") },
       view.detected.length === 0 ? (0, import_react49.createElement)(Row4, { label: t("No agent CLIs found") }) : null,
-      view.detected.map((agent) => (0, import_react49.createElement)(AgentSignInRow, { key: agent.route, agent, Row: Row4 })),
+      view.detected.map((agent) => (0, import_react49.createElement)(AgentSignInRow, { key: agent.route, agent, Row: Row4, run: run2 })),
       (0, import_react49.createElement)(
         Row4,
         { key: "refresh", label: t("Refresh"), hint: t("Scan again for agent CLIs.") },
@@ -22520,7 +22704,7 @@ function LocalAgentsPage({ run: run2, Section: Section2, Row: Row4 }) {
 var import_react50 = require("react");
 var import_dsh_client_ui_primitives2 = require("@deepseek-ai/dsh-client-ui-primitives");
 var capitalize2 = (word) => word[0].toUpperCase() + word.slice(1);
-var SETTINGS_PAGES = [["general", "General"], ["models", "Models"], ["local-agents", "Local agents"], ["bots", "Bots"], ["groups", "Group chats"], ["connectors", "Connectors"], ["im", "IM"], ["capabilities", "Capabilities"], ["browser", "Browser"], ["computer", "Computer use"], ["schedules", "Scheduled tasks"], ["pages", "Pages"], ["files", "Saved files"], ["usage", "Usage"], ["secrets", "Secrets"], ["feedback", "Feedback"], ["about", "About H bot"]];
+var SETTINGS_PAGES = [["general", "General"], ["models", "Models"], ["local-agents", "Local agents"], ["bots", "Bots"], ["groups", "Group chats"], ["connectors", "Connectors"], ["im", "IM"], ["capabilities", "Capabilities"], ["browser", "Browser"], ["computer", "Computer use"], ["schedules", "Scheduled tasks"], ["pages", "Pages"], ["files", "Saved files"], ["usage", "Usage"], ["secrets", "Secrets"], ["feedback", "Feedback"], ["about", "About DS Bot"]];
 var LAST_PAGES = /* @__PURE__ */ new Set(["feedback", "about"]);
 var MERGED_SECTIONS = /* @__PURE__ */ new Set(["general", "models"]);
 var LOOK_ITEMS = ["appearance", "font-size"];
@@ -22568,6 +22752,16 @@ function Choice({ label, value, options, pick: pick2 }) {
     }
   }, t(text))));
 }
+function useColorMode(source) {
+  const [value, setValue] = (0, import_react50.useState)(() => colorModeOf(source?.getSnapshot?.()));
+  (0, import_react50.useEffect)(() => {
+    if (typeof source?.subscribe !== "function") return void 0;
+    const sync = () => setValue(colorModeOf(source.getSnapshot?.()));
+    sync();
+    return source.subscribe(sync);
+  }, [source]);
+  return value;
+}
 function WidthSlider({ label, value, save }) {
   const [width, setWidth] = (0, import_react50.useState)(value);
   const pending = (0, import_react50.useRef)(null);
@@ -22602,9 +22796,10 @@ function WidthSlider({ label, value, save }) {
 }
 function GeneralPage({ roster, actions, run: run2, dsh }) {
   const items = (dsh?.items ?? []).map((row) => row.id).filter((id) => id !== "");
-  const look = LOOK_ITEMS.filter((id) => items.includes(id));
+  const look = LOOK_ITEMS.filter((id) => items.includes(id) && id !== "appearance");
   const more = items.filter((id) => !LOOK_ITEMS.includes(id));
   const prefs = roster.prefs ?? {};
+  const colorMode = useColorMode(actions.colorMode);
   const themes = allThemes();
   const current = themes[prefs.theme] ? prefs.theme : "deepseek";
   const [custom, setCustom] = (0, import_react50.useState)(prefs.accent ?? "#4d6bfe");
@@ -22619,6 +22814,11 @@ function GeneralPage({ roster, actions, run: run2, dsh }) {
     (0, import_react50.createElement)(
       SetSection,
       { key: "look", title: t("Appearance") },
+      (0, import_react50.createElement)(
+        SetRow,
+        { label: t("Color mode") },
+        (0, import_react50.createElement)(Choice, { label: t("Color mode"), value: colorMode, options: COLOR_MODE_OPTIONS, pick: (id) => actions.setColorMode?.(id) })
+      ),
       (0, import_react50.createElement)(
         SetRow,
         { label: t("Theme"), hint: t("Colors for the whole team, on every device.") },
@@ -23472,10 +23672,12 @@ function installSettingsShell(ctx, { face, actions, ui: ui2, held }) {
   const sections = ledgerSource(slots, locale, "settings.section", sectionRows);
   const items = ledgerSource(slots, locale, "settings.general.item", itemRows);
   const steps = ledgerSource(slots, locale, "settings.onboarding", stepRows);
+  const color = bindColorMode(ctx.theme, (listener) => ctx.on?.("theme/change", listener));
   const shellFace = () => {
     const base = face();
     return {
       ...base,
+      actions: { ...base.actions, ...color },
       reconnect: () => ctx.get("connection")?.reconnect(),
       openDesktopUpdate: () => update.open(),
       openOnboarding,
@@ -23495,7 +23697,7 @@ function installSettingsShell(ctx, { face, actions, ui: ui2, held }) {
   const disposers = [
     () => update.dispose(),
     // A profile that turned DSH's shell back on keeps it: the seat's child slots are then
-    // declared already, and H bot's dialog stays on its own pages.
+    // declared already, and DS Bot's dialog stays on its own pages.
     slots.inject("sidebar.settings", () => {
       try {
         const off = slots.register({ name: "sidebar.settings", inject: shellFace, children: SETTINGS_CHILDREN }, SettingsShell);
@@ -23505,7 +23707,7 @@ function installSettingsShell(ctx, { face, actions, ui: ui2, held }) {
           off();
         };
       } catch (error) {
-        console.warn("[ds-bot] DSH settings shell is on; H bot settings show its own pages only", error);
+        console.warn("[ds-bot] DSH settings shell is on; DS Bot settings show its own pages only", error);
         return () => {
         };
       }
@@ -23972,7 +24174,8 @@ function ComposerVoice({ sessionId, inputActions, actions, useUi, useRoster }) {
     if (!quote || !inputActions) return;
     actions.clearQuote(quote.token);
     const excerpt = quote.text.replace(/\s+/g, " ").trim();
-    const line = `> ${excerpt.length > 200 ? `${excerpt.slice(0, 200)}…` : excerpt}
+    const mention = quote.mention ? `@${quote.mention} ` : "";
+    const line = `${mention}> ${excerpt.length > 200 ? `${excerpt.slice(0, 200)}…` : excerpt}
 
 `;
     inputActions.insertText(line, inputActions.captureInsertion());
@@ -24020,6 +24223,9 @@ function menuIcons(roster) {
   };
 }
 function ComposerPlus({ sessionId, inputActions, useInput, useRoster, actions }) {
+  (0, import_react53.useEffect)(() => {
+    if (sessionId !== void 0) actions.watchDraftAttachments(sessionId);
+  }, [actions, sessionId]);
   const roster = useRoster((value) => value);
   const [open, setOpen] = (0, import_react53.useState)(null);
   const [shown, leaving] = useLinger(open, 120);
@@ -24237,7 +24443,7 @@ var SIDE_TOKEN = "/side ";
 var GROUP_REFUSAL = "Side chat is only available in a Bot's private chat.";
 var ATTACHMENT_REFUSAL = "/side does not take attachments.";
 var EMPTY_REFUSAL = "Write a question after /side.";
-var LOADING_REFUSAL = "H bot is still loading this chat.";
+var LOADING_REFUSAL = "DS Bot is still loading this chat.";
 function sideSurface(roster, sessionId) {
   if (!roster?.ready) return "unknown";
   if (roster.roomsById?.[sessionId]) return "group";
@@ -24538,6 +24744,155 @@ var SIDE_CSS = `
 .bt-pmenu-item svg{flex:none;width:15px;height:15px;color:var(--bt-ink-3)}
 .bt-pmenu-sep{height:.5px;flex:none;margin:4px 8px;background:var(--bt-line-2)}
 `;
+
+// src/shared/breeze-tts.js
+var BREEZE_API_ORIGIN = "https://api.breeze.blue";
+var BREEZE_WS_ORIGIN = "wss://api.breeze.blue";
+var BREEZE_DEFAULT_VOICE = "voc_88a7brnfb4tb";
+var BREEZE_MODEL = "breeze-tts-2";
+var BREEZE_KEY_REF = "BREEZE_API_KEY";
+var BREEZE_TEXT_LIMIT = 1e3;
+var BREEZE_SAMPLE_RATE = 24e3;
+var BREEZE_APPEND_LIMIT = 2048;
+var CLAUSE_END = /[。！？!?；;，,、\n]/;
+var SENTENCE_END = /[。！？!?\n]/;
+function breezeSyncUrl(voiceId = BREEZE_DEFAULT_VOICE, outputFormat = "mp3") {
+  return `${BREEZE_API_ORIGIN}/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=${outputFormat}`;
+}
+function breezeStreamUrl(voiceId = BREEZE_DEFAULT_VOICE, outputFormat = "pcm") {
+  return `${BREEZE_API_ORIGIN}/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=${outputFormat}`;
+}
+function breezeRealtimeSessionUrl(voiceId = BREEZE_DEFAULT_VOICE) {
+  return `${BREEZE_API_ORIGIN}/v1/text-to-speech/${encodeURIComponent(voiceId)}/realtime-sessions`;
+}
+function breezeRealtimeWsUrl(voiceId = BREEZE_DEFAULT_VOICE, {
+  outputFormat = "pcm",
+  modelId = BREEZE_MODEL,
+  inactivityTimeoutSeconds = 180
+} = {}) {
+  const query = new URLSearchParams({
+    output_format: outputFormat,
+    model_id: modelId,
+    inactivity_timeout_seconds: String(inactivityTimeoutSeconds)
+  });
+  return `${BREEZE_WS_ORIGIN}/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream-input?${query}`;
+}
+function breezeHeaders(apiKey) {
+  return { "xi-api-key": apiKey, "content-type": "application/json" };
+}
+function breezeTtsBody(text, { modelId = BREEZE_MODEL } = {}) {
+  return { text, model_id: modelId };
+}
+function redactTtsError(text) {
+  return String(text ?? "").replace(/brz_[A-Za-z0-9]+/g, "[redacted]").replace(/xi-api-key:\s*\S+/gi, "xi-api-key: [redacted]").replace(/client_secret["']?\s*[:=]\s*["']?[^"'\s]+/gi, "client_secret: [redacted]").replace(/sk-[A-Za-z0-9_-]+/g, "[redacted]");
+}
+function chunkText(text, limit = BREEZE_TEXT_LIMIT) {
+  const source = String(text ?? "");
+  if (source.length <= limit) return source ? [source] : [];
+  const parts = [];
+  let rest = source;
+  while (rest.length > limit) {
+    const window2 = rest.slice(0, limit);
+    let cut = lastIndex(window2, SENTENCE_END);
+    if (cut < limit * 0.4) cut = lastIndex(window2, CLAUSE_END);
+    if (cut < limit * 0.4) cut = lastIndex(window2, /\s/);
+    if (cut < Math.min(8, limit)) cut = limit;
+    parts.push(rest.slice(0, cut).trim());
+    rest = rest.slice(cut).trim();
+  }
+  if (rest) parts.push(rest);
+  return parts.filter(Boolean);
+}
+function lastIndex(text, pattern) {
+  let found = -1;
+  for (let index = 0; index < text.length; index += 1) {
+    if (pattern.test(text[index])) found = index + 1;
+  }
+  return found;
+}
+var FIRST_FLUSH_LIMIT = 32;
+var MIN_FIRST_COMMA_CHARS = 40;
+function nextFlushSlice(pending, { first = false, final = false, firstLimit = FIRST_FLUSH_LIMIT } = {}) {
+  const text = String(pending ?? "");
+  if (!text) return "";
+  if (final) return text;
+  if (first) {
+    const sentence = text.match(/^[\s\S]*?[。！？!?\n]/);
+    if (sentence) return sentence[0];
+    const clause = text.match(/^[\s\S]*?[；;，,、]/);
+    if (clause && visibleLength(clause[0]) >= MIN_FIRST_COMMA_CHARS) return clause[0];
+    if (text.length >= firstLimit) return cutPhrase(text, firstLimit);
+    return "";
+  }
+  const match = text.match(/^[\s\S]*?[。！？!?\n]/);
+  return match ? match[0] : "";
+}
+function visibleLength(text) {
+  return text.replace(/\s+/g, "").length;
+}
+function cutPhrase(text, limit) {
+  const window2 = text.slice(0, limit);
+  const space = window2.lastIndexOf(" ");
+  if (space >= limit * 0.5) return text.slice(0, space + 1);
+  return window2;
+}
+function realtimeClientEvents() {
+  return {
+    startTurn: (turnId) => turnId ? { type: "turn.start", turn_id: turnId } : { type: "turn.start" },
+    appendText: (text) => ({ type: "text.append", text }),
+    flush: () => ({ type: "text.flush" }),
+    endTurn: () => ({ type: "turn.end" }),
+    cancelTurn: () => ({ type: "turn.cancel" }),
+    ping: () => ({ type: "ping" }),
+    close: () => ({ type: "session.close" })
+  };
+}
+function splitAppend(text, limit = BREEZE_APPEND_LIMIT) {
+  const source = String(text ?? "");
+  if (!source) return [];
+  const parts = [];
+  let rest = source;
+  while (rest) {
+    if (byteLength(rest) <= limit) {
+      parts.push(rest);
+      break;
+    }
+    let cut = rest.length;
+    while (cut > 1 && byteLength(rest.slice(0, cut)) > limit) cut -= 1;
+    parts.push(rest.slice(0, cut));
+    rest = rest.slice(cut);
+  }
+  return parts;
+}
+function byteLength(text) {
+  return typeof Buffer === "undefined" ? new TextEncoder().encode(text).length : Buffer.byteLength(text);
+}
+function textFromBlocks(closing) {
+  if (!closing) return "";
+  const blocks = closing.blocks ?? closing;
+  if (!Array.isArray(blocks)) return typeof closing === "string" ? closing : "";
+  return blocks.filter((block) => block?.kind === "text" && String(block.text ?? "").trim() !== "").map((block) => block.text).join("\n\n");
+}
+function liveReplyText(chat, openTurn) {
+  const turnId = turnIdOf(openTurn);
+  if (turnId == null) return void 0;
+  const location2 = chat?.timeline?.turns?.get?.(Number(turnId));
+  if (location2 === void 0) return void 0;
+  const tail = location2.data?.get?.("turn-tail");
+  if (tail?.closing !== void 0 && tail.closing !== null) {
+    return { turn: Number(turnId), text: textFromBlocks(tail.closing), done: false };
+  }
+  const streaming = tail?.streaming ?? tail?.draft ?? tail?.message;
+  if (streaming) return { turn: Number(turnId), text: textFromBlocks(streaming), done: false };
+  if (Array.isArray(tail?.blocks)) return { turn: Number(turnId), text: textFromBlocks(tail), done: false };
+  return { turn: Number(turnId), text: "", done: false };
+}
+function turnIdOf(openTurn) {
+  if (openTurn == null) return void 0;
+  if (typeof openTurn === "number" && Number.isFinite(openTurn)) return openTurn;
+  if (typeof openTurn === "string" && openTurn !== "" && Number.isFinite(Number(openTurn))) return Number(openTurn);
+  return openTurn.turn ?? openTurn.id ?? openTurn.index;
+}
 
 // src/client/speech.js
 var VOICE_BUNDLE = "@deepseek-ai/dsh-experimental-voice-input-bundle";
@@ -24844,7 +25199,7 @@ function failureText2(code, { name, provider, status }) {
     case "SERVER":
       return t("The model service failed.");
     case "INTERRUPTED":
-      return t("DeepSeek Harness stopped before this turn finished.");
+      return t("H bot stopped before this turn finished.");
     default:
       return knownFailure(code) ?? t("This turn failed.");
   }
@@ -25602,6 +25957,409 @@ function ExchangeDialog({ pair, roster, actions }) {
   );
 }
 
+// src/client/breeze-tts.js
+var events = realtimeClientEvents();
+var STREAM_ROUTE = "api/bot-tts";
+var PCM_PREROLL_MS = 60;
+var PCM_START_AHEAD_MS = 30;
+function createPcmPlayer({
+  contextFactory,
+  sampleRate = BREEZE_SAMPLE_RATE,
+  prerollMs = PCM_PREROLL_MS,
+  startAheadMs = PCM_START_AHEAD_MS
+} = {}) {
+  let context;
+  let nextTime = 0;
+  let leftover = new Uint8Array(0);
+  let lastSource = null;
+  let ended = Promise.resolve();
+  let resolveEnded = () => {
+  };
+  let started = false;
+  const pending = [];
+  let pendingDuration = 0;
+  const ensure = () => {
+    if (context) return context;
+    context = contextFactory ? contextFactory({ sampleRate }) : typeof AudioContext === "function" ? new AudioContext({ sampleRate }) : null;
+    return context;
+  };
+  const markPending = () => {
+    ended = new Promise((resolve2) => {
+      resolveEnded = resolve2;
+    });
+  };
+  const bufferFromSamples = (audio, samples) => {
+    const buffer = audio.createBuffer(1, samples.length, sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let index = 0; index < samples.length; index += 1) data[index] = samples[index] / 32768;
+    return buffer;
+  };
+  const schedule = (buffer) => {
+    const audio = ensure();
+    if (!audio) return;
+    const source = audio.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audio.destination);
+    const start = Math.max(audio.currentTime, nextTime);
+    source.start(start);
+    nextTime = start + buffer.duration;
+    lastSource = source;
+    source.onended = () => {
+      if (lastSource === source && audio.currentTime >= nextTime - 0.01) resolveEnded();
+    };
+  };
+  const flushPending = (force = false) => {
+    if (started) {
+      while (pending.length > 0) schedule(pending.shift());
+      pendingDuration = 0;
+      return;
+    }
+    if (pending.length === 0) return;
+    const prerollSec = Math.max(0, prerollMs) / 1e3;
+    if (!force && pendingDuration < prerollSec) return;
+    const audio = ensure();
+    if (!audio) return;
+    if (audio.state === "suspended" && typeof audio.resume === "function") void audio.resume();
+    started = true;
+    markPending();
+    nextTime = (audio.currentTime ?? 0) + Math.max(0, startAheadMs) / 1e3;
+    while (pending.length > 0) schedule(pending.shift());
+    pendingDuration = 0;
+  };
+  return {
+    push(bytes) {
+      if (!bytes || bytes.byteLength === 0) return;
+      const incoming = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+      const joined = new Uint8Array(leftover.length + incoming.length);
+      joined.set(leftover);
+      joined.set(incoming, leftover.length);
+      const even = joined.byteLength - joined.byteLength % 2;
+      leftover = even < joined.byteLength ? joined.slice(even) : new Uint8Array(0);
+      if (even < 2) return;
+      const audio = ensure();
+      if (!audio) return;
+      if (audio.state === "suspended" && typeof audio.resume === "function") void audio.resume();
+      const samples = new Int16Array(joined.buffer, joined.byteOffset, even / 2);
+      const buffer = bufferFromSamples(audio, samples);
+      pending.push(buffer);
+      pendingDuration += buffer.duration;
+      flushPending(false);
+    },
+    stop() {
+      leftover = new Uint8Array(0);
+      pending.length = 0;
+      pendingDuration = 0;
+      started = false;
+      try {
+        lastSource?.stop?.();
+      } catch {
+      }
+      nextTime = 0;
+      lastSource = null;
+      resolveEnded();
+      const current = context;
+      context = void 0;
+      void current?.close?.().catch?.(() => {
+      });
+    },
+    finished() {
+      flushPending(true);
+      if (!context || nextTime <= (context.currentTime ?? 0)) return Promise.resolve();
+      return ended;
+    },
+    // Open and resume the audio context during voice-chat setup, so the first
+    // spoken frame is not waiting on context creation.
+    warm() {
+      const audio = ensure();
+      if (audio?.state === "suspended" && typeof audio.resume === "function") void audio.resume();
+      return audio;
+    }
+  };
+}
+function connectRealtimeSocket(session, { socketFactory, onPcm, onReady, onTurnDone, onError } = {}) {
+  const direct = Boolean(session?.directWebsocketUrl);
+  const url = direct ? session.directWebsocketUrl : session.websocketUrl;
+  if (!url) throw new Error("No realtime TTS socket");
+  const protocols = direct ? ["breeze-realtime-v1", `breeze-realtime-token.${session.clientSecret}`] : void 0;
+  const Factory = socketFactory ?? (typeof WebSocket === "function" ? WebSocket : void 0);
+  if (!Factory) throw new Error("WebSocket is not available");
+  const socket = protocols ? new Factory(url, protocols) : new Factory(url);
+  if ("binaryType" in socket) socket.binaryType = "arraybuffer";
+  socket.onmessage = (event) => {
+    const payload = event?.data;
+    if (payload instanceof ArrayBuffer || typeof ArrayBuffer !== "undefined" && ArrayBuffer.isView?.(payload) || typeof Buffer !== "undefined" && Buffer.isBuffer?.(payload)) {
+      onPcm?.(payload);
+      return;
+    }
+    if (typeof Blob !== "undefined" && payload instanceof Blob) {
+      void payload.arrayBuffer().then((buffer) => onPcm?.(buffer));
+      return;
+    }
+    if (typeof payload !== "string") return;
+    let message;
+    try {
+      message = JSON.parse(payload);
+    } catch {
+      return;
+    }
+    if (message.type === "session.ready") onReady?.(message);
+    else if (message.type === "turn.done" || message.type === "turn.cancelled") onTurnDone?.(message);
+    else if (message.type === "error") onError?.(message);
+  };
+  socket.onerror = () => onError?.({ type: "error", message: "WebSocket connection failed" });
+  return socket;
+}
+function send(socket, message) {
+  if (!socket || socket.readyState !== 1) return false;
+  socket.send(typeof message === "string" ? message : JSON.stringify(message));
+  return true;
+}
+function createReplySpeaker({
+  requestSession = () => call("tts-session"),
+  requestSync = (text) => call("tts-speak", { text }),
+  fetchStream = (text, signal) => fetch(STREAM_ROUTE, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ text, outputFormat: "pcm" }),
+    signal
+  }),
+  socketFactory,
+  playerFactory = createPcmPlayer,
+  systemSpeak
+} = {}) {
+  let session;
+  let socket;
+  let ready;
+  let player;
+  let sent = "";
+  let firstFlush = true;
+  let turnOpen = false;
+  let turnDone;
+  let resolveTurnDone = () => {
+  };
+  let pingTimer;
+  let unavailable = false;
+  let note;
+  const ensurePlayer = () => {
+    player ??= playerFactory();
+    return player;
+  };
+  const resetTurn = () => {
+    sent = "";
+    firstFlush = true;
+    turnOpen = false;
+  };
+  const armTurnDone = () => {
+    turnDone = new Promise((resolve2) => {
+      resolveTurnDone = resolve2;
+    });
+  };
+  const closeSocket = () => {
+    clearInterval(pingTimer);
+    pingTimer = void 0;
+    try {
+      send(socket, events.close());
+    } catch {
+    }
+    try {
+      socket?.close?.();
+    } catch {
+    }
+    socket = void 0;
+    session = void 0;
+    ready = void 0;
+  };
+  const attachSocket = (next) => {
+    armTurnDone();
+    socket = connectRealtimeSocket(next, {
+      socketFactory,
+      onPcm: (bytes) => ensurePlayer().push(bytes),
+      onReady: () => {
+        ready?.();
+      },
+      onTurnDone: () => resolveTurnDone(),
+      onError: () => {
+        resolveTurnDone();
+        closeSocket();
+      }
+    });
+    ready = void 0;
+    const opened = new Promise((resolve2, reject) => {
+      const timeout = setTimeout(() => reject(new Error("TTS socket timed out")), 8e3);
+      ready = () => {
+        clearTimeout(timeout);
+        resolve2();
+      };
+      socket.onopen = () => {
+        if (next.directWebsocketUrl && socket.protocol && socket.protocol !== "breeze-realtime-v1") {
+          clearTimeout(timeout);
+          reject(new Error("Direct WebSocket did not negotiate breeze-realtime-v1"));
+        }
+      };
+      const previous = socket.onerror;
+      socket.onerror = (event) => {
+        previous?.(event);
+        clearTimeout(timeout);
+        reject(new Error("WebSocket connection failed"));
+      };
+    });
+    pingTimer = setInterval(() => send(socket, events.ping()), 2e4);
+    return opened;
+  };
+  const prepare = async () => {
+    ensurePlayer().warm?.();
+    if (unavailable) return { available: false };
+    if (socket && socket.readyState === 1) return { available: true, mode: "realtime" };
+    closeSocket();
+    try {
+      const value = await requestSession();
+      if (!value?.available) {
+        unavailable = value?.reason === "no-key";
+        return { available: false, reason: value?.reason };
+      }
+      session = value;
+      await attachSocket(value);
+      return { available: true, mode: "realtime" };
+    } catch {
+      session = void 0;
+      return { available: false, reason: "socket" };
+    }
+  };
+  const beginTurn = () => {
+    if (turnOpen) return true;
+    if (!send(socket, events.startTurn())) return false;
+    turnOpen = true;
+    armTurnDone();
+    return true;
+  };
+  const appendFlush = (slice, shouldFlush) => {
+    if (!slice) return true;
+    if (!beginTurn()) return false;
+    for (const part of splitAppend(slice)) {
+      if (!send(socket, events.appendText(part))) return false;
+    }
+    sent += slice;
+    if (shouldFlush && !send(socket, events.flush())) return false;
+    return true;
+  };
+  const playStream = async (text) => {
+    const audio = ensurePlayer();
+    const response = await fetchStream(text);
+    if (!response?.ok) throw new Error("TTS stream failed");
+    const reader = response.body.getReader();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) audio.push(value);
+    }
+    await audio.finished();
+  };
+  const playSync = async (text) => {
+    const value = await requestSync(text);
+    if (!value?.available || !value.audioBase64) throw new Error(value?.reason ?? "sync-failed");
+    const binary2 = atob(value.audioBase64);
+    const bytes = new Uint8Array(binary2.length);
+    for (let index = 0; index < binary2.length; index += 1) bytes[index] = binary2.charCodeAt(index);
+    const blob = new Blob([bytes], { type: value.mediaType ?? "audio/mpeg" });
+    const url = URL.createObjectURL(blob);
+    try {
+      await new Promise((resolve2, reject) => {
+        const audio = new Audio(url);
+        audio.onended = resolve2;
+        audio.onerror = reject;
+        const play = audio.play();
+        if (play && typeof play.then === "function") play.catch(reject);
+      });
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  };
+  const fallback = async (text) => {
+    if (typeof systemSpeak === "function") {
+      note = "Using the system voice";
+      await systemSpeak(text);
+      return "system";
+    }
+    throw new Error("No TTS fallback");
+  };
+  return {
+    note: () => note,
+    async prepare() {
+      return prepare();
+    },
+    async update(fullText, { final = false } = {}) {
+      note = void 0;
+      const current = String(fullText ?? "");
+      if (!current && !final) return { mode: "idle" };
+      const prepared = await prepare();
+      if (prepared.available && socket && socket.readyState === 1) {
+        const pending = current.slice(sent.length);
+        const slice = nextFlushSlice(pending, { first: firstFlush, final });
+        if (slice) {
+          if (!appendFlush(slice, true)) {
+            closeSocket();
+          } else {
+            firstFlush = false;
+          }
+        }
+        if (final && socket) {
+          const rest = current.slice(sent.length);
+          if (rest) appendFlush(rest, false);
+          send(socket, events.endTurn());
+          turnOpen = false;
+          await (turnDone ?? Promise.resolve());
+          await (player?.finished?.() ?? Promise.resolve());
+          resetTurn();
+          return { mode: "realtime" };
+        }
+        if (socket) return { mode: "realtime" };
+      }
+      if (!final) return { mode: "pending" };
+      if (prepared.reason !== "no-key") {
+        try {
+          await playStream(current);
+          resetTurn();
+          return { mode: "http-stream" };
+        } catch {
+          try {
+            await playSync(current);
+            resetTurn();
+            return { mode: "sync" };
+          } catch {
+          }
+        }
+      }
+      await fallback(current);
+      resetTurn();
+      return { mode: "system" };
+    },
+    cancel() {
+      if (turnOpen) send(socket, events.cancelTurn());
+      player?.stop();
+      player = void 0;
+      resetTurn();
+    },
+    close() {
+      this.cancel();
+      closeSocket();
+    }
+  };
+}
+function systemUtteranceSpeak(text, { speechSynthesis, SpeechSynthesisUtterance, lang } = {}) {
+  const synth = speechSynthesis ?? (typeof window !== "undefined" ? window.speechSynthesis : void 0);
+  const Utterance = SpeechSynthesisUtterance ?? (typeof window !== "undefined" ? window.SpeechSynthesisUtterance : void 0);
+  if (!synth || !Utterance || !text) return Promise.resolve();
+  return new Promise((resolve2) => {
+    const utterance = new Utterance(text);
+    utterance.lang = lang ?? (/[\u3400-\u9fff]/.test(text) ? "zh-CN" : "en-US");
+    utterance.onend = () => resolve2();
+    utterance.onerror = () => resolve2();
+    synth.cancel();
+    synth.speak(utterance);
+  });
+}
+
 // src/client/voice.js
 var import_react59 = require("react");
 var plainSpeech = (text) => stripHeader(text).replace(/```[\s\S]*?```/g, " ").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_`#>|~-]+/g, " ").replace(/\s+/g, " ").trim();
@@ -25695,12 +26453,20 @@ function VoiceMode({ sessionId, roster, actions, useSessions, useSessionStatus }
   const [serviceLevel, setServiceLevel] = (0, import_react59.useState)(0);
   const [cycle, setCycle] = (0, import_react59.useState)(0);
   const waiting = (0, import_react59.useRef)(null);
+  const spokenFinal = (0, import_react59.useRef)(false);
   const reply = (0, import_react59.useRef)(lastReply);
   reply.current = lastReply;
+  const speaker = (0, import_react59.useRef)(null);
+  if (speaker.current === null) {
+    speaker.current = createReplySpeaker({
+      systemSpeak: (text) => systemUtteranceSpeak(text)
+    });
+  }
   const turn = (0, import_react59.useRef)(0);
   const paneLeft = usePaneLeft();
   const close = () => {
     turn.current += 1;
+    speaker.current?.close();
     window.speechSynthesis?.cancel();
     actions.closeVoice();
   };
@@ -25708,6 +26474,7 @@ function VoiceMode({ sessionId, roster, actions, useSessions, useSessionStatus }
   const submit = (text) => {
     setHeard(text);
     setPhase("thinking");
+    spokenFinal.current = false;
     waiting.current = reply.current.split("|")[0];
     void actions.send(sessionId, text.trim()).catch(() => setPhase("listening"));
   };
@@ -25809,41 +26576,70 @@ function VoiceMode({ sessionId, roster, actions, useSessions, useSessionStatus }
     };
   }, [speech, catalog, listen, cycle]);
   (0, import_react59.useEffect)(() => {
-    if (phase !== "thinking" || running || waiting.current === null) return void 0;
-    const count = lastReply.slice(0, lastReply.indexOf("|"));
-    const turn2 = Number(lastReply.slice(lastReply.indexOf("|") + 1));
-    if (count === waiting.current) return void 0;
-    const speak = (text) => {
+    void speaker.current.prepare();
+    return void 0;
+  }, []);
+  (0, import_react59.useEffect)(() => {
+    if (phase !== "thinking") return void 0;
+    void speaker.current.prepare();
+    return void 0;
+  }, [phase]);
+  (0, import_react59.useEffect)(() => {
+    if (phase !== "thinking" && phase !== "speaking") return void 0;
+    if (waiting.current === null) return void 0;
+    let cancelled = false;
+    const finish = (mode) => {
+      if (cancelled) return;
+      if (speaker.current.note()) setNote(t(speaker.current.note()));
       waiting.current = null;
-      const spoken = plainSpeech(text);
-      setSaid(spoken);
-      setHeard("");
-      if (!window.speechSynthesis || !spoken) {
+      setPhase((current) => current === "speaking" || current === "thinking" ? "listening" : current);
+      return mode;
+    };
+    const tick = () => {
+      if (cancelled || spokenFinal.current || waiting.current === null) return;
+      const live = actions.liveReply?.(sessionId);
+      if (live?.text) {
+        const spoken2 = plainSpeech(live.text);
+        if (spoken2) {
+          setSaid(spoken2);
+          setHeard("");
+          setPhase((current) => current === "thinking" ? "speaking" : current);
+          void speaker.current.update(spoken2, { final: false });
+        }
+      }
+      if (running) return;
+      const count = lastReply.slice(0, lastReply.indexOf("|"));
+      const turnId = Number(lastReply.slice(lastReply.indexOf("|") + 1));
+      if (count === waiting.current) return;
+      const text = actions.closingReply(sessionId, turnId);
+      if (text === void 0) return;
+      if (text === null) {
+        waiting.current = null;
         setPhase("listening");
         return;
       }
-      const utterance = new SpeechSynthesisUtterance(spoken);
-      utterance.lang = /[\u3400-\u9fff]/.test(spoken) ? "zh-CN" : "en-US";
-      utterance.onend = () => setPhase((current) => current === "speaking" ? "listening" : current);
-      utterance.onerror = utterance.onend;
-      setPhase("speaking");
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
-    };
-    return watchReply(
-      () => actions.closingReply(sessionId, turn2),
-      (listener) => actions.watchTurns(sessionId, listener),
-      (text) => {
-        if (text === null) {
-          waiting.current = null;
-          setPhase("listening");
-          return;
-        }
-        speak(text);
+      const spoken = plainSpeech(text);
+      setSaid(spoken);
+      setHeard("");
+      if (!spoken) {
+        finish();
+        return;
       }
-    );
+      spokenFinal.current = true;
+      setPhase("speaking");
+      void speaker.current.update(spoken, { final: true }).then(() => finish());
+    };
+    const off = actions.watchTurns(sessionId, tick);
+    tick();
+    return () => {
+      cancelled = true;
+      off();
+    };
   }, [phase, running, lastReply]);
-  (0, import_react59.useEffect)(() => () => window.speechSynthesis?.cancel(), []);
+  (0, import_react59.useEffect)(() => () => {
+    speaker.current?.close();
+    window.speechSynthesis?.cancel();
+  }, []);
   const micLevel = useMicLevel(!speech && phase === "listening" && dictation.listening);
   const level = speech ? serviceLevel : micLevel;
   const markState = phase === "thinking" || phase === "transcribing" ? "thinking" : phase === "speaking" ? "sending" : "idle";
@@ -25854,6 +26650,7 @@ function VoiceMode({ sessionId, roster, actions, useSessions, useSessionStatus }
       return;
     }
     turn.current += 1;
+    speaker.current?.cancel();
     window.speechSynthesis?.cancel();
     setPhase("paused");
   };
@@ -26561,7 +27358,7 @@ function BrowserCards({ bot, sessionId, roster, actions, useBrowserTabs, useBrow
     actions.browserEnsure?.(bot.id);
   }, [bot.id]);
   if (roster.browser !== true || !actions.browserShow) {
-    return (0, import_react62.createElement)("div", { className: "bt-muted" }, t("The browser is in DSH Desktop and the H bot app."));
+    return (0, import_react62.createElement)("div", { className: "bt-muted" }, t("The browser is in DSH Desktop and the DS Bot app."));
   }
   if (state.ids.length === 0) {
     return (0, import_react62.createElement)(
@@ -29646,7 +30443,7 @@ function listedOpener({ list, open, refresh, current }) {
 }
 
 // src/client/index.js
-var inject = ["sessions", "uiWorkspace", "uiConversation", "slots", "theme", "layout"];
+var inject = ["sessions", "conversation", "uiWorkspace", "uiConversation", "slots", "theme", "layout"];
 function apply(ctx) {
   ctx.effect(() => installLocale(ctx.get("locale")), "ds-bot: interface copy");
   migrateStorage();
@@ -30056,7 +30853,39 @@ function apply(ctx) {
       });
     }
   };
+  const watchedDrafts = /* @__PURE__ */ new WeakSet();
   const actions = {
+    watchDraftAttachments(sessionId) {
+      const binding = ctx.sessions.binding(sessionId);
+      if (!binding || watchedDrafts.has(binding)) return;
+      const input = ctx.conversation.input.for(binding.ctx).state;
+      watchedDrafts.add(binding);
+      binding.ctx.effect(() => {
+        let hold;
+        const release = () => {
+          const previous = hold;
+          hold = void 0;
+          previous?.release();
+        };
+        const sync = () => {
+          if (binding.session.getSnapshot().removed || !input.getSnapshot().attachmentIds.length) {
+            release();
+          } else if (!hold) {
+            hold = ctx.sessions.retain(sessionId, { source: "botAttachmentDraft" });
+            void hold.ready.catch(quietly("retain attachment draft"));
+          }
+        };
+        const offInput = input.subscribe(sync);
+        const offSession = binding.session.subscribe(sync);
+        sync();
+        return () => {
+          offInput();
+          offSession();
+          watchedDrafts.delete(binding);
+          release();
+        };
+      }, "ds-bot: retain unsent attachments");
+    },
     ...teamActions({ call, after, partFor, roster, ui: ui2, live, cards, heldCards, turnClock, panelFolded }),
     learningAnswer: (id, approve) => after(call("learning-answer", { id, approve })),
     // The full-pane overlays sit above the conversation, so opening one must dismiss them
@@ -30276,6 +31105,16 @@ function apply(ctx) {
       const binding = ctx.sessions.binding(sessionId);
       if (binding === void 0) return null;
       return closingReplyText(ctx.uiConversation.binding(binding).target("chat").getSnapshot(), turn);
+    } catch {
+      return null;
+    }
+  };
+  actions.liveReply = (sessionId) => {
+    try {
+      const binding = ctx.sessions.binding(sessionId);
+      if (binding === void 0) return null;
+      const conversation = ctx.uiConversation.binding(binding);
+      return liveReplyText(conversation.target("chat").getSnapshot(), conversation.openTurn.getSnapshot());
     } catch {
       return null;
     }

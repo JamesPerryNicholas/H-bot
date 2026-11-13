@@ -172,7 +172,7 @@ test('the guard refuses the blocking question tool in Bot Sessions only', async 
   assert.equal(guard('read', 'writer'), undefined)
 })
 
-// FeiZhuLulu/H-bot#77: a new Bot told never to use a question tool was opened
+// FeiZhuLulu/DS-Bot#77: a new Bot told never to use a question tool was opened
 // with "use ask_user", and a model that picked dsh's ask_user_question for it held the
 // Bot until the card was answered, with other Bots' messages queued behind it.
 test('a new Bot that rules out question tools opens without one and cannot block on dsh\'s', async (t) => {
@@ -288,7 +288,7 @@ test('Bot Sessions filter the hidden tools and their guidance out of the prompt 
   for (const id of ['chief', 'room-writer', 'plain']) await agentFor(id)
   const filters = scopedListeners.filter(record => record.event === 'system-prompt/assemble')
   // Bot Sessions get the hidden-tools filter and the computer-use filter. The room's own
-  // Session and a plain Agent get neither while H bot has mounted no provider.
+  // Session and a plain Agent get neither while DS Bot has mounted no provider.
   assert.deepEqual(filters.map(record => record.sessionId), ['chief', 'chief', 'room-writer', 'room-writer'])
   // Resolving the same Agent again adds no listener.
   await rt.resolveAgent('chief')

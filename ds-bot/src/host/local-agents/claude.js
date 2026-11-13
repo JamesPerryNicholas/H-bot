@@ -93,7 +93,7 @@ class ClaudeSession {
       args.push('--mcp-config', JSON.stringify({
         mcpServers: { dsbot: { type: 'http', url: mcp.url, headers: { Authorization: `Bearer ${mcp.token}` } } },
       }))
-      // H bot's own team tools need no approval, as for a model-backed Bot:
+      // DS Bot's own team tools need no approval, as for a model-backed Bot:
       // toolsFor() already narrowed what this Bot may call.
       args.push('--allowedTools', 'mcp__dsbot')
     }

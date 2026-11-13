@@ -1,5 +1,5 @@
 // IM: talk to Bots from chat apps. A connection is one IM bot account bound to a Bot;
-// direct chats reach that Bot, platform group chats can be bound to a H bot group.
+// direct chats reach that Bot, platform group chats can be bound to a DS Bot group.
 // The platform adapters (im/platforms/) own the wire; this module owns pairing,
 // routing, cards and the send queues. Only the dsh holding the team lock connects.
 import { randomBytes, randomUUID } from 'node:crypto'

@@ -1,7 +1,7 @@
 // Bundled OpenAI credit: the API key is stored only as ciphertext, unlocked
-// by a passphrase the package never keeps in the clear. After unlock, spend
-// is capped in this app (the hard stop is local; the key itself can still be
-// pulled out of a running session by a determined attacker).
+// by a passphrase the package never keeps in the clear. Spend may be recorded
+// for history, but this app no longer applies an in-app hard stop. Official-key
+// use follows the OpenAI account itself, not a local meter.
 
 import { createCipheriv, createDecipheriv, randomBytes, scrypt } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -11,7 +11,6 @@ import { promisify } from 'node:util'
 
 const scryptAsync = promisify(scrypt)
 
-export const CREDIT_LIMIT_USD = 20
 export const DEFAULT_PROVIDER = 'openai'
 export const DEFAULT_MODEL = 'gpt-4o'
 export const KEY_REF = 'OPENAI_API_KEY'
@@ -226,19 +225,19 @@ export function writeState(dataDir, state) {
   const next = {
     unlocked: state.unlocked === true,
     spentUsd: Math.max(0, Number(state.spentUsd) || 0),
-    exhausted: state.exhausted === true,
+    exhausted: false,
     usedSlots,
     ...(state.unlockedAt ? { unlockedAt: state.unlockedAt } : {}),
     ...(state.slotId ? { slotId: state.slotId } : {}),
   }
-  if (next.spentUsd >= CREDIT_LIMIT_USD) next.exhausted = true
   writeFileSync(statePath(dataDir), `${JSON.stringify(next, null, 2)}\n`, 'utf8')
   return next
 }
 
 export function remainingUsd(state) {
-  if (!state?.unlocked || state.exhausted) return 0
-  return Math.max(0, Math.round((CREDIT_LIMIT_USD - (state.spentUsd || 0)) * 100) / 100)
+  // No in-app remaining cap. Callers should not display a leftover dollar amount.
+  if (!state?.unlocked) return null
+  return null
 }
 
 export function addSpend(dataDir, usd) {
@@ -248,8 +247,8 @@ export function addSpend(dataDir, usd) {
   return writeState(dataDir, { ...state, spentUsd: state.spentUsd + amount })
 }
 
-// Conservative USD per 1M tokens. Unknown models use a high fallback so the
-// in-app cap does not run past the promised $20.
+// Conservative USD per 1M tokens. Unknown models use a high fallback so
+// cost estimates stay on the safe side of published list prices.
 export const RATES_PER_MILLION = {
   'gpt-4o': { input: 2.5, output: 10 },
   'gpt-4o-mini': { input: 0.15, output: 0.6 },
@@ -409,22 +408,19 @@ export async function unlockCredit({ dataDir, passphrase, envelope, usedDir, now
 
 export function creditStatus(dataDir, { hasEnvelope = existsSync(envelopePath()) } = {}) {
   const state = dataDir && existsSync(dataDir) ? readState(dataDir) : { unlocked: false, spentUsd: 0, exhausted: false }
-  const remaining = remainingUsd(state)
   return {
     available: hasEnvelope,
     unlocked: state.unlocked,
-    exhausted: state.exhausted || (state.unlocked && remaining <= 0),
-    remaining,
-    limit: CREDIT_LIMIT_USD,
+    exhausted: false,
+    remaining: remainingUsd(state),
+    limit: null,
   }
 }
 
 export function recordUsage(dataDir, usage) {
   const cost = estimateCostUsd(usage)
   if (cost <= 0) return readState(dataDir)
-  const state = addSpend(dataDir, cost)
-  if (state.exhausted) removeBundledKey(dataDir)
-  return state
+  return addSpend(dataDir, cost)
 }
 
 export const VARIANT_FILE = 'bundled-credit-variant.json'

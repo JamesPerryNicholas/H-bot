@@ -263,7 +263,7 @@ test('an imported pre-rename pause note is not duplicated when a move retries', 
   const agent = host.agentOf('b')
   const note = [...agent.inbox.nextStep, ...agent.inbox.nextTurn].find(message => text(message) === PAUSE)
   assert.ok(note)
-  const legacy = PAUSE.replace('H bot', 'H bot')
+  const legacy = PAUSE.replace('H bot', 'DS Bot')
   for (const queue of [agent.inbox.nextStep, agent.inbox.nextTurn]) {
     const index = queue.indexOf(note)
     if (index !== -1) queue.splice(index, 1, { ...note, content: [{ type: 'text', text: legacy }] })

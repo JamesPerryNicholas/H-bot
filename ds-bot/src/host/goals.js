@@ -408,7 +408,7 @@ export function markTasks(room, botId, from, to, note, now = Date.now()) {
   return true
 }
 
-const DUTY_ACTIVE = 'You run this goal. Hand each task of the current stage to its member with @Name; members you call in one message start together. When they report back, check the results against the stage\'s "done when" yourself or have a reviewing member check them. Then call group_goal pass with the evidence and hand out the next stage in the same reply, or call group_goal rework with what is missing and call the members again. Keep all work inside the objective and the rules. When the user corrects the direction, call group_goal revise first. Ask the user only for decisions you cannot make.'
+const DUTY_ACTIVE = 'You run this goal. Hand each task of the current stage to its member with @Name; members you call in one message start together. Advance by complete stages, not by splitting small work into many review rounds. When they report back, check the results against the stage\'s "done when" yourself and call group_goal pass with the evidence and hand out the next stage in the same reply, or call group_goal rework with what is missing and call the members again. Still check before sending a message, paying, deleting something, or using someone else\'s account; do not pull ordinary small changes out for review again and again. Keep all work inside the objective and the rules. When the user corrects the direction, call group_goal revise first. Ask the user only for decisions you cannot make.'
 const DUTY_PASSED = 'Every stage passed. Check the overall "done when", then call group_goal complete with the evidence and a summary for the user.'
 const DUTY_PAUSED = 'The user paused this goal. Do not hand out stage work or pass stages. Talk with the user, and write their corrections into the goal with group_goal revise. The user resumes it.'
 const dutyOf = goal => (goal.status === 'paused' ? DUTY_PAUSED : goal.stages[goal.current] === undefined ? DUTY_PASSED : DUTY_ACTIVE)
@@ -417,7 +417,7 @@ const DUTY_DRAFT = [
   'Align with the user before you write it, following the goal-grill skill:',
   '1. Find the facts yourself (files, code, records) or ask members with @Name. Never ask the user what you can look up.',
   '2. List the decisions only the user can make. Ask them in one message, numbered, each with your recommended answer, so the user can reply "as recommended". Skip this when nothing is open.',
-  '3. Then call group_goal start: the objective, how to check it is done (commands, tests, files, evidence), the rules to keep, and the stages in order, each with its own check and its tasks for named members.',
+  '3. Then call group_goal start: the objective, how to check it is done (commands, tests, files, evidence), the rules to keep, and the stages in order — each a complete slice of the outcome with its own check and its tasks for named members. Do not split small work into many tiny stages or repeated review steps. Still check before sending a message, paying, deleting something, or using someone else\'s account; do not review ordinary small changes over and over.',
 ].join('\n')
 const NUDGE_LINE = 'Goal check from H bot: nothing is running in this group and the goal is not finished. Take the next step now: hand out the current stage\'s tasks that are not done, check a stage whose members have reported, or complete the goal if every stage passed. If you are waiting for the user, reply [PASS].'
 const RESUME_LINE = 'The user resumed the goal. Take the next step now.'
@@ -703,7 +703,7 @@ export function install(rt) {
             },
           },
         },
-        description: 'start: every stage, in order. revise: replaces the current stage and every stage after it; passed stages stay. Each stage has a title, its own check (how to tell this stage is done) and its tasks, each for one member by exact name',
+        description: 'start: every stage, in order. revise: replaces the current stage and every stage after it; passed stages stay. Each stage is a complete slice of the outcome: a title, its own check (how to tell this stage is done) and its tasks, each for one member by exact name. Do not split small work into many tiny stages or repeated review steps.',
       },
       bot: { type: 'string', description: 'task: the member whose task changes. rework: only this member\'s task goes back' },
       stage: { type: 'integer', description: 'task: stage number, 1 for the first; the current stage when left out' },

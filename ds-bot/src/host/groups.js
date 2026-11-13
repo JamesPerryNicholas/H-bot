@@ -5,9 +5,9 @@
 // at the same time: a call takes effect as soon as the message that makes it is
 // posted, whether the user wrote it, a member said it while working, or a Bot posted
 // it while the round runs. Each turn shows everything that arrived since that member
-// last looked, and who else is answering. A plain message goes to the admin alone in
-// admin mode; otherwise every member answers it in turn, admin first, each after the
-// one before has posted or passed, so a discussion or a count-off stays in order. A
+// last looked, and who else is answering. Every member answers a plain user message
+// in turn, admin first, each after the one before has posted or passed, so a
+// discussion or a count-off stays in order. A
 // member answers one call at a time. The user's own messages are always answered.
 // Bots may call each other for as long as the work needs; the user stops a group from
 // its details.
@@ -26,6 +26,7 @@ import { GROUP_LINE_READ, LATE_ANSWER, ROOM_IDLE_RELAY_LIMIT, ROOM_REPLY_TIMEOUT
 import { escapeRegExp, headOf, splitRef, textOf } from './text.js'
 import { viaOf } from '../shared/im-platforms.js'
 import { mentionSpans, speakerOf } from '../shared/mentions.js'
+import { assignedIn, calledIn, isGroupWideAsk, shouldStayOut } from './group-collab.js'
 import { GROUP_REF, output } from './tools.js'
 import { failureLine } from './turns.js'
 
@@ -165,8 +166,9 @@ export const referenceNote = references => (references?.length
   ? `Conversations the user referenced in this round:\n\n${references.map(reference => reference.text).join('\n\n')}`
   : '')
 
-const ROOM_REPLY = 'Reply with your message for the group, no name prefix: in a discussion, one or two short messages. When you are asked to do something, call your first tool in the same step as your opening note — if you stop without a tool call, your turn ends and no work runs. The group does not wait for you and sees what you write while you work: say what you will do, write again only when something matters, and end with the result, never a promise to do it later. Reply [PASS] to stay silent when you have nothing new to add or the message is for someone else.'
+const ROOM_REPLY = 'Reply with your message for the group, no name prefix: in a discussion, one or two short messages. When you are asked to do something, call your first tool in the same step as your opening note — if you stop without a tool call, your turn ends and no work runs. The group does not wait for you and sees what you write while you work: say what you will do, write again only when something matters, and end with the result, never a promise to do it later. When you hand work to a member, write @Name, say what they should do, and stop: do not start that same work yourself. Reply [PASS] to stay silent when you have nothing new to add, the message is for someone else, another member already answered or claimed the same work, or already reported the same status. Do not restate their findings, do not also claim work they own, and do not post a similar "I\'ll check" or "it\'s done". An @-mention of you still needs a reply. Staying silent is the right move when you have nothing new to add.'
 const ROOM_CALLS = 'Writing "@Name" calls that member at once, to answer or to do what you ask, as soon as your message is posted: call members before you start on your own part. Members called in one message start together and do not see each other\'s replies until they post, so when one needs another\'s result, call the first and ask it to call the next. When a member finishes work you gave it, you answer its result. To only mention a member, write its name without "@".'
+const USER_REPLY = 'The user called you to answer this message. Give your own brief reply from your role, even if another member has already replied. For a greeting or check-in, give your own acknowledgment. Do not use [PASS] just because another member answered. If you have an assignment, execute your own part rather than only acknowledging it. If another member owns the work, acknowledge that or add a useful point without repeating their work, claiming it, or calling tools for it.'
 
 const slotLabel = (slot, self) => {
   if (slot.status === 'speaking') return slot === self ? `${slot.name} (you, now)` : `${slot.name} (answering now)`
@@ -182,9 +184,16 @@ const slotLabel = (slot, self) => {
 
 const adminNote = room => [
   'You are this group\'s admin.',
-  room.mode === 'admin' ? 'Plain messages come to you first: answer them, or call the members who should answer with @Name.' : '',
+  'The user sets the objective and constraints; you are responsible for organizing the team and delivering the checked result, not doing every member\'s work yourself. For a task with separable work, consider the relevant perspectives and member roles, then delegate suitable parts before executing them yourself. Give each part an owner, scope, expected result and how to check it, and actually call its owner with @Name in your reply; a plan that names no one does not dispatch work. Call independent owners in one message so they can work in parallel. For dependent steps, have the first owner hand its result to the next. Give shared files or resources one writer at a time. Never redo a part you delegated while its owner works.',
+  'When members report back, check their evidence against the user\'s request, reconcile conflicts, send missing or failed parts back to a named owner, and give the user the combined result with any remaining blockers. Do not treat an acknowledgment or a promise as completion. Do not poll or send thanks and status echoes; results call you back. Answer greetings and simple questions directly without inventing a project or needless delegation. If no suitable member is available, explain the gap and do only what you can verify yourself.',
+  room.mode === 'admin' ? 'On every plain user message, you answer first and every other member answers in turn. Start with the division of work when the user gives the team a task; a member\'s turn to reply is not permission to take another member\'s assignment.' : '',
   '"@all" calls every member. When the user asks, change the group with update_group.',
   'When the user wants this group to reach a goal, set it with group_goal: align with the user first (goal-grill skill), then start it.',
+].filter(Boolean).join(' ')
+
+const memberNote = room => [
+  room.mode === 'admin' ? 'Every plain user message is for all members, not just the admin. Add your own brief reply from your role.' : '',
+  'Carry out the part assigned to you in this turn using the tools it needs, then report the result, evidence and blockers. Follow the admin\'s division of work; do not execute work assigned to another member. An acknowledgment is not a completed assignment. If you have no assignment, give only your own useful perspective or brief acknowledgment; do not start duplicate work. Raise dependencies or conflicting assignments with the admin instead of changing other members\' work.',
 ].filter(Boolean).join(' ')
 
 // The opening turn of a group the user just made without a first message.
@@ -341,7 +350,7 @@ export function install(rt) {
   // `files` are the files of the lines shown, which go to the member with the prompt.
   function roomPrompt(room, member, round, slot) {
     const peers = room.members.filter(id => id !== member.id).map(rt.botOf).filter(Boolean)
-      .map(bot => `${bot.name}${rt.isAdminOf(room, bot.id) ? ' (admin)' : ''}`)
+      .map(bot => `${bot.name}${rt.isAdminOf(room, bot.id) ? ' (admin)' : ''}${bot.role ? ` (role: ${bot.role})` : ''}`)
     const leads = rt.isAdminOf(room, member.id)
     const lines = unseenLines(room, member.id)
     const earlier = lines.filter(line => line.seq < round.startSeq).slice(-ROOM_EARLIER_MAX)
@@ -360,6 +369,7 @@ export function install(rt) {
       notice,
       goal,
       leads ? adminNote(room) : '',
+      memberNote(room),
       earlier.length ? `Earlier in the group, before this round (context only):\n${transcript(earlier, memberText(room))}` : '',
       current.length
         ? `This round so far${spokeThisRound ? ', since your last message' : ', starting with the new message'} (oldest first):\n${transcript(current, memberText(room))}`
@@ -368,6 +378,7 @@ export function install(rt) {
       working.length > 0 ? `Still at work on what they were asked; each posts here when done: ${working.map(item => `${item.bot.name} (${minutesSince(item.since)} min${item.unread > 0 ? `, with ${item.unread} group message(s) it has not read yet` : ''})`).join(', ')}.` : '',
       ...placeLines(round, slot),
       ROOM_REPLY,
+      slot.userReply ? USER_REPLY : '',
     ].filter(Boolean).join('\n\n')
     const shown = [...earlier, ...current]
     return { text, images: shown.flatMap(line => line.images ?? []), files: shown.flatMap(line => line.files ?? []) }
@@ -384,6 +395,9 @@ export function install(rt) {
       const after = order.length - index - 1
       lines.push(`Members answer this message one at a time: ${order.map(other => slotLabel(other, slot)).join(' → ')}.`,
         `You are number ${index + 1} of ${order.length}. ${index === 0 ? 'Nobody spoke before you' : `${index} went before you`}${after === 0 ? ', and you are the last.' : `; ${after} after you will see your message.`}`)
+      if (!slot.userReply && index > 0 && order.slice(0, index).some(other => ['posted', 'working', 'waiting-approval'].includes(other.status))) {
+        lines.push('A member has already posted in this round. Reply [PASS] unless you have genuinely new information the group does not have, or you were asked by name. Do not restate their answer, do not also claim the same work, and do not post a similar status.')
+      }
     } else {
       const together = round.slots.filter(other => other !== slot && other.batch === slot.batch && other.id !== slot.id)
       if (together.length > 0) lines.push(`Called together with you: ${together.map(other => other.name).join(', ')}. You answer at the same time and do not see each other's replies until they post.`)
@@ -581,7 +595,7 @@ export function install(rt) {
   }
   rt.yieldRoomTurn = (sessionId) => { for (const waiter of waitersOf(sessionId)) waiter.approval() }
   // The team's own tools are quick; any other tool is the start of work.
-  const QUICK_TOOLS = new Set(TEAM_TOOLS)
+  const QUICK_TOOLS = new Set(TEAM_TOOLS.filter(name => !name.startsWith('ssh_')))
   rt.workRoomTurn = (sessionId, tool) => {
     if (QUICK_TOOLS.has(tool)) return
     const owner = rt.groupOwners.get(sessionId)
@@ -602,7 +616,7 @@ export function install(rt) {
   // member still waiting is called once, with the newest note: an ordered call moves
   // it up the order, any other call lets it start at once. `by` is the calling member,
   // if a member called.
-  function callIn(round, callees, note, by, { ordered = false } = {}) {
+  function callIn(round, callees, note, by, { ordered = false, userReply = false } = {}) {
     if (callees.length === 0) return
     round.batches = (round.batches ?? 0) + 1
     const batchKey = registerBatch(round.roomId, by, callees)
@@ -613,6 +627,7 @@ export function install(rt) {
       const slot = waiting === -1 ? { id: peer.id, name: peer.name, status: 'waiting' } : round.slots[waiting]
       if (moves && waiting !== -1) round.slots.splice(waiting, 1)
       slot.note = note
+      if (userReply) slot.userReply = true
       slot.batch = round.batches
       if (batchKey !== undefined) slot.batchKey = batchKey
       if (by === undefined) delete slot.by
@@ -696,10 +711,10 @@ export function install(rt) {
     for (const line of lines) {
       appendRoom(room, { who: 'User', text: line.text, ...(line.via ? { via: line.via } : {}) })
       round.replies.push({ kind: 'user', text: line.text, time: Date.now(), ...(line.via ? { via: line.via } : {}) })
-      const { all, found } = mentionsIn(line.text, members)
+      const { all, found } = calledIn(line.text, members)
       const note = all || found.length > 0 ? 'the user mentioned you' : 'new message from the user'
       const { speakers, ordered } = openingCall(room, { text: line.text })
-      callIn(round, speakers, note, undefined, { ordered })
+      callIn(round, speakers, note, undefined, { ordered, userReply: true })
     }
     releaseParked(room, round)
     void rt.save().catch(() => {})
@@ -805,7 +820,14 @@ export function install(rt) {
       due = false
       if (signal.aborted) break
       drainRoomInbox(room, round, agent)
+      const everyone = room.members.map(rt.botOf).filter(Boolean)
       for (const slot of round.slots) {
+        if (slot.status === 'waiting' && slot.ordered && !slot.userReply && shouldStayOut(slot, { replies: round.replies, everyone, openingText: round.openingText ?? '' })) {
+          slot.status = 'passed'
+          round.passed.push(slot.name)
+          dropMemberFromBatch(room, slot.id)
+          continue
+        }
         if (!startable(round, slot)) continue
         const turn = memberTurn(room, round, slot, signal)
           .catch(error => rt.warn('ds-bot: group turn of %s in %s failed: %s', slot.name, room.name, error))
@@ -1040,6 +1062,7 @@ export function install(rt) {
         roomId: room.id,
         members: room.members,
         startSeq,
+        openingText: opener.text ?? '',
         goalRevision: room.goal?.revision,
         ...(posts.some(userPost) ? { userMessage: true } : {}),
         ...(opener.kickoff ? { kickoff: true } : {}),
@@ -1049,6 +1072,7 @@ export function install(rt) {
         ...(references.length > 0 ? { references, shown: [] } : {}),
         slots: speakers.map(member => ({
           id: member.id, name: member.name, status: 'waiting', batch: 1,
+          ...(userPost(opener) ? { userReply: true } : {}),
           ...(ordered ? { ordered: true } : {}),
           // A round a Bot's post opened: what its members answer is Bot-to-Bot, counted
           // by the idle guard even though no one is named (#853).
@@ -1225,10 +1249,12 @@ export function install(rt) {
     },
   }))
 
-  // A Bot that posts never answers its own post. @mentions choose the speakers; else
-  // the admin answers alone in admin mode, or first of everyone. What a member posts
-  // after its round moved on is answered by the member that asked for it; work the
-  // user asked for is left for the user to read.
+  // A Bot that posts never answers its own post. @mentions and bare-name assignments
+  // choose the speakers; @all calls everyone. Every ordinary user message calls
+  // all members, admin first, in turn, including in admin mode. A Bot's ordinary
+  // post can still go to the admin alone. What a member posts after its round moved
+  // on is answered by the member that asked for it; work the user asked for is left
+  // for the user to read.
   // `ordered`: a plain message everyone answers in turn, admin first; any other call
   // starts its members at once.
   function openingCall(room, opener) {
@@ -1241,13 +1267,16 @@ export function install(rt) {
     if (opener.done) return at(members.filter(bot => bot.id === opener.askedBy))
     // A goal post — the user's draft ask, an idle goal check, a resume — is the admin's alone.
     if (opener.goal !== undefined) return at(admin ? [admin] : [])
-    const { all, found: named } = mentionsOf(opener, everyone) ?? mentionsIn(opener.text, everyone, opener.references)
+    const mentioned = mentionsOf(opener, everyone) ?? mentionsIn(opener.text, everyone, opener.references)
+    const assigned = assignedIn(opener.text ?? '', everyone, opener.references)
+    const named = mentioned.found.concat(assigned.found.filter(bot => !mentioned.found.includes(bot)))
     const found = named.filter(bot => bot.id !== opener.botId)
+    const all = mentioned.all === true
     if (opener.progress) return at(found)
     if (opener.late) return at(found.length > 0 ? found : members.filter(bot => bot.id === opener.askedBy))
     if (opener.member) return at(found)
     if (found.length > 0 && !all) return at(found)
-    if (!all && room.mode === 'admin' && admin) return at([admin])
+    if (opener.botId !== undefined && !all && room.mode === 'admin' && admin && !isGroupWideAsk(opener.text ?? '')) return at([admin])
     const speakers = admin ? [admin, ...members.filter(bot => bot !== admin)] : members
     return { speakers, ordered: !all && speakers.length > 1 }
   }
@@ -1554,7 +1583,7 @@ export function install(rt) {
 
   // A group chat's own Session never consults the model: models drift from "only call
   // group_relay" (they message one member directly when the user names it), so the
-  // relay step is synthesized here. Auxiliary calls such as titles, and H bot's own
+  // relay step is synthesized here. Auxiliary calls such as titles, and DS Bot's own
   // calls for the room such as image readings, still reach the model.
   ctx.on('llm/stream', (options, next) => {
     if (options.sessionId === undefined || options.purpose !== undefined || rt.ownRequest(options)) return next()

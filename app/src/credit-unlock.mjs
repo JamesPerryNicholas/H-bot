@@ -1,7 +1,6 @@
-// Start-page offer for the bundled OpenAI credit. The passphrase never
-// appears in logs; only a yes/no result is recorded.
-import { creditStatus, loadEnvelope, loadVariant, unlockCredit, unlockOpenCredit } from './bundled-credit.mjs'
-
+// Bundled provider keys are no longer offered. Packages do not ship a key,
+// and users enter their own. receiveUnlock stays so an old unlock card can
+// still be dismissed without writing a key into the user's data.
 let pending
 
 export function receiveUnlock(payload) {
@@ -16,50 +15,6 @@ export function receiveUnlock(payload) {
   settle({ value })
 }
 
-function waitForUnlock() {
-  return new Promise((resolve) => {
-    pending = resolve
-  })
-}
-
-export async function offerBundledCredit({ startWindow, dataDir, usedDir }) {
-  let envelope
-  try { envelope = loadEnvelope() } catch { return { available: false, unlocked: false, exhausted: false, remaining: 0 } }
-  if (!envelope || !dataDir) return { available: false, unlocked: false, exhausted: false, remaining: 0 }
-  const status = creditStatus(dataDir)
-  if (status.unlocked) return status
-
-  if (loadVariant() === 'open') {
-    await unlockOpenCredit({ dataDir, envelope, usedDir })
-    return creditStatus(dataDir)
-  }
-
-  let wrong = false
-  let used = false
-  for (;;) {
-    startWindow.card({ kind: 'creditUnlock', wrong, used })
-    const answer = await startWindow.asking(waitForUnlock())
-    if (answer?.skip) {
-      startWindow.card(undefined)
-      return creditStatus(dataDir)
-    }
-    try {
-      await unlockCredit({ dataDir, passphrase: answer?.value ?? '', envelope, usedDir })
-      startWindow.card(undefined)
-      return creditStatus(dataDir)
-    } catch (error) {
-      if (error?.code === 'bundled-credit/invalid') {
-        wrong = true
-        used = false
-        continue
-      }
-      if (error?.code === 'bundled-credit/used') {
-        used = true
-        wrong = false
-        continue
-      }
-      startWindow.card(undefined)
-      throw error
-    }
-  }
+export async function offerBundledCredit() {
+  return { available: false, unlocked: false, exhausted: false, remaining: 0 }
 }

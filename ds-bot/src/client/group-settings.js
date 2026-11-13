@@ -9,7 +9,7 @@ import { PermissionPicker } from './permission-picker.js'
 import { t } from './i18n.js'
 
 export const ROOM_MODES = [
-  ['admin', 'Admin leads', 'Plain messages go to the admin, who calls others with @Name.'],
+  ['admin', 'Admin leads', 'Every ordinary message is answered by all members in turn. The admin speaks first and coordinates their roles. Use @Name to choose who answers.'],
   ['everyone', 'Everyone', 'Every member answers in turn, admin first.'],
 ]
 

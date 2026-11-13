@@ -30,7 +30,7 @@ function AgentForm({ initial, submit, close }) {
 // command it needs and says where to run it. The copy can fail (no clipboard, a
 // refused permission, an insecure page), and that has to be visible instead of
 // leaving the click unanswered (#1083).
-export function AgentSignInRow({ agent, Row }) {
+export function AgentSignInRow({ agent, Row, run }) {
   const [note, setNote] = useState(null)
   const copy = () => {
     const done = copied => setNote({ copied, command: agent.signIn })
@@ -57,7 +57,7 @@ export function AgentSignInRow({ agent, Row }) {
     ],
   },
   h('div', { className: 'bt-set-actions' },
-    agent.signIn ? h('button', { type: 'button', className: 'bt-soft bt-soft-sm', title: t('Copies the sign-in command'), onClick: copy }, t('Sign in')) : null,
+    agent.signIn ? h('button', { type: 'button', className: 'bt-soft bt-soft-sm', title: agent.route === 'local-antigravity' ? t('Sign in') : t('Copies the sign-in command'), onClick: agent.route === 'local-antigravity' ? () => run(call('antigravity-login')) : copy }, t('Sign in')) : null,
     h('span', { className: 'bt-tag' }, agent.signedIn === true ? t('Signed in') : agent.signedIn === false ? t('Not signed in') : agent.path ? t('Found') : t('Not found'))))
 }
 
@@ -74,7 +74,7 @@ export function LocalAgentsPage({ run, Section, Row }) {
   return [
     h(Section, { key: 'found', title: t('Detected agents') },
       view.detected.length === 0 ? h(Row, { label: t('No agent CLIs found') }) : null,
-      view.detected.map(agent => h(AgentSignInRow, { key: agent.route, agent, Row })),
+      view.detected.map(agent => h(AgentSignInRow, { key: agent.route, agent, Row, run })),
       h(Row, { key: 'refresh', label: t('Refresh'), hint: t('Scan again for agent CLIs.') },
         h('button', { type: 'button', className: 'bt-soft bt-soft-sm', onClick: refresh }, h(CheckIcon)))),
     h(Section, { key: 'custom', title: t('Custom agents') },

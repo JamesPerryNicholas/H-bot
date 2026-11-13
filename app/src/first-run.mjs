@@ -57,9 +57,20 @@ export async function pickRoot(from, signal, ui) {
 }
 
 /** The places a first start offers. */
-export const defaultPlaces = ({ dataName = '.ds-bot', workspaceName = 'H bot' } = {}) => ({
+export const defaultPlaces = ({ dataName = '.ds-bot', workspaceName = 'DS Bot' } = {}) => ({
   dataDir: join(homedir(), dataName), workspace: join(homedir(), workspaceName),
 })
+
+/**
+ * Places a new edition should open when nothing is saved yet. If the shared
+ * historical team already exists, reuse it instead of starting a separate empty home.
+ */
+export function resolvePlaces(defaults, lookup = teamIn) {
+  const shared = defaultPlaces()
+  const configured = defaultPlaces(defaults)
+  if (lookup(shared.dataDir) !== undefined) return shared
+  return configured
+}
 
 /** The Bot team in a data folder, if it has one. */
 export function teamIn(dataDir) {
@@ -137,7 +148,7 @@ export function chooseLocations(defaults) {
     const saved = JSON.parse(readFileSync(file, 'utf8'))
     return { dataDir: saved.dataDir, workspace: saved.workspace, freeAtStart: roomOf(saved.freeAtStart) }
   }
-  const { dataDir, workspace } = defaultPlaces(defaults)
+  const { dataDir, workspace } = resolvePlaces(defaults)
   const offer = offerOf(dataDir)
   if (offer !== undefined) return { dataDir, workspace, offer }
   // There is nothing to copy, so the first run ends with the chosen places.

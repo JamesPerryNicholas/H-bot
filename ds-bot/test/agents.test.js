@@ -93,7 +93,7 @@ const TEAM = {
   questions: {},
 }
 
-test('add-agent creates one record with a first Session in the H bot workspace', async (t) => {
+test('add-agent creates one record with a first Session in the DS Bot workspace', async (t) => {
   const { call, stop, created } = start(TEAM)
   t.after(stop)
   await call('state', {})

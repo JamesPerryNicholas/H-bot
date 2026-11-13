@@ -11,7 +11,7 @@ const LANGUAGES = { zh: 'Chinese (简体中文)', en: 'English' }
 const RUN_STATS = ['sessionStats', 'tokenUsage', 'contextPressure']
 
 const invalid = message => Object.assign(new Error(message), { code: 'bot/invalid' })
-// Programming and file system errors are H bot's own faults, logged with their stack;
+// Programming and file system errors are DS Bot's own faults, logged with their stack;
 // any other error is a refusal whose message is meant for the user.
 const isInternal = error => error instanceof TypeError || error instanceof ReferenceError || error instanceof RangeError
   || error instanceof SyntaxError || (typeof error?.code === 'string' && /^E[A-Z_]+$/.test(error.code))
@@ -143,7 +143,7 @@ export function install(rt) {
   }
   // What a host that only reads the team may still answer.
   // Updates change the dsh profile, not the team, so a reading host may run them too.
-  const READS = new Set(['state', 'models', 'efforts', 'providers', 'provider-models', 'earlier', 'chat', 'run-stats', 'room-progress', 'exchange', 'exchange-text', 'file-text', 'usage', 'schedules', 'memory-view', 'browser-wait', 'browser-result', 'diagnostics', 'diagnostics-log', 'diagnostics-clear', 'update-check', 'update-install', 'dsh-update-install', 'repo-stars', 'approval-answer', 'thinking', 'avatar-library', 'computer-system-status', 'computer-shot', 'local-agents', 'local-agent-models'])
+  const READS = new Set(['state', 'models', 'efforts', 'providers', 'provider-models', 'earlier', 'chat', 'run-stats', 'room-progress', 'exchange', 'exchange-text', 'file-text', 'usage', 'schedules', 'memory-view', 'browser-wait', 'browser-result', 'diagnostics', 'diagnostics-log', 'diagnostics-clear', 'update-check', 'update-install', 'dsh-update-install', 'repo-stars', 'approval-answer', 'thinking', 'avatar-library', 'computer-system-status', 'computer-shot', 'local-agents', 'local-agent-models', 'tts-session', 'tts-speak'])
 
   async function setPrefs(body) {
     if (body.theme !== undefined) {
@@ -674,6 +674,7 @@ export function install(rt) {
         case 'local-agents':
         case 'local-agent-models':
         case 'local-agent-refresh':
+        case 'antigravity-login':
         case 'local-agent-add':
         case 'local-agent-update':
         case 'local-agent-remove':
@@ -701,6 +702,10 @@ export function install(rt) {
         case 'diagnostics-clear':
           await rt.diagnostics.clear()
           return ok(true)
+        case 'tts-session':
+          return ok(await rt.breezeTtsSession())
+        case 'tts-speak':
+          return ok(await rt.breezeTtsSpeak(String(body.text ?? '')))
         default:
           if (endpoint.startsWith('computer-')) {
             await rt.load()
@@ -773,6 +778,17 @@ export function install(rt) {
       return new Response(JSON.stringify(result), { status: 200, headers: { 'content-type': 'application/json' } })
     },
   }), 'ds-bot: api route')
+
+  ctx.effect(() => ctx.connection.fetch.register({
+    path: '/api/bot-tts',
+    methods: ['POST'],
+    requestBody: 'buffered',
+    fetch: async (request) => {
+      let body
+      try { body = await request.json() } catch { body = {} }
+      return rt.breezeTtsStreamResponse(body, request.signal)
+    },
+  }), 'ds-bot: tts stream route')
 
   ctx.effect(() => {
     void rt.load()

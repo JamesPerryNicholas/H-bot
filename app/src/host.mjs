@@ -31,8 +31,13 @@ async function main() {
   const office = check === undefined ? reconcileOfficeRuntime(profile) : { patchFiles: [] }
   // ds-bot reads the payload's Node for the Office commands it runs itself.
   if (office.node !== undefined) process.env.DS_BOT_OFFICE_NODE = office.node
+  let environment = loadLayeredEnv('dsh')
+  if (process.platform === 'win32' && !check) {
+    const { applyWindowsProxy } = await import('./windows-proxy.mjs')
+    if (await applyWindowsProxy(environment)) environment = loadLayeredEnv('dsh')
+  }
   const application = runProfile({
-    environment: loadLayeredEnv('dsh'),
+    environment,
     profile: check === undefined ? PROFILE : CHECK_PROFILE,
     resolvedProfile: { profile, installAnchor: INSTALL_ANCHOR },
     patchFiles: check === undefined ? [...writeAppPatch(profile), ...reconcileSearchSelector(profile), ...reconcileGoal(profile), ...office.patchFiles] : [],

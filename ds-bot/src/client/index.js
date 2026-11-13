@@ -16,7 +16,7 @@ import { ComposerPlus, ComposerVoice, menuIcons } from './composer.js'
 import { CHATS_SOURCE, atSources } from './at-menu.js'
 import { BtwDock, BtwTurnTail } from './btw.js'
 import { SIDE_CSS, sideSource } from './side-chat.js'
-import { VOICE_BUNDLE, closingReplyText, requestPreparation } from './speech.js'
+import { VOICE_BUNDLE, closingReplyText, liveReplyText, requestPreparation } from './speech.js'
 import { sameVersion } from './dsh-offer.js'
 import { QuestionCard, QuestionDock } from './questions.js'
 import { AnsweredReply, WidgetDock, WIDGET_CSS } from './widget-cell.js'
@@ -59,7 +59,7 @@ import { QueueDock, QUEUE_CSS } from './queue-dock.js'
 import { noticeApprovals } from './approval-notices.js'
 import { listedOpener } from './open-listed.js'
 
-export const inject = ['sessions', 'uiWorkspace', 'uiConversation', 'slots', 'theme', 'layout']
+export const inject = ['sessions', 'conversation', 'uiWorkspace', 'uiConversation', 'slots', 'theme', 'layout']
 
 export function apply(ctx) {
   ctx.effect(() => installLocale(ctx.get('locale')), 'ds-bot: interface copy')
@@ -88,7 +88,7 @@ export function apply(ctx) {
   // style so the shell's own interface returns. `plain` stays false until a Bot-mode
   // view hosts a plain session, which drops only the conversation replacements.
   const surface = createSource({ mode: readMode(), plain: false })
-  // Whether H bot holds the settings seat; Overlays draws the Settings dialog while it does not.
+  // Whether DS Bot holds the settings seat; Overlays draws the Settings dialog while it does not.
   const settingsShellHeld = createSource(false)
   let settingsShell = null
   // DSH Agent Session ids from the last pull, so a reload already knows the main
@@ -295,7 +295,7 @@ export function apply(ctx) {
     }, 'ds-bot: app update status')
   }
 
-  // The H bot app's own updater; its state goes beside the host's answer as ownApp,
+  // The DS Bot app's own updater; its state goes beside the host's answer as ownApp,
   // which the About row turns into the app's update state and buttons.
   const ownAppUpdates = globalThis.dsBotApp?.updates ?? null
   if (ownAppUpdates?.state && ownAppUpdates.subscribe) {
@@ -473,7 +473,39 @@ export function apply(ctx) {
       })
     }
   }
+  const watchedDrafts = new WeakSet()
   const actions = {
+    watchDraftAttachments(sessionId) {
+      const binding = ctx.sessions.binding(sessionId)
+      if (!binding || watchedDrafts.has(binding)) return
+      const input = ctx.conversation.input.for(binding.ctx).state
+      watchedDrafts.add(binding)
+      binding.ctx.effect(() => {
+        let hold
+        const release = () => {
+          const previous = hold
+          hold = undefined
+          previous?.release()
+        }
+        const sync = () => {
+          if (binding.session.getSnapshot().removed || !input.getSnapshot().attachmentIds.length) {
+            release()
+          } else if (!hold) {
+            hold = ctx.sessions.retain(sessionId, { source: 'botAttachmentDraft' })
+            void hold.ready.catch(quietly('retain attachment draft'))
+          }
+        }
+        const offInput = input.subscribe(sync)
+        const offSession = binding.session.subscribe(sync)
+        sync()
+        return () => {
+          offInput()
+          offSession()
+          watchedDrafts.delete(binding)
+          release()
+        }
+      }, 'ds-bot: retain unsent attachments')
+    },
     ...teamActions({ call, after, partFor, roster, ui, live, cards, heldCards, turnClock, panelFolded }),
     learningAnswer: (id, approve) => after(call('learning-answer', { id, approve })),
     // The full-pane overlays sit above the conversation, so opening one must dismiss them
@@ -711,6 +743,16 @@ export function apply(ctx) {
       return null
     }
   }
+  actions.liveReply = (sessionId) => {
+    try {
+      const binding = ctx.sessions.binding(sessionId)
+      if (binding === undefined) return null
+      const conversation = ctx.uiConversation.binding(binding)
+      return liveReplyText(conversation.target('chat').getSnapshot(), conversation.openTurn.getSnapshot())
+    } catch {
+      return null
+    }
+  }
   actions.seatAccount = on => ui.set(state => (state.accountSeated === on ? state : { ...state, accountSeated: on }))
   // The install runs on the host; the check loop follows it every two seconds.
   actions.installUpdate = async () => {
@@ -718,7 +760,7 @@ export function apply(ctx) {
     update.set(previous => ({ ...previous, ...value }))
     wakeUpdate()
   }
-  // The DSH the newest released H bot verified installs the same way.
+  // The DSH the newest released DS Bot verified installs the same way.
   actions.installDshUpdate = async () => {
     const dsh = await call('dsh-update-install')
     update.set(previous => ({ ...previous, dsh }))
@@ -821,8 +863,8 @@ export function apply(ctx) {
     })
   }
   const face = () => ({ actions, hooks: { roster, ui, activity, work, memoryNews, registry, turnClock, live, computer, cards, heldCards, browserPages, browserTabs, browserHolds, surface, update, frame, sidebarPref, settingsShellHeld } })
-  // H bot holds the settings seat in every mode, Agent mode included: the bundle patch
-  // turns DSH's own shell off, and this one draws DSH's settings pages in H bot's dialog.
+  // DS Bot holds the settings seat in every mode, Agent mode included: the bundle patch
+  // turns DSH's own shell off, and this one draws DSH's settings pages in DS Bot's dialog.
   ctx.effect(() => {
     const offStyles = installCompiledStyles(SETTINGS_SHELL_CSS, 'settings-shell')
     settingsShell = installSettingsShell(ctx, { face, actions, ui, held: settingsShellHeld })
@@ -1054,7 +1096,7 @@ export function apply(ctx) {
     [SIDE_CSS, 'side'],
     [BROWSER_CSS, 'browser'],
   ]
-  // Settings outside Bot mode (Agent mode) brings H bot's own rules and colors while it
+  // Settings outside Bot mode (Agent mode) brings DS Bot's own rules and colors while it
   // shows; the shell overrides and DSH's tokens stay as Agent mode has them.
   let shellSheets = 0
   actions.holdSettingsLook = () => {

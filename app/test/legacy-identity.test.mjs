@@ -12,7 +12,7 @@ import { APP_ID, configureIdentity, LEGACY_ARTIFACT_PREFIX, LEGACY_PRODUCT_NAME 
 function fixture({ saved = [], packaged = true } = {}) {
   const app = new EventEmitter()
   const appData = join(tmpdir(), 'dsbot-identity-fixture')
-  const current = join(appData, 'H bot')
+  const current = join(appData, 'DS Bot')
   const legacy = join(appData, LEGACY_PRODUCT_NAME)
   const paths = { appData, userData: current }
   const names = []
@@ -41,7 +41,7 @@ for (const platform of ['win32', 'darwin', 'linux']) {
     } else {
       assert.deepEqual(f.names, [LEGACY_PRODUCT_NAME])
       f.app.emit('ready')
-      assert.deepEqual(f.names, [LEGACY_PRODUCT_NAME, 'H bot'])
+      assert.deepEqual(f.names, [LEGACY_PRODUCT_NAME, 'DS Bot'])
     }
   })
 }
@@ -54,10 +54,10 @@ test('a fresh installation uses the new shell directory', () => {
 
 test('a display-name change keeps the fork shell directory and Windows identity', () => {
   const f = fixture()
-  const kept = join(f.paths.appData, 'H bot Dev')
+  const kept = join(f.paths.appData, 'DS Bot Dev')
   const result = configureIdentity(f.app, {
     env: {}, platform: 'win32', mkdir: () => {},
-    shellName: 'H bot Dev', inheritLegacy: false, appId: 'io.github.fei2411.dsbot.local',
+    shellName: 'DS Bot Dev', inheritLegacy: false, appId: 'io.github.fei2411.dsbot.local',
     exists: () => { throw new Error('must not probe the original installation') },
   })
   assert.equal(result.userData, kept)
@@ -100,11 +100,11 @@ test('a source installation also keeps its existing shell data', () => {
 })
 
 for (const suffix of ['mac-arm64.zip', 'mac-x64.zip', 'linux-amd64.deb']) {
-  test(`old update clients receive the identical H bot payload: ${suffix}`, () => {
+  test(`old update clients receive the identical DS Bot payload: ${suffix}`, () => {
     const root = mkdtempSync(join(tmpdir(), 'dsbot-release-alias-'))
     try {
-      const source = join(root, `H-bot-1.2.3-${suffix}`)
-      const payload = Buffer.from('new H bot package')
+      const source = join(root, `DS-Bot-1.2.3-${suffix}`)
+      const payload = Buffer.from('new DS Bot package')
       writeFileSync(source, payload)
       const result = spawnSync(process.execPath, ['scripts/legacy-release-assets.mjs', source], { cwd: new URL('../', import.meta.url), encoding: 'utf8' })
       assert.equal(result.status, 0, result.stderr)

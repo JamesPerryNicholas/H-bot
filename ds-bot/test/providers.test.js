@@ -114,7 +114,7 @@ test('a saved API key goes to the provider\'s reference and frees its models', a
   await assert.rejects(rt.setProviderKey('deepseek-account', 'sk-test'), /deepseek-account takes no API key here/)
 })
 
-test('a key set outside H bot is not overwritten or removed', async () => {
+test('a key set outside DS Bot is not overwritten or removed', async () => {
   const { rt, writes } = dsh({ keys: { DEEPSEEK_API_KEY: 'k' }, readOnly: ['DEEPSEEK_API_KEY'] })
   await assert.rejects(rt.setProviderKey('deepseek-official', 'sk-test'), /set outside H bot/)
   await assert.rejects(rt.clearProviderKey('deepseek-official'), /set outside H bot/)

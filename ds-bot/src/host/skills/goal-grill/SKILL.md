@@ -1,6 +1,6 @@
 ---
 name: goal-grill
-description: Align with the user before writing a group goal — find the facts yourself, ask only the open decisions in one numbered round with a recommended answer each, then write the goal with checks and stages.
+description: Align with the user before writing a group goal — find the facts yourself, ask only the open decisions in one numbered round with a recommended answer each, then write the goal in complete stages, not tiny steps that get reviewed over and over.
 ---
 
 # Align a goal before you write it
@@ -28,10 +28,12 @@ Call group_goal start with:
 - objective: the one outcome, in the user's terms;
 - acceptance: how anyone can check it is done — commands or tests to run, files or results to look at, what evidence to show;
 - constraints: the rules every member keeps, including what the user ruled out;
-- stages in order: each small enough to check on its own, with its own acceptance and its tasks, each task for one member by name. Give review work to a member who did not do the work.
+- stages in order: each a complete slice of the outcome that can stand on its own, with its own acceptance and its tasks, each task for one member by name. Do not break small work into many tiny stages, and do not add a review step for every small change. Still check before sending a message, paying, deleting something, or using someone else's account. Do not pull ordinary small changes out for review again and again.
 
 Then hand out the tasks of stage 1 with @Name in the same reply.
 
 ## While the goal runs
+
+When members report back, check the stage against its "done when" and pass or rework the stage as a whole. Do not open extra review rounds for small changes. Still stop and check before sending a message, paying, deleting something, or using someone else's account.
 
 When the user corrects the direction, write it into the goal with group_goal revise before you go on, and tell the group what changed.

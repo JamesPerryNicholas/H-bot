@@ -1,5 +1,27 @@
 ; Install for the current user only: the installer skips the page that asks
 ; "for all users or only for me" and never asks for administrator rights.
+; Older relocated H bot copies can have a stale Software\GUID path while the
+; uninstall record already points at the active folder. Resolve that before
+; electron-builder selects the directory or launches the old uninstaller.
+!macro preInit
+  !ifndef BUILD_UNINSTALLER
+    !if "${APP_ID}" == "io.github.fei2411.dsbot.local"
+      !ifdef APP_64
+        ${If} ${RunningX64}
+          SetRegView 64
+        ${EndIf}
+      !endif
+      Push $0
+      ReadRegStr $0 HKCU "${UNINSTALL_REGISTRY_KEY}" InstallLocation
+      ${If} $0 != ""
+      ${AndIf} ${FileExists} "$0\${APP_EXECUTABLE_FILENAME}"
+        WriteRegStr HKCU "${INSTALL_REGISTRY_KEY}" InstallLocation "$0"
+      ${EndIf}
+      Pop $0
+    !endif
+  !endif
+!macroend
+
 !macro customInstallMode
   StrCpy $isForceCurrentInstall "1"
 !macroend

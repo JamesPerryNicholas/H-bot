@@ -9,8 +9,8 @@ import {
   MEMORY_LIMITS, addLink, cleanEntry, cleanTopic, formatEntry, insertEntry, looksLikeKey,
   looksSecret, matchEntries, parseAsk, parseMemory, parseReview, reviewEntries, removeLink, splitMeta, writtenIn,
 } from '../src/host/memory.js'
-import { fitWindow, promptEntry } from '../src/host/memory-entries.js'
-import { rankEntries } from '../src/host/memory-search.js'
+import { fitWindow, isStanding, keepPriority, promptEntry } from '../src/host/memory-entries.js'
+import { pickRecalled, rankEntries } from '../src/host/memory-search.js'
 import { latestMemoryChange, summaryBlocks } from '../src/client/text.js'
 import { fakeContext } from './fake-ctx.js'
 
@@ -80,6 +80,10 @@ test('the memory panel reads JSON from the model, in a fence or not', () => {
     assert.deepEqual(parsed.leftOut, [JSON.parse(bad)], bad)
   }
   assert.deepEqual(parseReview('{"changes": [{"op": "remove", "entry": "2"}]}'), { changes: [{ op: 'remove', entry: '2' }], leftOut: [] })
+  assert.deepEqual(parseReview('{"changes": [{"op": "add", "text": "The user likes a plain style", "standing": true}]}'), { changes: [{ op: 'add', text: 'The user likes a plain style', standing: true }], leftOut: [] })
+  const marked = parseReview('{"changes": [{"op": "add", "text": "x", "standing": "true"}, {"op": "add", "text": "y"}]}')
+  assert.deepEqual(marked.changes, [{ op: 'add', text: 'y' }])
+  assert.deepEqual(marked.leftOut, [{ op: 'add', text: 'x', standing: 'true' }])
 })
 
 test('the panel shows a summary as headings over paragraphs', () => {
@@ -1589,6 +1593,24 @@ test('a prompt shows what the model window has room for, the newest first, and s
   assert.deepEqual(fitWindow(entries, undefined, text => text.length), { shown: entries, left: 0 })
   assert.match(promptEntry(entries[0]), /^- Fact 0 \[[0-9a-f]{4} · 11-01\]$/)
   assert.match(promptEntry({ text: 'Undated', meta: {} }), /^- Undated \[[0-9a-f]{4}\]$/)
+  assert.match(promptEntry({ text: 'Likes tea', meta: { id: 'aaaa', added: '2026-01-01', standing: 'yes' } }), /^- Likes tea \[aaaa \u00b7 01-01 \u00b7 standing\]$/)
+  assert.match(promptEntry({ text: 'Away in March', meta: { id: 'bbbb', added: '2026-02-01', until: '2026-03-31' } }), /^- Away in March \[bbbb \u00b7 02-01 \u00b7 until 2026-03-31\]$/)
+})
+
+test('standing and pinned facts stay in the prompt window ahead of newer dated history', () => {
+  const entries = [
+    { text: 'Likes plain replies', meta: { added: '2026-01-01', standing: 'yes', id: 'aaaa' } },
+    { text: 'Trip in March', meta: { added: '2026-11-10', until: '2027-03-31', id: 'bbbb' } },
+    { text: 'Newest filler', meta: { added: '2026-11-11', id: 'cccc' } },
+    { text: 'Pinned name', meta: { added: '2026-01-02', pinned: 'user', id: 'dddd' } },
+  ]
+  assert.deepEqual(entries.map(entry => keepPriority(entry, '2026-11-12')), [1, 3, 2, 0])
+  assert.equal(isStanding(entries[0]), true)
+  const measure = text => text.length
+  const budget = promptEntry(entries[0]).length + promptEntry(entries[3]).length
+  const { shown, left } = fitWindow(entries, budget, measure, '2026-11-12')
+  assert.deepEqual(shown.map(entry => entry.text), ['Likes plain replies', 'Pinned name'])
+  assert.equal(left, 2)
 })
 
 test('an entry has an id, can end on a day, and a pin keeps it from being moved or changed', async (t) => {
@@ -1734,6 +1756,42 @@ test('a turn brings up matching topic entries once, as data, and only from what 
   assert.equal(await recallOf(ctx, 'b2', '这次发版前要做什么检查'), undefined)
 })
 
+test('remember and the memory review mark a lasting preference as standing', async (t) => {
+  const home = mkdtempSync(join(tmpdir(), 'ds-bot-memory-'))
+  const replies = [JSON.stringify({ changes: [{ op: 'add', text: 'The user lives in Houston', standing: true }] })]
+  const { ctx, tool, call, read, stop } = start({ home, replies, config: { memoryReviewDelayMs: 0 } })
+  t.after(() => stop())
+  await tool('remember', { text: 'The user likes a plain style', standing: true }, 'b2')
+  const saved = parseMemory(read('bots', 'b2', 'MEMORY.md')).entries[0]
+  assert.equal(saved.meta.standing, 'yes')
+  assert.equal(isStanding(saved), true)
+  const view = (await call('memory-view', { botId: 'b2' })).value
+  assert.equal(view.entries.find(entry => entry.text === 'The user likes a plain style').standing, true)
+  // A dated fact is not marked standing, even if both are asked for.
+  await tool('remember', { text: 'Away until April', standing: true, until: '2026-04-30' }, 'b2')
+  const dated = parseMemory(read('bots', 'b2', 'MEMORY.md')).entries.find(entry => entry.text === 'Away until April')
+  assert.equal(dated.meta.until, '2026-04-30')
+  assert.equal(dated.meta.standing, undefined)
+  await call('state', {})
+  ctx.emit('agent/status', { agent: { id: 'b2' }, status: 'idle' })
+  await reviewed(call)
+  const kept = parseMemory(read('bots', 'b2', 'MEMORY.md')).entries.find(entry => entry.text === 'The user lives in Houston')
+  assert.equal(kept.meta.standing, 'yes')
+})
+
+test('a standing topic entry is recalled on a single overlapping word', () => {
+  const entries = [
+    { text: 'The user lives in Houston', meta: { standing: 'yes' }, file: { topic: 'profile' } },
+    { text: 'Ships on Friday and also lots of other words here', file: { topic: 'ship' } },
+  ]
+  const ranked = rankEntries(entries, 'weather in Houston')
+  assert.equal(ranked[0].entry.text, 'The user lives in Houston')
+  assert.equal(ranked[0].hits, 1)
+  const picked = pickRecalled(ranked, 5)
+  assert.deepEqual(picked.map(hit => hit.entry.text), ['The user lives in Houston'])
+  assert.deepEqual(pickRecalled(rankEntries([entries[1]], 'weather in Houston'), 5), [])
+})
+
 test('recall puts the entry that matches best first', () => {
   const entries = ['Ships on Friday and also lots of other words here', 'Friday ships'].map(text => ({ text, file: {} }))
   const ranked = rankEntries(entries, 'ships friday')
@@ -1850,6 +1908,23 @@ test('a new entry on a full MEMORY.md moves the oldest in the same change, and t
   assert.equal(row.op, 'add')
   assert.deepEqual(row.movedTo, ['earlier.md'])
   assert.match(row.moved[0], /Filler fact number 27 /)
+})
+
+test('a full MEMORY.md keeps a standing preference and moves dated history first', async (t) => {
+  const home = mkdtempSync(join(tmpdir(), 'ds-bot-memory-'))
+  mkdirSync(join(home, 'memory', 'bots', 'b2'), { recursive: true })
+  const standing = '- The user likes a plain style [id: aaaa; added: 2026-01-01; standing: yes]'
+  const dated = '- Away on a trip [id: bbbb; added: 2026-01-02; until: 2099-03-31]'
+  const filler = Array.from({ length: 27 }, (_, at) => `- Filler fact number ${at + 1} ${'y'.repeat(280)} [added: 2026-03-${String(at + 1).padStart(2, '0')}]`)
+  writeFileSync(join(home, 'memory', 'bots', 'b2', 'MEMORY.md'), `# Memory\n\n${standing}\n${dated}\n${filler.join('\n')}\n\n## Index\n`)
+  const { tool, read, stop } = start({ home })
+  t.after(() => stop())
+  await tool('remember', { text: 'A new fact' }, 'b2')
+  const main = read('bots', 'b2', 'MEMORY.md')
+  assert.match(main, /- The user likes a plain style \[id: aaaa;.*standing: yes/)
+  assert.match(main, /- A new fact \[/)
+  assert.doesNotMatch(main, /Away on a trip/)
+  assert.match(read('bots', 'b2', 'earlier.md'), /Away on a trip/)
 })
 
 test('a full topic continues in a numbered one, and past the last topic the entry goes to MEMORY.md', async (t) => {

@@ -5,6 +5,35 @@ import { join, resolve } from 'node:path'
 import { FileMatcher, getNodeModuleFileMatcher } from 'app-builder-lib/out/fileMatcher.js'
 import { parse } from 'yaml'
 
+test('the desktop lock includes the local plugin dependencies and the complete SSH dependency tree', () => {
+  const plugin = JSON.parse(readFileSync(new URL('../../ds-bot/package.json', import.meta.url), 'utf8'))
+  const { packages } = JSON.parse(readFileSync(new URL('../package-lock.json', import.meta.url), 'utf8'))
+  assert.deepEqual(packages['node_modules/ds-bot'].dependencies, plugin.dependencies,
+    'refresh app/package-lock.json when the local plugin dependencies change')
+
+  const visited = new Set()
+  function check(path) {
+    if (visited.has(path)) return
+    visited.add(path)
+    const entry = packages[path]
+    assert.ok(entry && !entry.dev && !entry.link, `${path} must be a packaged production dependency`)
+    for (const name of Object.keys(entry.dependencies ?? {})) {
+      const candidates = [`${path}/node_modules/${name}`]
+      let parent = path
+      while (parent.includes('node_modules/')) {
+        parent = parent.slice(0, parent.lastIndexOf('node_modules/'))
+        candidates.push(`${parent}node_modules/${name}`)
+        parent = parent.replace(/\/$/u, '')
+      }
+      const dependency = candidates.find(candidate => packages[candidate])
+      assert.ok(dependency, `${path} is missing dependency ${name}`)
+      check(dependency)
+    }
+  }
+  check('node_modules/ssh2')
+  assert.equal(packages['node_modules/ssh2'].version, plugin.dependencies.ssh2)
+})
+
 // npm installs the peers that the DSH packages ask for, but electron-builder packs only the
 // dependencies it finds through `dependencies` and `optionalDependencies`. A package that npm
 // installed only as a peer would be left out of the installer, and the Host would not boot.

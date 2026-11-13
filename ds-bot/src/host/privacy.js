@@ -1,6 +1,6 @@
 // Private Bots. A private Bot reads the team like any Bot, but no other Bot reads it, and
 // what it sends out waits for the user. DSH does not fence reads, so this closes the
-// tools H bot owns and checks the paths that the file tools and the shell are given;
+// tools DS Bot owns and checks the paths that the file tools and the shell are given;
 // a shell can still reach any file the account can (see docs/plans).
 import { join, resolve } from 'node:path'
 import { within } from './folders.js'
@@ -77,6 +77,7 @@ export function install(rt) {
     join(rt.home, 'learning', 'state.json'),
     join(rt.home, 'ocr.json'),
     join(rt.home, 'secrets.json'),
+    join(rt.home, 'known-hosts.json'),
     join(rt.home, 'memory', 'journal.jsonl'),
     join(rt.home, 'memory', 'journal.torn'),
     join(rt.home, 'memory', 'pending.json'),

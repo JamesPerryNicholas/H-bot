@@ -1,5 +1,5 @@
 // The Codex app-server engine: `codex app-server --listen stdio://`, one
-// JSON-RPC process per route that multiplexes threads. H bot Sessions map to
+// JSON-RPC process per route that multiplexes threads. DS Bot Sessions map to
 // threads; turns stream item notifications back.
 import { JsonRpcPeer, wireProcess, EventQueue } from './jsonrpc.js'
 import { cleanEnv, spawnAgent } from './discover.js'
@@ -112,7 +112,7 @@ export class CodexEngine {
       })
     }
     // Codex asks before every MCP tool call under `on-request`. A refusal reads as
-    // "user rejected MCP tool call", so H bot's own loopback server is approved
+    // "user rejected MCP tool call", so DS Bot's own loopback server is approved
     // here: toolsFor() already narrowed what the Bot may call. Other servers
     // still need the user's decision through the normal approval bridge.
     if (method === 'mcpServer/elicitation/request' && params?.serverName === MCP_SERVER && params?._meta?.codex_approval_kind === 'mcp_tool_call') {
@@ -272,6 +272,15 @@ const activityOf = item => {
     : item.type === 'fileChange' ? 'edit'
       : item.type === 'mcpToolCall' ? (item.tool ?? 'tool')
         : (item.title ?? item.type)
-  return String(kind).split('\n')[0].slice(0, 120)
+  let label = String(kind)
+  if (item.type === 'commandExecution') {
+    // Keep the command itself visible when Codex supplies an absolute shell path.
+    const wrapper = /^(?:"(?:[^"]*[\\/])?(?:pwsh|powershell)(?:\.exe)?"|(?:[^\s"]*[\\/])?(?:pwsh|powershell)(?:\.exe)?)\s+(?:(?:-NoProfile|-NonInteractive|-NoLogo)\s+)*-Command\s+([\s\S]+)$/i.exec(label)
+    if (wrapper) {
+      label = wrapper[1].trim()
+      if (/^(["'])[\s\S]*\1$/.test(label)) label = label.slice(1, -1)
+    }
+  }
+  return label.split('\n')[0].slice(0, 120)
 }
 const detailText = params => [params?.command, params?.reason, JSON.stringify(params?.changes ?? params?.patch ?? '')].filter(Boolean).join('\n').slice(0, 4_000)

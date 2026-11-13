@@ -137,14 +137,14 @@ async function start(t, { saved = team() } = {}) {
     }
     return agents.get(sessionId)
   }
-  const registry = new Map([['w1', { id: 'w1', path: workspace, title: 'H bot' }]])
+  const registry = new Map([['w1', { id: 'w1', path: workspace, title: 'DS Bot' }]])
   Object.assign(ctx, {
     llm,
     workspaceRegistry: {
       get: id => registry.get(id),
       list: () => [...registry.values()],
       resolveByPath: async path => [...registry.values()].find(entry => entry.path === path),
-      create: async (path) => { const entry = { id: 'w-new', path, title: 'H bot' }; registry.set(entry.id, entry); return entry },
+      create: async (path) => { const entry = { id: 'w-new', path, title: 'DS Bot' }; registry.set(entry.id, entry); return entry },
       archiveSession: async (id, options) => { archived.push([id, options]) },
     },
     sessionController: {
@@ -240,7 +240,7 @@ test('a Bot without a model of its own still moves to a CLI only by the user, co
   }
   assert.equal(env.state().bots.c.model, undefined)
   assert.equal(env.state().bots.d.model, undefined)
-  // A model of H bot's own is an ordinary pick.
+  // A model of DS Bot's own is an ordinary pick.
   assert.equal((await env.call('update-bot', { id: 'd', model: 'ds/pro' })).ok, true)
   assert.equal(env.state().bots.d.model, 'ds/pro')
 })
@@ -500,7 +500,7 @@ const send = async (adapter, sessionId, messages, extra = {}) => {
   return { text, finish }
 }
 
-test('listing a route lists what H bot knows and starts nothing', async (t) => {
+test('listing a route lists what DS Bot knows and starts nothing', async (t) => {
   const { adapter, engines } = adapterFor(t)
   const models = await adapter.listModels('local-acp-fake')
   assert.deepEqual(models.map(model => model.id), ['default', 'used-one'])

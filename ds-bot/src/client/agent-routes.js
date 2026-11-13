@@ -12,6 +12,7 @@ const cliOf = route => (typeof route === 'string' && route.startsWith(PREFIX) ? 
 
 // CLI name -> [glyph, ink name].
 export const AGENT_BADGES = {
+  'antigravity': ['AG', 'blue'],
   'devin-cli': ['DV', 'violet'],
   'claude-code': ['CC', 'tangerine'],
   'codex-cli': ['CX', 'green'],
@@ -39,7 +40,7 @@ export const isLocalRoute = ref => badgeOf(String(ref ?? '').split('/')[0]) !== 
 export const routeOf = ref => String(ref ?? '').split('/')[0]
 
 // The models a pick can go to from `ref`: a local agent lists only its own, and
-// everything else lists H bot's models. What a Bot runs on changes in its settings.
+// everything else lists DS Bot's models. What a Bot runs on changes in its settings.
 export function modelsFor(models, ref) {
   const list = models ?? []
   return isLocalRoute(ref)

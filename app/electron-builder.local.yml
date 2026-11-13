@@ -1,4 +1,4 @@
-# Local fork: independent installation, shell data and update policy.
+# Local fork: independent installation and update policy. Shares the same historical data as other editions.
 extends: ./electron-builder.yml
 appId: io.github.fei2411.dsbot.local
 productName: H bot
@@ -11,11 +11,11 @@ extraMetadata:
   dsBotBuild:
     automaticUpdates: false
     defaultPlaces:
-      dataName: .ds-bot-dev
-      workspaceName: H bot Dev
+      dataName: .ds-bot
+      workspaceName: DS Bot
     identity:
       appId: io.github.fei2411.dsbot.local
       inheritLegacy: false
-      shellName: H bot Dev
+      shellName: H bot
 nsis:
   guid: 86bb7439-3260-4cce-b063-9f207f4e6a63

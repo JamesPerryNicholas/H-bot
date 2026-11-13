@@ -66,17 +66,32 @@ export const isPinned = entry => Boolean(entry.meta?.pinned)
 const DAY = /^\d{4}-\d{2}-\d{2}$/
 export const cleanDay = raw => (DAY.test(String(raw ?? '').trim()) ? String(raw).trim() : undefined)
 export const isExpired = (entry, today) => DAY.test(String(entry.meta?.until ?? '')) && entry.meta.until < today
-
-// An entry as the prompt shows it: its id and the day it was saved. recall shows the rest.
-export function promptEntry(entry) {
-  const day = /^\d{4}-(\d{2}-\d{2})$/.exec(String(entry.meta?.added ?? ''))?.[1]
-  return `- ${entry.text} [${[entryId(entry), day].filter(Boolean).join(' · ')}]`
+// A lasting profile fact or preference, marked when it was saved. Pinned is separate and stronger.
+export const isStanding = entry => {
+  const value = String(entry?.meta?.standing ?? '').trim().toLowerCase()
+  return value !== '' && value !== 'false' && value !== 'no' && value !== '0'
+}
+// What stays in view when room is tight: 0 kept first, 4 moved first.
+export function keepPriority(entry, today) {
+  if (isPinned(entry)) return 0
+  if (isExpired(entry, today)) return 4
+  if (cleanDay(entry.meta?.until)) return 3
+  if (isStanding(entry)) return 1
+  return 2
 }
 
-// The entries a window has room for, newest kept, shown in their own order.
-export function fitWindow(entries, tokens, measure) {
+// An entry as the prompt shows it: its id, the day it was saved, and whether it is standing or dated.
+export function promptEntry(entry) {
+  const day = /^\d{4}-(\d{2}-\d{2})$/.exec(String(entry.meta?.added ?? ''))?.[1]
+  const until = cleanDay(entry.meta?.until)
+  return `- ${entry.text} [${[entryId(entry), day, isStanding(entry) ? 'standing' : undefined, until ? `until ${until}` : undefined].filter(Boolean).join(' · ')}]`
+}
+
+// The entries a window has room for: pinned and standing first, then the newest of the rest, shown in their own order.
+export function fitWindow(entries, tokens, measure, today) {
   if (tokens === undefined) return { shown: entries, left: 0 }
-  const order = entries.map((entry, at) => ({ entry, at })).sort((a, b) => Number(isPinned(b.entry)) - Number(isPinned(a.entry)) || String(b.entry.meta?.added ?? '').localeCompare(String(a.entry.meta?.added ?? '')) || b.at - a.at)
+  const day = DAY.test(String(today ?? '')) ? String(today) : new Date().toISOString().slice(0, 10)
+  const order = entries.map((entry, at) => ({ entry, at })).sort((a, b) => keepPriority(a.entry, day) - keepPriority(b.entry, day) || String(b.entry.meta?.added ?? '').localeCompare(String(a.entry.meta?.added ?? '')) || b.at - a.at)
   const kept = new Set()
   let used = 0
   for (const { entry } of order) {
@@ -294,7 +309,7 @@ const wellFormed = (change) => {
   if (change === null || typeof change !== 'object') return false
   const texted = typeof change.text === 'string' && change.text.trim() !== ''
   const numbered = Number.isInteger(Number(change.entry)) && Number(change.entry) >= 1
-  if (change.op === 'add') return texted && (change.topic === undefined || typeof change.topic === 'string') && (change.team === undefined || typeof change.team === 'boolean') && (change.for === undefined || typeof change.for === 'string') && (change.group === undefined || typeof change.group === 'string') && (change.until === undefined || typeof change.until === 'string')
-  if (change.op === 'edit') return texted && numbered
+  if (change.op === 'add') return texted && (change.topic === undefined || typeof change.topic === 'string') && (change.team === undefined || typeof change.team === 'boolean') && (change.for === undefined || typeof change.for === 'string') && (change.group === undefined || typeof change.group === 'string') && (change.until === undefined || typeof change.until === 'string') && (change.standing === undefined || typeof change.standing === 'boolean')
+  if (change.op === 'edit') return texted && numbered && (change.standing === undefined || typeof change.standing === 'boolean') && (change.until === undefined || typeof change.until === 'string')
   return change.op === 'remove' && numbered
 }

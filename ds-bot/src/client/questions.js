@@ -1,10 +1,11 @@
-import { createElement as h, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
+import { createElement as h, Fragment, useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { CloseIcon, CheckIcon } from './icons.js'
 import { CellEmpty } from './cell-empty.js'
 import { sendsOnEnter } from './enter-key.js'
 import { t } from './i18n.js'
 import { useDockHold } from './card-hold.js'
 import { createSource, heldCardKey } from './sources.js'
+import { PITCH_ACCEPT, PITCH_DECLINE } from '../shared/pitch.js'
 
 // -------------------------------------------------------------------------
 // Question cards. `ask_user` cards sit in the transcript and never block the Bot;
@@ -13,6 +14,12 @@ import { createSource, heldCardKey } from './sources.js'
 
 export const keyLetter = index => String.fromCharCode(65 + index)
 const optionsOf = question => (question?.options ?? []).map(option => (typeof option === 'string' ? { label: option } : option))
+const pitchLabel = (label) => {
+  if (label === PITCH_ACCEPT) return t('Go ahead')
+  if (label === PITCH_DECLINE) return t('Not this time')
+  return label
+}
+const shownLabel = (question, label) => (question?.kind === 'pitch' ? pitchLabel(label) : label)
 const isTypingTarget = node => node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement
   || node instanceof HTMLSelectElement || (node instanceof HTMLElement && node.isContentEditable)
 
@@ -102,8 +109,8 @@ function QuestionView({ question, onAnswer, onDismiss, onInteract, busy = false,
     },
     hints ? h('span', { className: 'bt-key', 'aria-hidden': true }, keyLetter(optionIndex)) : null,
     h('span', { className: 'bt-q-body' },
-      h('span', { className: 'bt-q-label' }, option.label),
-      option.description ? h('span', { className: 'bt-q-desc' }, option.description) : null),
+      h('span', { className: 'bt-q-label' }, shownLabel(question, option.label)),
+      option.description ? h('span', { className: 'bt-q-desc' }, question.kind === 'pitch' && option.label === PITCH_ACCEPT ? t('Start this work now.') : question.kind === 'pitch' && option.label === PITCH_DECLINE ? t('Leave it until I ask.') : option.description) : null),
     selected && !raised ? h('span', { className: 'bt-q-check', title: t('Selected') }, h(CheckIcon)) : null)
   })
   // Raised cards keep the custom answer as one more keyed row; bubbles put it below the list.
@@ -128,7 +135,11 @@ function QuestionView({ question, onAnswer, onDismiss, onInteract, busy = false,
   },
     h('div', { className: 'bt-q-head' },
       h('div', { className: 'bt-q-text' },
-        h('p', { className: 'bt-q-title', id: titleId }, question.header ? `${question.header} · ` : '', question.question),
+        question.kind === 'pitch'
+          ? h(Fragment, null,
+            h('p', { className: 'bt-q-title', id: titleId }, t('I can take this on')),
+            question.question ? h('div', { className: 'bt-q-detail' }, question.question) : null)
+          : h('p', { className: 'bt-q-title', id: titleId }, question.header ? `${question.header} · ` : '', question.question),
         question.detail ? h('div', { className: 'bt-q-detail' }, question.detail) : null,
         raised && multi ? h('div', { className: 'bt-q-detail' }, t('Choose all that apply')) : null),
       h('button', { type: 'button', className: 'bt-q-x', 'aria-label': t('Dismiss question'), title: t('Dismiss'), onClick: onDismiss, disabled: busy }, h(CloseIcon))),
@@ -156,14 +167,19 @@ export function SettledQuestion({ question, answer, closed }) {
     ...selected.map(label => ({ label, at: options.findIndex(option => option.label === label) })),
     ...(custom !== '' ? [{ label: custom, at: options.length }] : []),
   ] : []
-  return h('div', { className: answered ? 'bt-q bt-q-settled bt-q-answered' : 'bt-q bt-q-settled bt-q-dismissed', role: 'group', 'aria-label': prompt },
+  const title = question?.kind === 'pitch' ? t('I can take this on') : prompt
+  const aria = question?.kind === 'pitch' ? [t('I can take this on'), prompt].filter(Boolean).join(' ') : prompt
+  return h('div', { className: answered ? 'bt-q bt-q-settled bt-q-answered' : 'bt-q bt-q-settled bt-q-dismissed', role: 'group', 'aria-label': aria },
     h('div', { className: 'bt-q-head' },
-      h('div', { className: 'bt-q-text' }, prompt ? h('p', { className: 'bt-q-title' }, prompt) : null),
+      h('div', { className: 'bt-q-text' },
+        title ? h('p', { className: 'bt-q-title' }, title) : null,
+        question?.kind === 'pitch' && prompt ? h('div', { className: 'bt-q-detail' }, prompt) : null,
+        question?.kind === 'pitch' && question.detail ? h('div', { className: 'bt-q-detail' }, question.detail) : null),
       answered ? null : h('span', { className: 'bt-q-badge' }, closedLabel(closed))),
     chosen.length > 0 ? h('div', { className: 'bt-q-list', role: 'group', 'aria-label': t('Your answer') }, chosen.map(({ label, at }, index) =>
       h('div', { key: `${label}-${index}`, className: 'bt-q-opt', title: t('Selected') },
         at >= 0 ? h('span', { className: 'bt-key', 'aria-hidden': true }, keyLetter(at)) : null,
-        h('span', { className: 'bt-q-body' }, h('span', { className: 'bt-q-label' }, label))))) : null)
+        h('span', { className: 'bt-q-body' }, h('span', { className: 'bt-q-label' }, shownLabel(question, label)))))) : null)
 }
 
 export function QuestionCard({ matched }) {

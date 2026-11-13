@@ -73,7 +73,7 @@ async function start({ services = {}, workspaces = [], llm, team: saved = TEAM, 
     }
     return agents.get(sessionId)
   }
-  const registry = new Map([['w1', { id: 'w1', path: team, title: 'H bot' }], ...workspaces.map(workspace => [workspace.id, workspace])])
+  const registry = new Map([['w1', { id: 'w1', path: team, title: 'DS Bot' }], ...workspaces.map(workspace => [workspace.id, workspace])])
   Object.assign(ctx, {
     llm: llm ?? { listProviders: () => [], listModels: async () => [], resolveModelInfo: async () => ({}) },
     workspaceRegistry: {
@@ -81,7 +81,7 @@ async function start({ services = {}, workspaces = [], llm, team: saved = TEAM, 
       list: () => [...registry.values()],
       resolveByPath: async path => [...registry.values()].find(workspace => workspace.path === path),
       create: async (path) => {
-        const workspace = { id: 'w-new', path, title: 'H bot' }
+        const workspace = { id: 'w-new', path, title: 'DS Bot' }
         registry.set(workspace.id, workspace)
         return workspace
       },

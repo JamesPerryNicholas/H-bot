@@ -1,7 +1,7 @@
 // Ranking saved entries against a question. Entries are few, so this runs in memory over
 // the scopes the caller may read: visibility is settled before anything is scored. FTS5's
 // trigrams, which the chat index uses, cannot match a Chinese word of two characters.
-import { wordsOf } from './memory-entries.js'
+import { isStanding, wordsOf } from './memory-entries.js'
 
 const K1 = 1.2
 const B = 0.75
@@ -24,6 +24,8 @@ export function rankEntries(entries, query) {
 }
 
 // What the turn's first step brings along: only what shares enough with what was said.
+// A standing preference that overflowed into a topic is brought along on a weaker match,
+// so a later turn can still follow it when a word overlaps.
 const AUTO_MIN_HITS = 2
 const AUTO_MIN_COVER = 0.3
-export const pickRecalled = (ranked, max) => ranked.filter(hit => hit.hits >= AUTO_MIN_HITS && hit.covers >= AUTO_MIN_COVER).slice(0, max)
+export const pickRecalled = (ranked, max) => ranked.filter(hit => (hit.hits >= AUTO_MIN_HITS && hit.covers >= AUTO_MIN_COVER) || (isStanding(hit.entry) && hit.hits >= 1)).slice(0, max)

@@ -1,9 +1,8 @@
 // Compatibility identifiers are kept here so released installs can upgrade in place.
 import { existsSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { PRODUCT_NAME } from './start/product.mjs'
 
-export { PRODUCT_NAME }
+export const PRODUCT_NAME = 'DS Bot'
 export const APP_ID = 'io.github.fei2411.dsbot'
 export const LEGACY_PRODUCT_NAME = 'DeepSeek Bot'
 export const LEGACY_ENGINE = 'deepseek-bot-engine'

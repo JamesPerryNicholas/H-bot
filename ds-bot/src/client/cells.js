@@ -19,6 +19,7 @@ import { call } from './api.js'
 import { failureLabel } from './diagnostics.js'
 import { turnReasoning, thinkingStep, opensReply, stepActivity } from './turn-reasoning.js'
 import { parseReplies, stackReplies } from '../shared/group-replies.js'
+import { PITCH_TOOL, askedPitchOf } from '../shared/pitch.js'
 import { FOLD_AT, FOLD_HUGE, stripLongNote, useFold } from './fold.js'
 import { noHover, useViewport, viewBottom, useFlip } from './motion.js'
 import { heldCardKey } from './sources.js'
@@ -64,7 +65,7 @@ export function Bubbles({ texts, roster, selfId, actions, streaming, sessionId, 
     Number.isFinite(time) ? h('div', { className: 'bt-utime', title: clockLabel(time) }, messageClock(time)) : null)
 }
 
-// A folded message's last code block shows only its start; H bot draws its own
+// A folded message's last code block shows only its start; DS Bot draws its own
 // copy control for it, bound to the whole block. DSH's and the app's copy
 // buttons live in the block's banner and their markup differs, so none of
 // theirs is intercepted or cloned.
@@ -88,7 +89,7 @@ function FoldCodeCopy({ code, actions }) {
 
 // A folded message's last code block shows only its start. The start is not
 // given to the host's Markdown — its block would carry a copy bound to the
-// part shown — so H bot draws the part itself, with a copy bound to the
+// part shown — so DS Bot draws the part itself, with a copy bound to the
 // whole block. `body` renders the markdown before the block.
 const foldArea = (body, code, codeHead, actions) => (code === undefined ? body
   : h('div', { className: 'bt-fold-code' },
@@ -116,7 +117,7 @@ function Bubble({ text, index, roster, selfId, actions, sessionId, msgKey, menti
       h('div', { className: 'bt-bubble', 'data-folded': folded || undefined },
         control ? h('div', { className: 'bt-fold-body' }, area) : area,
         control),
-      live ? null : h(MessageTools, { text: folded ? text : shown, name: roster.byId[selfId]?.name ?? t('Bot'), sessionId, react: key ? emoji => actions.toggleReaction(msgKey, index, emoji) : undefined, actions, open: toolsOpen })),
+      live ? null : h(MessageTools, { text: folded ? text : shown, name: roster.byId[selfId]?.name ?? t('Bot'), sessionId, mention: roster.roomsById?.[sessionId] ? roster.byId[selfId]?.name : undefined, react: key ? emoji => actions.toggleReaction(msgKey, index, emoji) : undefined, actions, open: toolsOpen })),
     picked.length ? h('div', { className: 'bt-reacts' }, picked.map(emoji => h('button', {
       key: emoji, type: 'button', className: 'bt-react', 'aria-label': t('Remove reaction {emoji}', { emoji }), onClick: () => actions.toggleReaction(msgKey, index, emoji),
     }, emoji))) : null)
@@ -145,7 +146,7 @@ function useDismiss(open, close, refs) {
 
 // The hover toolbar beside a reply bubble: Add reaction, Reply, More. `open` is
 // the touch fallback: a tap on the bubble toggles it (see Bubble).
-function MessageTools({ text, name, sessionId, react, actions, open: tapped }) {
+function MessageTools({ text, name, sessionId, mention, react, actions, open: tapped }) {
   // The anchor element is kept, not its rect: the visible viewport can move
   // (on-screen keyboard) while the popover is open.
   const [panel, setPanel] = useState(null)
@@ -178,7 +179,7 @@ function MessageTools({ text, name, sessionId, react, actions, open: tapped }) {
   const item = (label, Icon, run) => h('button', { key: label, type: 'button', role: 'menuitem', onClick: () => { close(); run() } }, h(Icon), label)
   return h('div', { ref: tools, className: 'bt-tools', 'data-open': panel !== null || tapped || undefined },
     react ? h('button', { type: 'button', className: 'bt-tool', 'aria-label': t('Add reaction'), title: t('Add reaction'), 'aria-expanded': panel?.kind === 'react', onClick: event => open('react', event) }, h(SmileIcon)) : null,
-    sessionId ? h('button', { type: 'button', className: 'bt-tool', 'aria-label': t('Reply'), title: t('Reply'), onClick: () => actions.quote(sessionId, text) }, h(ReplyIcon)) : null,
+    sessionId ? h('button', { type: 'button', className: 'bt-tool', 'aria-label': t('Reply'), title: t('Reply'), onClick: () => actions.quote(sessionId, text, mention) }, h(ReplyIcon)) : null,
     h('button', { type: 'button', className: 'bt-tool', 'aria-label': t('More message actions'), title: t('More'), 'aria-haspopup': 'menu', 'aria-expanded': panel?.kind === 'more', onClick: event => open('more', event) }, copied ? h(CheckIcon) : h(DotsIcon)),
     panel?.kind === 'react' ? createPortal(h('div', { ref: pop, className: 'bt-react-strip', role: 'menu', 'aria-label': t('Reactions'), style: place },
       REACTIONS.map(emoji => h('button', { key: emoji, type: 'button', role: 'menuitem', 'aria-label': emoji, onClick: () => { close(); react(emoji) } }, emoji))), document.body) : null,
@@ -316,7 +317,6 @@ export function AssistantCell({ node, groupPart, sessionId, openFile, fileMentio
       })
     }),
     head ? h(SpeakerHead, { bot: speaker, time: data.time }) : null,
-    liveWork ? h(AgentActLive, { line: activity.at(-1), bot: roster.byId[sessionId] }) : null,
     reasoning ? h(ThinkingRow, {
       text: reasoning, live: thinking !== undefined, viewKey: `${sessionId}:${data.turn}`,
       // The live clock counts the settled steps too: backing `at` by the settled
@@ -337,6 +337,7 @@ function activityName(line) {
 
 function activityLabel(line) {
   const name = String(line ?? '').trim()
+  if (name === 'contextCompaction') return t('Compacting context')
   const token = activityName(name)
   if (/^[A-Za-z][\w./-]*$/.test(token)) {
     const found = toolActivity(token, () => undefined, () => undefined)
@@ -348,15 +349,6 @@ function activityLabel(line) {
 function activityMarkState(line) {
   const token = activityName(line)
   return /^[A-Za-z][\w./-]*$/.test(token) ? toolState(token) : 'working'
-}
-
-// The live work step: the Bot's mark keeps moving, and the current phrase
-// shimmers beside it, same surfaces as the transcript-tail activity row.
-function AgentActLive({ line, bot }) {
-  const text = activityLabel(line)
-  return h('div', { className: 'bt-activity' },
-    bot ? h(BotMark, { bot, size: 28, state: activityMarkState(line), live: true }) : h('span', { className: 'bt-agent-act-mark', 'data-live': true, 'aria-hidden': true }),
-    h(Shimmer, null, `${text}…`))
 }
 
 function AgentActRow({ line, id, live }) {
@@ -940,7 +932,8 @@ const TOOL_PHRASES = [
 const GROUP_PHRASES = { create_group: 'Creating a group', update_group: 'Updating the group', delete_group: 'Deleting the group', post_to_group: 'Posting in the group' }
 function toolActivity(name, arg, findBot, self) {
   switch (name) {
-    case 'ask_user': return null
+    case 'ask_user':
+    case PITCH_TOOL: return null
     case 'request_secret': return null
     case 'list_secrets': return { label: t('Checking the keys'), state: 'searching' }
     case 'ask_user_question': return { label: t('Waiting for your answer'), state: 'alert' }
@@ -1111,9 +1104,9 @@ function GroupReplies({ sessionId, callId, done, content, roster, actions, useUi
 // The calls ToolCell draws. A PTC program (`run_code`) dispatches the real tools as
 // its sub-calls, so a call draws by its own name wherever it sits in the tree.
 const isComputerCall = name => name === 'cua' || name?.startsWith('cua_driver_native__') === true
-const DRAWN = new Set(['message_bot', 'stop_bot', 'create_bot', 'update_bot', 'group_relay', 'create_group', 'update_group', 'delete_group', 'post_to_group', 'ask_user', 'request_secret', 'request_connector', 'mail_send', 'ask_user_question', 'show_view', 'browser_handoff', 'read_group_chat', 'remember', 'forget'])
+const DRAWN = new Set(['message_bot', 'stop_bot', 'create_bot', 'update_bot', 'group_relay', 'create_group', 'update_group', 'delete_group', 'post_to_group', 'ask_user', PITCH_TOOL, 'request_secret', 'request_connector', 'mail_send', 'ask_user_question', 'show_view', 'browser_handoff', 'read_group_chat', 'remember', 'forget'])
 // Calls whose card a dock above the composer carries when the call is not drawn.
-const CARDS = new Set(['ask_user', 'request_secret', 'request_connector', 'mail_send', 'show_view', 'browser_handoff', 'computer_handoff'])
+const CARDS = new Set(['ask_user', PITCH_TOOL, 'request_secret', 'request_connector', 'mail_send', 'show_view', 'browser_handoff', 'computer_handoff'])
 
 // Pictures a settled tool result should show in the chat flow. The raw tool
 // text and call list stay hidden; the image is the visible record.
@@ -1227,14 +1220,17 @@ function renderCall(call, { sessionId, roster, actions, useUi, useWork, findBot,
       const room = roster.rooms.find(entry => entry.name === name)
       return h(GroupEvent, { prefix: t(verbs[0]), room: tool === 'delete_group' ? undefined : room, name, roster, actions })
     }
-    case 'ask_user': {
+    case 'ask_user':
+    case PITCH_TOOL: {
       const question = roster.questions?.[sessionId]
       if (!question || question.callId !== call.callId) {
         // Dismissed or answered by a message: the card stays here, read-only.
         // Answered on the card: its reply message carries it, so no gap here.
         const closed = roster.closedCards?.[sessionId]?.[call.callId]
         if (closed === undefined) return h(CellEmpty, { className: 'bt-q-gone' })
-        const asked = { question: arg('question') ?? '', detail: arg('detail'), options: argValue('options') ?? [], multiSelect: argValue('multiSelect') === true }
+        const asked = tool === PITCH_TOOL
+          ? askedPitchOf(undefined, { work: arg('work'), why: arg('why'), question: arg('question'), detail: arg('detail') })
+          : { question: arg('question') ?? '', detail: arg('detail'), options: argValue('options') ?? [], multiSelect: argValue('multiSelect') === true }
         return h('div', { className: 'bt-q-inline' }, h(SettledQuestion, { question: asked, closed }))
       }
       if (heldCards?.[heldCardKey('question', question.id)] > 0) return h(CellEmpty)
